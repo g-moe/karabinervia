@@ -31,12 +31,12 @@ const Container = styled.div`
 const KeyboardTitle = styled.label`
   pointer-events: all;
   display: inline-block;
-  background: var(--color_accent);
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  background: var(--color_control-selected-bg);
+  border-bottom-left-radius: var(--radius_menu);
+  border-bottom-right-radius: var(--radius_menu);
   font-size: 18px;
   text-transform: uppercase;
-  color: var(--color_inside-accent);
+  color: var(--color_control-selected-text);
   padding: 1px 10px;
   margin-right: 10px;
   border: solid 1px var(--bg_control);
@@ -44,14 +44,14 @@ const KeyboardTitle = styled.label`
   cursor: pointer;
   transition: all 0.1s ease-out;
   &:hover {
-    filter: brightness(0.7);
+    filter: var(--filter_control-hover);
   }
 `;
 const KeyboardList = styled.ul<{$show: boolean}>`
   padding: 0;
   border: 1px solid var(--bg_control);
   width: 160px;
-  border-radius: 6px;
+  border-radius: var(--radius_menu);
   background-color: var(--bg_menu);
   margin: 0;
   margin-top: 5px;

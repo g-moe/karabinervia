@@ -65,13 +65,13 @@ const Keycode = styled(Button)<{disabled: boolean}>`
   font-size: 14px;
   border: 4px solid var(--border_color_icon);
   background: var(--bg_control);
-  color: var(--color_label-highlighted);
+  color: var(--color_control-text);
   margin: 0;
   box-shadow: none;
   position: relative;
-  border-radius: 10px;
+  border-radius: var(--radius_key-tile);
   &:hover {
-    border-color: var(--color_accent);
+    border-color: var(--color_control-border);
     transform: translate3d(0, -2px, 0);
   }
   ${(props: any) => props.disabled && `cursor:not-allowed;filter:opacity(50%);`}
@@ -86,12 +86,12 @@ const CustomKeycode = styled(Button)`
   width: 50px;
   height: 50px;
   line-height: 18px;
-  border-radius: 10px;
+  border-radius: var(--radius_key-tile);
   font-size: 14px;
   border: 4px solid var(--border_color_icon);
-  background: var(--color_accent);
-  border-color: var(--color_inside_accent);
-  color: var(--color_inside_accent);
+  background: var(--color_control-selected-bg);
+  border-color: var(--color_control-selected-text);
+  color: var(--color_control-selected-text);
   margin: 0;
 `;
 

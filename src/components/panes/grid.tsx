@@ -58,19 +58,21 @@ export const ConfigureFlexCell = styled(SinglePaneFlexCell)`
 
 export const CategoryIconContainer = styled.span<{$selected?: boolean}>`
   position: relative;
-  color: var(--color_inside-accent);
+  color: var(--color_control-selected-text);
   height: 35px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   background: ${(props) =>
-    props.$selected ? 'var(--color_accent)' : 'transparent'};
-  border-radius: 10px;
+    props.$selected ? 'var(--color_control-selected-bg)' : 'transparent'};
+  border-radius: var(--radius_key-tile);
   width: 40px;
   &:hover {
     color: ${(props) =>
-      props.$selected ? 'var(--color_inside-accent)' : 'var(--color_accent)'};
+      props.$selected
+        ? 'var(--color_control-selected-text)'
+        : 'var(--color_control-border)'};
     & .tooltip {
       transform: scale(1) translateX(0px);
       opacity: 1;
@@ -123,7 +125,7 @@ export const SubLabel = styled(Label)`
 `;
 
 export const Detail = styled.span`
-  color: var(--color_accent);
+  color: var(--color_detail-text);
   display: flex;
   align-items: center;
 `;

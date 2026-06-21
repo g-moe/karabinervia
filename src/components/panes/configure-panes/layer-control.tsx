@@ -26,19 +26,22 @@ const LayerButton = styled.button<{$selected?: boolean}>`
   font-variant-numeric: tabular-nums;
   border: none;
   background: ${(props) =>
-    props.$selected ? 'var(--color_accent)' : 'transparent'};
+    props.$selected ? 'var(--color_control-selected-bg)' : 'transparent'};
   color: ${(props) =>
     props.$selected
-      ? 'var(--color_inside-accent)'
+      ? 'var(--color_control-selected-text)'
       : 'var(--color_label-highlighted)'};
   cursor: pointer;
   font-size: 20px;
   font-weight: 400;
   &:hover {
     border: none;
-    background: ${(props) => (props.$selected ? 'auto' : 'var(--bg_menu)')};
+    background: ${(props) =>
+      props.$selected ? 'var(--color_control-selected-bg)' : 'var(--bg_menu)'};
     color: ${(props) =>
-      props.$selected ? 'auto' : 'var(--color_label-highlighted)'};
+      props.$selected
+        ? 'var(--color_control-selected-text)'
+        : 'var(--color_label-highlighted)'};
   }
 `;
 

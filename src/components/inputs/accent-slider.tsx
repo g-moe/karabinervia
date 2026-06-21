@@ -34,7 +34,9 @@ const Slider = styled.span<{$ischecked?: boolean}>`
     bottom: 4px;
     border-radius: 4px;
     background-color: ${(props) =>
-      !props.$ischecked ? 'var(--bg_icon)' : 'var(--color_inside-accent)'};
+      !props.$ischecked
+        ? 'var(--bg_icon)'
+        : 'var(--color_control-selected-text)'};
     -webkit-transition: 0.4s;
     transition: 0.4s;
     ${(props) => (props.$ischecked ? 'transform: translateX(26px)' : '')};

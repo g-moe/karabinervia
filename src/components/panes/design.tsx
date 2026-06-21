@@ -92,7 +92,7 @@ const UploadIcon = styled.div`
   width: 50%;
   cursor: pointer;
   max-width: 560px;
-  border-radius: 6px;
+  border-radius: var(--radius_menu);
   margin: 50px 10px;
   animation-duration: 1.5s;
   animation-name: border-glow;

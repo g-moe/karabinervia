@@ -2,7 +2,7 @@ import React from 'react';
 import {getAutocompleteKeycodes} from '../../utils/autocomplete-keycodes';
 import styled from 'styled-components';
 const Keycode = styled.span`
-  color: var(--color_accent);
+  color: var(--color_detail-text);
   display: flex;
   padding-left: 10px;
 `;

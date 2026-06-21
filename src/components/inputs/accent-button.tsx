@@ -38,7 +38,7 @@ export const AccentButton = styled(AccentButtonBase)`
       : 'var(--color_control-border)'};
 
   &:hover {
-    filter: brightness(0.7);
+    filter: var(--filter_control-hover);
   }
 `;
 export const AccentButtonLarge = styled(AccentButton)`
@@ -59,6 +59,6 @@ export const PrimaryAccentButton = styled(AccentButtonBase)`
   background-color: ${(props) =>
     props.disabled ? 'transparent' : 'var(--color_control-selected-bg)'};
   &:hover {
-    filter: brightness(0.7);
+    filter: var(--filter_control-hover);
   }
 `;

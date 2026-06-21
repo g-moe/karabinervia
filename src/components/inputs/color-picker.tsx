@@ -133,7 +133,7 @@ const ColorHexContainer = styled.div`
 const ColorHexInput = styled.input`
   text-align: center;
   border: none;
-  color: var(--color_accent);
+  color: var(--color_control-text);
   background: var(--bg_menu);
   font-size: 20px;
   font-weight: 300;
@@ -141,8 +141,8 @@ const ColorHexInput = styled.input`
   width: 100%;
   &:focus {
     outline: none;
-    color: var(--color_accent);
-    border-color: var(--color_accent);
+    color: var(--color_control-text);
+    border-color: var(--color_control-border);
   }
 `;
 

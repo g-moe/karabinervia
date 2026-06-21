@@ -27,11 +27,11 @@ const TextArea = styled.textarea`
   font-family: 'Source Code Pro';
   font-weight: 500;
   &::placeholder {
-    color: var(--color_label);
+    color: var(--color_control-text-muted);
   }
   &:focus {
-    color: var(--color_accent);
-    outline-color: var(--color_accent);
+    color: var(--color_control-text);
+    outline-color: var(--color_control-border);
   }
 `;
 
@@ -46,12 +46,12 @@ const ToastErrorMessage = styled(ErrorMessage)`
 `;
 
 const Message = styled.div`
-  color: var(--color_accent);
+  color: var(--color_detail-text);
 `;
 
 const Link = styled.a`
   font-size: 18x !important;
-  color: var(--color_accent);
+  color: var(--color_detail-text);
   text-decoration: underline;
 `;
 

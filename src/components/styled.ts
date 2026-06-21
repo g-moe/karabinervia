@@ -7,9 +7,9 @@ export const Message = styled.span`
 `;
 
 export const ErrorMessage = styled(Message)`
-  color: #d15e5e;
+  color: var(--color_error);
 `;
 
 export const SuccessMessage = styled(Message)`
-  color: #9ab46a;
+  color: var(--color_success);
 `;

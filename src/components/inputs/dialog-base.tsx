@@ -14,13 +14,13 @@ export const ModalBackground = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  border: 2px solid var(--color_accent);
+  border: 2px solid var(--color_control-border);
   min-width: 460px;
   max-width: 550px;
   min-height: 170px;
   gap: 20px;
   background-color: var(--bg_menu);
-  border-radius: 6px;
+  border-radius: var(--radius_menu);
   display: flex;
   justify-content: center;
   align-items: center;

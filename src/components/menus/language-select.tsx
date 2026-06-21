@@ -15,7 +15,7 @@ const LanguageList = styled.ul<{$show: boolean}>`
   padding: 0;
   border: 1px solid var(--bg_control);
   width: 160px;
-  border-radius: 6px;
+  border-radius: var(--radius_menu);
   background-color: var(--bg_menu);
   margin: 0;
   margin-top: 5px;

@@ -4,8 +4,8 @@ export const Button = styled.div`
   display: flex;
   transition: transform 0.2s ease-out;
   user-select: none;
-  color: #717070;
-  border: 1px #717070 solid;
+  color: var(--color_control-text-muted);
+  border: 1px var(--color_control-border-disabled) solid;
   width: 45px;
   height: 45px;
   padding: 2px;
@@ -15,11 +15,11 @@ export const Button = styled.div`
   cursor: pointer;
   font-size: 12px;
   text-align: center;
-  border-radius: 4px;
+  border-radius: var(--radius_button);
   justify-content: center;
   align-items: center;
   white-space: pre-wrap;
-  box-shadow: #8c8c8c 0 1px 0 0;
+  box-shadow: var(--box-shadow-control-raised);
   &:hover {
     transform: translate3d(0, -2px, 0);
   }

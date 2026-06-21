@@ -25,7 +25,7 @@ export const AdvancedLightingValues = [
 ];
 
 const AccentText = styled.span`
-  color: var(--color_accent);
+  color: var(--color_detail-text);
 `;
 
 type AdvancedControlMeta = [

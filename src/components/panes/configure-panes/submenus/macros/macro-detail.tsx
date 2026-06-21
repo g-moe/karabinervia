@@ -32,7 +32,7 @@ const ProgressBar = styled.div`
   background: var(--bg_control);
   position: relative;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: var(--radius_control);
   overflow: hidden;
   margin-bottom: 10px;
   cursor: pointer;
@@ -43,7 +43,7 @@ const ProgressBar = styled.div`
     position: absolute;
     left: 0;
     top: 0;
-    background: var(--color_accent);
+    background: var(--color_detail-text);
     height: 10px;
     width: 100%;
     transform: scaleX(0.1);
@@ -57,17 +57,19 @@ const MacroTab = styled.span<{$selected: boolean}>`
   line-height: initial;
   border-top: none;
   padding: 8px;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: var(--radius_menu);
+  border-bottom-right-radius: var(--radius_menu);
   min-width: 38px;
   justify-content: center;
   box-sizing: border-box;
   color: ${(props) =>
-    props.$selected ? 'var(--color_accent)' : 'var(--bg_icon)'};
+    props.$selected ? 'var(--color_detail-text)' : 'var(--bg_icon)'};
   cursor: pointer;
   &:hover {
     color: ${(props) =>
-      props.$selected ? 'var(--color_accent)' : 'var(--bg_icon-highlighted)'};
+      props.$selected
+        ? 'var(--color_detail-text)'
+        : 'var(--bg_icon-highlighted)'};
   }
 `;
 

@@ -25,7 +25,7 @@ type OLEDMode = number;
 
 const MenuContainer = styled.div`
   display: flex;
-  color: #717070;
+  color: var(--color_control-text-muted);
   padding: 24px;
   font-family: GothamRounded;
   h3 {

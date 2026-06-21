@@ -26,8 +26,8 @@ const NormalInput = styled.input`
 `;
 
 const ErrorInput = styled(NormalInput)`
-  border-color: #d15e5e;
-  color: #d15e5e;
+  border-color: var(--color_error);
+  color: var(--color_error);
 `;
 
 type Props = {

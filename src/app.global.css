@@ -66,7 +66,11 @@ a:hover {
   --box-shadow-keycap: inset -1px -1px 0 rgb(0 0 0 / 20%),
     inset 1px 1px 0 rgb(255 255 255 / 20%);
   --box-shadow-keyboard: var(--box-shadow-keycap);
+  --box-shadow-control-raised: #8c8c8c 0 1px 0 0;
+  --filter_control-hover: brightness(0.7);
+  --radius_button: 4px;
   --radius_control: 5px;
+  --radius_key-tile: 10px;
   --radius_menu: 6px;
 }
 
@@ -74,6 +78,7 @@ html[data-theme-mode='dark'] {
   --color_label: #a8a8a8;
   --color_label-highlighted: var(--color_light-grey);
   --color_error: var(--color_error);
+  --color_success: #9ab46a;
   --border_color_icon: var(--color_medium-grey);
   --border_color_cell: var(--color_dark-grey);
   --bg_icon: var(--color_medium-grey);
@@ -94,6 +99,7 @@ html[data-theme-mode='dark'] {
   --color_control-border-disabled: var(--bg_control);
   --color_control-selected-bg: var(--color_accent);
   --color_control-selected-text: var(--color_inside-accent);
+  --color_detail-text: var(--color_accent);
   --color_tooltip-bg: var(--color_accent);
   --color_tooltip-text: var(--color_inside-accent);
 }
@@ -101,6 +107,7 @@ html[data-theme-mode='light'] {
   --color_label: #545454;
   --color_label-highlighted: var(--color_light-jet);
   --color_error: var(--color_error);
+  --color_success: #57701e;
   --border_color_icon: var(--color_medium-grey);
   --border_color_cell: var(--color_tinge-dark);
   --bg_icon: var(--color_medium-grey);
@@ -124,6 +131,7 @@ html[data-theme-mode='light'] {
   --color_control-border-disabled: var(--bg_control);
   --color_control-selected-bg: var(--color_accent);
   --color_control-selected-text: var(--color_inside-accent);
+  --color_detail-text: var(--color_accent);
   --color_tooltip-bg: var(--color_accent);
   --color_tooltip-text: var(--color_inside-accent);
 }
