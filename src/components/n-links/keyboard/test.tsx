@@ -27,6 +27,11 @@ import {useLocation} from 'wouter';
 import fullKeyboardDefinition from '../../../utils/test-keyboard-definition.json';
 import {TestContext} from '../../panes/test';
 import {getKeyboardCanvas} from './configure';
+import {
+  KARABINER_VIA_VENDOR_PRODUCT_ID,
+  macbookKeys,
+} from 'src/karabiner/virtual-device';
+import basicKeyToByte from 'src/utils/key-to-byte/default';
 const EMPTY_ARR = [] as any[];
 export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
   const dispatch = useAppDispatch();
@@ -43,6 +48,10 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
   const selectedMatrixKeycodes = useAppSelector(
     (state) => getSelectedKeymap(state) || [],
   );
+  const isVirtualMacBook =
+    !!selectedDefinition &&
+    typeof selectedDefinition !== 'string' &&
+    selectedDefinition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID;
 
   const [globalPressedKeys, setGlobalPressedKeys] = useGlobalKeys(
     !isTestMatrixEnabled && isShowingTest,
@@ -90,10 +99,10 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
         )
       : [];
 
-  const testDefinition = isTestMatrixEnabled
+  const testDefinition = isTestMatrixEnabled || isVirtualMacBook
     ? selectedDefinition
     : fullKeyboardDefinition;
-  const testKeys = isTestMatrixEnabled
+  const testKeys = isTestMatrixEnabled || isVirtualMacBook
     ? keyDefinitions
     : fullKeyboardDefinition.layouts.keys;
 
@@ -101,8 +110,18 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
     return null;
   }
 
+  const virtualGlobalPressedKeys =
+    isVirtualMacBook && !isTestMatrixEnabled
+      ? macbookKeys.map((key) => {
+          const byte = basicKeyToByte[key.code as keyof typeof basicKeyToByte];
+          return globalPressedKeys[matrixKeycodes.indexOf(byte)];
+        })
+      : [];
+
   const testPressedKeys = isTestMatrixEnabled
     ? (matrixPressedKeysMapped as TestKeyState[])
+    : isVirtualMacBook
+    ? (virtualGlobalPressedKeys as TestKeyState[])
     : (globalPressedKeys as TestKeyState[]);
 
   const {partitionedKeys} = useMemo(
@@ -111,6 +130,8 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
   );
   const testPressedKeys2 = isTestMatrixEnabled
     ? (matrixPressedKeys as TestKeyState[])
+    : isVirtualMacBook
+    ? (virtualGlobalPressedKeys as TestKeyState[])
     : (globalPressedKeys as TestKeyState[]);
   const partitionedPressedKeys: TestKeyState[][] = partitionedKeys.map(
     (rowArray) => {
@@ -131,7 +152,9 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
         keys={testKeys as VIAKey[]}
         pressedKeys={testPressedKeys}
         matrixKeycodes={
-          isTestMatrixEnabled ? selectedMatrixKeycodes : matrixKeycodes
+          isTestMatrixEnabled || isVirtualMacBook
+            ? selectedMatrixKeycodes
+            : matrixKeycodes
         }
         containerDimensions={props.dimensions}
         nDimension={props.nDimension}
