@@ -102,10 +102,10 @@ export const macbookKeys: MacKey[] = [
   key(5, 4, 4.85, 5, 5.45, 'KC_SPC'),
   key(5, 5, 10.3, 5, 1.45, 'KC_RGUI', KeyColorType.Mod),
   key(5, 6, 11.75, 5, 1.2, 'KC_RALT', KeyColorType.Mod),
-  key(5, 7, 13.05, 5.45, 1, 'KC_LEFT', KeyColorType.Mod),
+  key(5, 7, 13.05, 5.5, 1, 'KC_LEFT', KeyColorType.Mod, 0.5),
   key(5, 8, 14.05, 5, 1, 'KC_UP', KeyColorType.Mod, 0.5),
   key(5, 9, 14.05, 5.5, 1, 'KC_DOWN', KeyColorType.Mod, 0.5),
-  key(5, 10, 15.05, 5.45, 1, 'KC_RGHT', KeyColorType.Mod),
+  key(5, 10, 15.05, 5.5, 1, 'KC_RGHT', KeyColorType.Mod, 0.5),
 ];
 
 export const macbookDefinition: VIADefinitionV3 = {
