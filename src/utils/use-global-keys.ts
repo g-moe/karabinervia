@@ -4,43 +4,44 @@ import {getIndexByEvent} from './key-event';
 
 type TestKeys = {[code: number]: TestKeyState};
 export const useGlobalKeys = (enableGlobalKeys: boolean) => {
-  const startMatrixTest = !enableGlobalKeys;
   const selectedKeysState = useState<TestKeys>({});
-  const [selectedKeys, setSelectedKeys] = selectedKeysState;
-  // If pressed key is our target key then set to true
-  function downHandler(evt: KeyboardEvent) {
-    evt.preventDefault();
-    if (
-      !startMatrixTest &&
-      !evt.repeat &&
-      selectedKeys[getIndexByEvent(evt) ?? -1] !== TestKeyState.KeyDown
-    ) {
-      setSelectedKeys((selectedKeys) => ({
-        ...selectedKeys,
-        [getIndexByEvent(evt)]: TestKeyState.KeyDown,
-      }));
-    }
-  }
-
-  // If released key is our target key then set to false
-  const upHandler = (evt: KeyboardEvent) => {
-    evt.preventDefault();
-    if (
-      !startMatrixTest &&
-      selectedKeys[getIndexByEvent(evt)] !== TestKeyState.KeyUp
-    ) {
-      setSelectedKeys((selectedKeys) => ({
-        ...selectedKeys,
-        [getIndexByEvent(evt)]: TestKeyState.KeyUp,
-      }));
-    }
-  };
+  const [, setSelectedKeys] = selectedKeysState;
 
   useEffect(() => {
-    if (enableGlobalKeys) {
-      window.addEventListener('keydown', downHandler);
-      window.addEventListener('keyup', upHandler);
+    if (!enableGlobalKeys) {
+      return;
     }
+
+    const setKeyState = (evt: KeyboardEvent, state: TestKeyState) => {
+      const index = getIndexByEvent(evt);
+      if (index < 0) {
+        return;
+      }
+
+      evt.preventDefault();
+      setSelectedKeys((selectedKeys) =>
+        selectedKeys[index] === state
+          ? selectedKeys
+          : {
+              ...selectedKeys,
+              [index]: state,
+            },
+      );
+    };
+
+    const downHandler = (evt: KeyboardEvent) => {
+      if (!evt.repeat) {
+        setKeyState(evt, TestKeyState.KeyDown);
+      }
+    };
+
+    const upHandler = (evt: KeyboardEvent) => {
+      setKeyState(evt, TestKeyState.KeyUp);
+    };
+
+    window.addEventListener('keydown', downHandler);
+    window.addEventListener('keyup', upHandler);
+
     // Remove event listeners on cleanup
     return () => {
       window.removeEventListener('keydown', downHandler);
