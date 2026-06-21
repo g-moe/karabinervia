@@ -15,10 +15,13 @@ jobs:
         with:
           submodules: true
 
-      - name: Use Bun
-        uses: oven-sh/setup-bun@v1
-      - name: bun install, and start
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: npm install and build
         run: |
-          bun install
-          bun run refresh-kbs
-          bun run build
+          npm ci
+          npm run refresh-kbs
+          npm run build
