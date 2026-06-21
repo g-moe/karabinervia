@@ -42,6 +42,7 @@ import {useAppDispatch} from 'src/store/hooks';
 import {MenuTooltip} from '../inputs/tooltip';
 import {getRenderMode, getSelectedTheme} from 'src/store/settingsSlice';
 import {useTranslation} from 'react-i18next';
+import {KARABINER_VIA_VENDOR_PRODUCT_ID} from 'src/karabiner/virtual-device';
 
 const MenuContainer = styled.div`
   padding: 15px 10px 20px 10px;
@@ -73,6 +74,8 @@ const getRowsForKeyboard = (): typeof Rows => {
 
   if (!selectedDefinition) {
     return [];
+  } else if (selectedDefinition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID) {
+    return [Keycode, SaveLoad];
   } else if (isVIADefinitionV2(selectedDefinition)) {
     return getRowsForKeyboardV2(selectedDefinition, showMacros, numberOfLayers);
   } else if (isVIADefinitionV3(selectedDefinition)) {

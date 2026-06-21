@@ -43,6 +43,8 @@ import {
 } from 'src/store/settingsSlice';
 import {getNextKey} from 'src/utils/keyboard-rendering';
 import {useTranslation} from 'react-i18next';
+import {KARABINER_VIA_DEVICE_PATH} from 'src/karabiner/virtual-device';
+import {KarabinerActionEditor} from 'src/karabiner/action-editor';
 const KeycodeList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 64px);
@@ -154,6 +156,8 @@ export const KeycodePane: FC = () => {
   const selectedKeyDefinitions = useAppSelector(getSelectedKeyDefinitions);
   const {basicKeyToByte} = useAppSelector(getBasicKeyToByte);
   const macroCount = useAppSelector(getMacroCount);
+  const isVirtualDevice =
+    !!selectedDevice && selectedDevice.path === KARABINER_VIA_DEVICE_PATH;
 
   const KeycodeCategories = useMemo(
     () => generateKeycodeCategories(basicKeyToByte, macroCount),
@@ -163,6 +167,10 @@ export const KeycodePane: FC = () => {
   // TODO: improve typing so we can get rid of this
   if (!selectedDefinition || !selectedDevice || !matrixKeycodes) {
     return null;
+  }
+
+  if (isVirtualDevice) {
+    return <KarabinerActionEditor />;
   }
 
   const [selectedCategory, setSelectedCategory] = useState(

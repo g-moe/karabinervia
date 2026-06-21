@@ -6,6 +6,7 @@ import type {
   ConnectedDevices,
   VendorProductIdMap,
 } from '../types/types';
+import {KARABINER_VIA_DEVICE_PATH} from 'src/karabiner/virtual-device';
 
 import type {RootState} from './index';
 
@@ -90,5 +91,6 @@ export const getSelectedConnectedDevice = createSelector(
 );
 export const getSelectedKeyboardAPI = createSelector(
   getSelectedDevicePath,
-  (path) => path && new KeyboardAPI(path),
+  (path) =>
+    path && path !== KARABINER_VIA_DEVICE_PATH ? new KeyboardAPI(path) : null,
 );

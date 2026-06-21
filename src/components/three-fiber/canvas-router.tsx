@@ -109,7 +109,7 @@ export const NonSuspenseCanvasRouter = () => {
       dispatch(updateSelectedKey(null));
     }
   }, [dispatch]);
-  const showAuthorizeButton = 'hid' in navigator || OVERRIDE_HID_CHECK;
+  const showAuthorizeButton = true;
   const hideCanvasScene =
     !showAuthorizeButton ||
     ['/settings', '/errors'].includes(path) ||

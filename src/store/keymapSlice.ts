@@ -18,6 +18,7 @@ import {
   selectDevice,
 } from './devicesSlice';
 import {KeyboardAPI} from 'src/utils/keyboard-api';
+import {KARABINER_VIA_DEVICE_PATH} from 'src/karabiner/virtual-device';
 
 type KeymapState = {
   rawDeviceMap: DeviceLayerMap;
@@ -162,13 +163,16 @@ export const saveRawKeymapToDevice =
     const {path} = connectedDevice;
     const api = getSelectedKeyboardAPI(state);
     const definition = getSelectedDefinition(state);
-    if (!path || !definition || !api) {
+    const isVirtualDevice = path === KARABINER_VIA_DEVICE_PATH;
+    if (!path || !definition || (!api && !isVirtualDevice)) {
       return;
     }
 
     const {matrix} = definition;
 
-    await api.writeRawMatrix(matrix, keymap);
+    if (!isVirtualDevice && api) {
+      await api.writeRawMatrix(matrix, keymap);
+    }
     const layers = keymap.map((layer) => ({
       keymap: layer,
       isLoaded: true,
@@ -184,17 +188,24 @@ export const updateKey =
     const connectedDevice = getSelectedConnectedDevice(state);
     const api = getSelectedKeyboardAPI(state);
     const selectedDefinition = getSelectedDefinition(state);
-    if (!connectedDevice || !keys || !selectedDefinition || !api) {
+    if (!connectedDevice || !keys || !selectedDefinition) {
+      return;
+    }
+
+    const isVirtualDevice = connectedDevice.path === KARABINER_VIA_DEVICE_PATH;
+    if (!isVirtualDevice && !api) {
       return;
     }
 
     const selectedLayerIndex = getSelectedLayerIndex(state);
     const {path} = connectedDevice;
     const {row, col} = keys[keyIndex];
-    await api.setKey(selectedLayerIndex, row, col, value);
-
     const {matrix} = selectedDefinition;
     const keymapIndex = row * matrix.cols + col;
+
+    if (!isVirtualDevice && api) {
+      await api.setKey(selectedLayerIndex, row, col, value);
+    }
 
     dispatch(setKey({keymapIndex, value, devicePath: path}));
   };

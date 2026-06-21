@@ -17,6 +17,7 @@ import {
 import {selectConnectedDeviceByPath} from 'src/store/devicesThunks';
 import {isElectron} from 'src/utils/running-context';
 import {useTranslation} from 'react-i18next';
+import {KARABINER_VIA_VENDOR_PRODUCT_ID} from 'src/karabiner/virtual-device';
 
 const Container = styled.div`
   position: absolute;
@@ -173,6 +174,14 @@ export const Badge = () => {
 
   if (!selectedDefinition || !selectedPath) {
     return null;
+  }
+
+  if (selectedDefinition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID) {
+    return (
+      <Container>
+        <KeyboardTitle>{selectedDefinition.name}</KeyboardTitle>
+      </Container>
+    );
   }
 
   return (

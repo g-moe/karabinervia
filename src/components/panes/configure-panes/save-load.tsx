@@ -24,6 +24,16 @@ import {
 } from 'src/store/devicesSlice';
 import {getExpressions, saveMacros} from 'src/store/macrosSlice';
 import {useTranslation} from 'react-i18next';
+import {KARABINER_VIA_DEVICE_PATH} from 'src/karabiner/virtual-device';
+import {
+  downloadKarabiner,
+  downloadProject,
+} from 'src/karabiner/export';
+import {
+  createDefaultWorkspace,
+  saveWorkspace,
+  workspaceToViaLayers,
+} from 'src/karabiner/workspace';
 
 type ViaSaveFile = {
   name: string;
@@ -58,9 +68,11 @@ export const Pane: FC = () => {
   const macros = useAppSelector((state) => state.macros);
   const expressions = useAppSelector(getExpressions);
   const {basicKeyToByte, byteToKey} = useAppSelector(getBasicKeyToByte);
+  const isVirtualDevice =
+    !!selectedDevice && selectedDevice.path === KARABINER_VIA_DEVICE_PATH;
 
   // TODO: improve typing so we can remove this
-  if (!selectedDefinition || !selectedDevice || !api) {
+  if (!selectedDefinition || !selectedDevice || (!api && !isVirtualDevice)) {
     return null;
   }
 
@@ -68,6 +80,7 @@ export const Pane: FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const getEncoderValues = async () => {
+    if (!api) return [];
     const {layouts} = selectedDefinition;
     const {keys, optionKeys} = layouts;
     const encoders = [
@@ -109,6 +122,78 @@ export const Pane: FC = () => {
       return [];
     }
   };
+
+  if (isVirtualDevice) {
+    const loadKarabinerProject = ([file]: Blob[]) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const workspace = JSON.parse((reader as any).result.toString());
+          saveWorkspace(workspace);
+          dispatch(
+            saveRawKeymapToDevice(
+              workspaceToViaLayers(workspace).map((layer) => layer.keymap),
+              selectedDevice,
+            ),
+          );
+        } catch (error) {
+          setErrorMessage(t('Could not load file: invalid data.'));
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    const resetWorkspace = () => {
+      const workspace = createDefaultWorkspace();
+      saveWorkspace(workspace);
+      dispatch(
+        saveRawKeymapToDevice(
+          workspaceToViaLayers(workspace).map((layer) => layer.keymap),
+          selectedDevice,
+        ),
+      );
+    };
+
+    return (
+      <SpanOverflowCell>
+        <SaveLoadPane>
+          <Container>
+            <ControlRow>
+              <Label>{t('Export Project')}</Label>
+              <Detail>
+                <AccentButton onClick={() => downloadProject()}>
+                  {t('Save')}
+                </AccentButton>
+              </Detail>
+            </ControlRow>
+            <ControlRow>
+              <Label>{t('Import Project')}</Label>
+              <Detail>
+                <AccentUploadButton onLoad={loadKarabinerProject}>
+                  {t('Load')}
+                </AccentUploadButton>
+              </Detail>
+            </ControlRow>
+            <ControlRow>
+              <Label>{t('Export Karabiner')}</Label>
+              <Detail>
+                <AccentButton onClick={() => downloadKarabiner()}>
+                  {t('Save')}
+                </AccentButton>
+              </Detail>
+            </ControlRow>
+            <ControlRow>
+              <Label>{t('Reset Workspace')}</Label>
+              <Detail>
+                <AccentButton onClick={resetWorkspace}>{t('Reset')}</AccentButton>
+              </Detail>
+            </ControlRow>
+            {errorMessage ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
+          </Container>
+        </SaveLoadPane>
+      </SpanOverflowCell>
+    );
+  }
 
   const saveLayout = async () => {
     const {name, vendorProductId} = selectedDefinition;
@@ -213,6 +298,7 @@ export const Pane: FC = () => {
       await dispatch(saveRawKeymapToDevice(keymap, selectedDevice));
 
       if (saveFile.encoders) {
+        if (!api) return;
         await Promise.all(
           saveFile.encoders.map((encoder, id) =>
             Promise.all(
