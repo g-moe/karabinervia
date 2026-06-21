@@ -19,7 +19,7 @@ jobs:
           submodules: true
 
       - name: Enable pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
       - name: Use Node
         uses: actions/setup-node@v4
         with:
