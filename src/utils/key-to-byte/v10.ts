@@ -306,4 +306,5 @@ export default {
   S2_DEC: 0x5f0d,
   FN_MO13: 0x5f10,
   FN_MO23: 0x5f11,
+  KC_FN: 0x5f12,
 };

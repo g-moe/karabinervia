@@ -503,4 +503,5 @@ export default {
   DYN_MACRO_PLAY2: 0x7c57,
   FN_MO13: 0x7c77,
   FN_MO23: 0x7c78,
+  KC_FN: 0x7c79,
 };

@@ -95,7 +95,7 @@ export const macbookKeys: MacKey[] = [
   key(4, 10, 11.2, 4, 1, 'KC_SLSH'),
   key(4, 11, 12.2, 4, 2.65, 'KC_RSFT', KeyColorType.Mod),
 
-  key(5, 0, 0, 5, 1, 'KC_NO', KeyColorType.Mod),
+  key(5, 0, 0, 5, 1, 'KC_FN', KeyColorType.Mod),
   key(5, 1, 1, 5, 1.2, 'KC_LCTL', KeyColorType.Mod),
   key(5, 2, 2.2, 5, 1.2, 'KC_LALT', KeyColorType.Mod),
   key(5, 3, 3.4, 5, 1.45, 'KC_LGUI', KeyColorType.Mod),

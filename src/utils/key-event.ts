@@ -101,6 +101,7 @@ export const matrixKeycodes = [
   basicKeyToByte.KC_P3,
   basicKeyToByte.KC_PENT,
   // Row 5
+  basicKeyToByte.KC_FN,
   basicKeyToByte.KC_LCTL,
   basicKeyToByte.KC_LGUI,
   basicKeyToByte.KC_LALT,
@@ -179,6 +180,7 @@ const evtToKeyByte = {
   ShiftLeft: basicKeyToByte.KC_LSFT,
   ShiftRight: basicKeyToByte.KC_RSFT,
   ContextMenu: basicKeyToByte.KC_APP,
+  Fn: basicKeyToByte.KC_FN,
   Enter: basicKeyToByte.KC_ENT,
   Space: basicKeyToByte.KC_SPC,
   Tab: basicKeyToByte.KC_TAB,
@@ -446,6 +448,9 @@ export function mapEvtToKeycode(evt: KeyboardEvent) {
     }
     case 'Apps': {
       return 'KC_APP';
+    }
+    case 'Fn': {
+      return 'KC_FN';
     }
     case 'Enter': {
       return 'KC_ENT';

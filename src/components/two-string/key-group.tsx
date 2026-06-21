@@ -67,6 +67,7 @@ const keycapLabelMap: Record<string, string> = {
   period: '.',
   slash: '/',
   caps_lock: 'Caps',
+  fn: 'Fn',
   return_or_enter: 'Enter',
   left_shift: 'LShift',
   right_shift: 'RShift',

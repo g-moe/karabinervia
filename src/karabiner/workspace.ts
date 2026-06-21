@@ -94,6 +94,7 @@ export const qmkToKarabiner: Record<string, string> = {
   KC_9: '9',
   KC_0: '0',
   KC_ESC: 'escape',
+  KC_FN: 'fn',
   KC_GRV: 'grave_accent_and_tilde',
   KC_MINS: 'hyphen',
   KC_EQL: 'equal_sign',
@@ -216,6 +217,12 @@ function migrateOpinionatedDefaults(workspace: KarabinerWorkspace) {
   const defaultBase = createDefaultWorkspace().layers[0];
   const oldCaps = assignment(keyAction('escape'), layerAction('nav'));
   const oldSpace = assignment(keyAction('spacebar'), layerAction('numbers'));
+
+  macbookKeys.forEach((key) => {
+    if (baseLayer && !baseLayer.assignments[key.code]) {
+      baseLayer.assignments[key.code] = defaultBase.assignments[key.code];
+    }
+  });
 
   if (
     baseLayer?.assignments.KC_CAPS &&
