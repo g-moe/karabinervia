@@ -1,6 +1,6 @@
-import getIconColor from '../icons/get-icon-color';
-import styled from 'styled-components';
-import {iconNavButtonSurface} from '../inputs/control-styles';
+import getIconColor from "../icons/get-icon-color";
+import styled from "styled-components";
+import { iconNavButtonSurface } from "../inputs/control-styles";
 
 export const Grid = styled.div`
   height: 100%;
@@ -59,7 +59,7 @@ export const ConfigureFlexCell = styled(SinglePaneFlexCell)`
   height: 500px;
 `;
 
-export const CategoryIconContainer = styled.span<{$selected?: boolean}>`
+export const CategoryIconContainer = styled.span<{ $selected?: boolean }>`
   ${iconNavButtonSurface}
 `;
 
@@ -108,7 +108,7 @@ export const Detail = styled.span`
   align-items: center;
 `;
 
-export const Row = styled.div<{$selected: boolean}>`
+export const Row = styled.div<{ $selected: boolean }>`
   cursor: pointer;
   white-space: nowrap;
   margin-bottom: 15px;
@@ -137,14 +137,13 @@ export const Row = styled.div<{$selected: boolean}>`
 `;
 
 export const SubmenuRow = styled(Row)`
-  background: ${(props) =>
-    props.$selected ? 'var(--color_control-background)' : 'inherit'};
+  background: ${(props) => (props.$selected ? "var(--color_control-background)" : "inherit")};
   padding: 4px 8px;
   font-weight: 400;
   min-width: min-content;
   border-color: transparent;
   margin-bottom: 11px;
   color: ${(props) =>
-    props.$selected ? 'var(--color_text-primary)' : 'var(--color_text-secondary)'};
+    props.$selected ? "var(--color_text-primary)" : "var(--color_text-secondary)"};
   border-radius: 12px;
 `;

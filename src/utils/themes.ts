@@ -1,5 +1,5 @@
-import {KeyColorPair} from 'src/types/keyboard-rendering';
-import {AppleRendererColorByMode} from './apple-colors';
+import { KeyColorPair } from "src/types/keyboard-rendering";
+import { AppleRendererColorByMode } from "./apple-colors";
 
 export type Theme = {
   alpha: KeyColorPair;

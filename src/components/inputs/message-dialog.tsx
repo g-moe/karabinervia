@@ -1,8 +1,8 @@
-import {PropsWithChildren, useCallback, useEffect, useRef} from 'react';
-import styled from 'styled-components';
-import {AccentButton} from './accent-button';
-import {ModalContainer, PromptText} from './dialog-base';
-import {useTranslation} from 'react-i18next';
+import { PropsWithChildren, useCallback, useEffect, useRef } from "react";
+import styled from "styled-components";
+import { AccentButton } from "./accent-button";
+import { ModalContainer, PromptText } from "./dialog-base";
+import { useTranslation } from "react-i18next";
 
 const MessageDialogContainer = styled.dialog`
   padding: 0;
@@ -35,7 +35,7 @@ export const MessageDialog: React.FC<
     confirmLabel?: string;
   }>
 > = (props) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const ref = useRef<HTMLDialogElement>(null);
   const closeModal = useCallback(() => {
     if (ref.current) {
@@ -71,7 +71,7 @@ export const MessageDialog: React.FC<
               closeModal();
             }}
           >
-            {t(props.confirmLabel || 'Confirm')}
+            {t(props.confirmLabel || "Confirm")}
           </AccentButton>
         </Controls>
       </ModalContainer>

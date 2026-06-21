@@ -1,9 +1,12 @@
 name: PR Build
 
 on:
+  push:
+    branches: [main, fiber]
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [main, fiber]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,18 +14,21 @@ jobs:
     name: Build
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
+      - name: Enable pnpm
+        uses: pnpm/action-setup@v4
       - name: Use Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version-file: .node-version
           cache: pnpm
-      - name: Enable pnpm
-        uses: pnpm/action-setup@v4
-      - name: Install and build
+      - name: Install
         run: |
           pnpm install --frozen-lockfile
-          pnpm build
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Verify
+        run: pnpm verify

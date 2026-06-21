@@ -1,31 +1,31 @@
-import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
-import ChippyLoader from '../chippy-loader';
-import LoadingText from '../loading-text';
-import {CenterPane, ConfigureBasePane} from './pane';
-import type {VIADefinitionV2, VIADefinitionV3} from '@the-via/reader';
-import {ConfigureFlexCell} from './grid';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import ChippyLoader from "../chippy-loader";
+import LoadingText from "../loading-text";
+import { CenterPane, ConfigureBasePane } from "./pane";
+import type { VIADefinitionV2, VIADefinitionV3 } from "@the-via/reader";
+import { ConfigureFlexCell } from "./grid";
 import {
   BottomSection,
   BottomSectionContent,
   BottomSectionNav,
   BottomSectionNavItem,
   BottomSectionTopBar,
-} from './bottom-section';
-import * as Keycode from './configure-panes/keycode';
-import * as SaveLoad from './configure-panes/save-load';
-import {LayerControl} from './configure-panes/layer-control';
-import {Badge} from './configure-panes/badge';
-import {useAppSelector} from 'src/store/hooks';
-import {getSelectedDefinition} from 'src/store/definitionsSlice';
+} from "./bottom-section";
+import * as Keycode from "./configure-panes/keycode";
+import * as SaveLoad from "./configure-panes/save-load";
+import { LayerControl } from "./configure-panes/layer-control";
+import { Badge } from "./configure-panes/badge";
+import { useAppSelector } from "src/store/hooks";
+import { getSelectedDefinition } from "src/store/definitionsSlice";
 import {
   clearSelectedKey,
   getLoadProgress,
   setConfigureKeyboardIsSelectable,
-} from 'src/store/keymapSlice';
-import {useDispatch} from 'react-redux';
-import {getSelectedTheme} from 'src/store/settingsSlice';
-import {useTranslation} from 'react-i18next';
+} from "src/store/keymapSlice";
+import { useDispatch } from "react-redux";
+import { getSelectedTheme } from "src/store/settingsSlice";
+import { useTranslation } from "react-i18next";
 
 const Rows = [Keycode, SaveLoad];
 
@@ -42,7 +42,7 @@ const Loader: React.FC<{
   loadProgress: number;
   selectedDefinition: VIADefinitionV2 | VIADefinitionV3 | null;
 }> = (props) => {
-  const {loadProgress, selectedDefinition} = props;
+  const { loadProgress, selectedDefinition } = props;
   const theme = useAppSelector(getSelectedTheme);
   return (
     <LoaderPane>
@@ -83,10 +83,7 @@ export const ConfigurePane = () => {
 
   const showLoader = !selectedDefinition || loadProgress !== 1;
   return showLoader ? (
-    <Loader
-      selectedDefinition={selectedDefinition || null}
-      loadProgress={loadProgress}
-    />
+    <Loader selectedDefinition={selectedDefinition || null} loadProgress={loadProgress} />
   ) : (
     <ConfigureBasePane>
       <ConfigureGrid />
@@ -95,7 +92,7 @@ export const ConfigurePane = () => {
 };
 
 const ConfigureGrid = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const [selectedRow, setRow] = useState(0);
@@ -104,7 +101,7 @@ const ConfigureGrid = () => {
   const selectedTitle = KeyboardRows[selectedRow]?.Title;
 
   useEffect(() => {
-    if (selectedTitle !== 'Keymap') {
+    if (selectedTitle !== "Keymap") {
       dispatch(setConfigureKeyboardIsSelectable(false));
     } else {
       dispatch(setConfigureKeyboardIsSelectable(true));
@@ -115,8 +112,7 @@ const ConfigureGrid = () => {
     <>
       <ConfigureOverlay
         onClick={(evt) => {
-          if ((evt.target as any).nodeName !== 'CANVAS')
-            dispatch(clearSelectedKey());
+          if ((evt.target as any).nodeName !== "CANVAS") dispatch(clearSelectedKey());
         }}
       >
         <ConfigureControls>
@@ -128,7 +124,7 @@ const ConfigureGrid = () => {
         <BottomSectionTopBar>
           <BottomSectionNav>
             {(KeyboardRows || []).map(
-              ({Icon, Title}: {Icon: any; Title: string}, idx: number) => (
+              ({ Icon, Title }: { Icon: any; Title: string }, idx: number) => (
                 <BottomSectionNavItem
                   key={idx}
                   onClick={() => setRow(idx)}
@@ -142,9 +138,7 @@ const ConfigureGrid = () => {
           </BottomSectionNav>
         </BottomSectionTopBar>
 
-        <BottomSectionContent>
-          {SelectedPane && <SelectedPane />}
-        </BottomSectionContent>
+        <BottomSectionContent>{SelectedPane && <SelectedPane />}</BottomSectionContent>
       </BottomSection>
     </>
   );

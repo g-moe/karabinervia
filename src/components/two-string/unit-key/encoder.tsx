@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const EncoderKeyContainer = styled.div`
   position: absolute;
@@ -13,14 +13,13 @@ const EncoderKeyContainer = styled.div`
   }
 `;
 
-const EncoderKeyContent2 = styled.div<{$innerPadding: number; $size: number}>`
+const EncoderKeyContent2 = styled.div<{ $innerPadding: number; $size: number }>`
   --inner-padding: ${(p) => p.$innerPadding}px;
   --size: ${(p) => p.$size}px;
   --inner-size: ${(p) => p.$size - p.$innerPadding * 2}px;
   --half-size: ${(p) => (p.$size - p.$innerPadding * 2) / 2}px;
   --half-size-p1: ${(p) => 1 + (p.$size - p.$innerPadding * 2) / 2}px;
-  --half-size-p05p: ${(p) =>
-    p.$innerPadding / 2 + (p.$size - p.$innerPadding * 2) / 2}px;
+  --half-size-p05p: ${(p) => p.$innerPadding / 2 + (p.$size - p.$innerPadding * 2) / 2}px;
   background-color: currentColor;
   padding: var(--inner-padding);
   min-width: var(--size);
@@ -124,10 +123,8 @@ const EncoderKeyContent2 = styled.div<{$innerPadding: number; $size: number}>`
     53.07% 3.1%
   );
 
-  background-image: radial-gradient(
-      currentColor var(--half-size),
-      transparent var(--half-size-p1)
-    ),
+  background-image:
+    radial-gradient(currentColor var(--half-size), transparent var(--half-size-p1)),
     radial-gradient(
       var(--color_texture-highlight) var(--half-size),
       transparent var(--half-size-p1)
@@ -136,12 +133,12 @@ const EncoderKeyContent2 = styled.div<{$innerPadding: number; $size: number}>`
       var(--color_texture-shadow) var(--half-size),
       transparent var(--half-size-p05p)
     ),
-    radial-gradient(
-      var(--color_texture-shadow) var(--half-size),
-      transparent var(--half-size-p05p)
-    );
+    radial-gradient(var(--color_texture-shadow) var(--half-size), transparent var(--half-size-p05p));
   background-size: var(--size) var(--size);
-  background-position: 0px 0px, -0.5px -0.5px, 0px 0px,
+  background-position:
+    0px 0px,
+    -0.5px -0.5px,
+    0px 0px,
     calc(var(--inner-padding) / 2) calc(var(--inner-padding) / 2);
   background-repeat: repeat;
 
@@ -160,10 +157,7 @@ export const EncoderKey = (props: {
 }) => {
   return (
     <EncoderKeyContainer onClick={props.onClick} style={props.style}>
-      <EncoderKeyContent2
-        $size={props.size && +props.size}
-        $innerPadding={(5 * props.size) / 52}
-      />
+      <EncoderKeyContent2 $size={props.size && +props.size} $innerPadding={(5 * props.size) / 52} />
     </EncoderKeyContainer>
   );
 };

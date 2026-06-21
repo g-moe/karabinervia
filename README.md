@@ -13,9 +13,15 @@ This fork is currently scoped to Apple laptop keyboards. It is intended to help 
 
 ## Development
 
-This project uses pnpm. Dependency installs are gated by a 14-day minimum release age in `pnpm-workspace.yaml`.
+This project targets Node 24 LTS. Use the exact version in `.node-version`
+or `.nvmrc`.
+
+This project uses pnpm through Corepack. Dependency installs are gated by a
+14-day minimum release age in `pnpm-workspace.yaml`.
 
 ```bash
+corepack enable
+corepack prepare pnpm@11.5.3 --activate
 pnpm install
 pnpm dev
 ```
@@ -25,6 +31,18 @@ The local dev server runs with Vite. Build the app with:
 ```bash
 pnpm build
 ```
+
+Run the verification suites with:
+
+```bash
+pnpm verify
+```
+
+GitHub save/load flows are optional. When they are enabled, copy
+`.env.example`, set `VITE_GITHUB_CLIENT_ID`, and deploy a compatible
+`POST /api/GithubOAuth` endpoint.
+
+See `CONTRIBUTING.md` for the full local lifecycle.
 
 ## Upstream
 

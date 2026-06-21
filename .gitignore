@@ -6,3 +6,7 @@ node_modules
 public/definitions
 dist
 dist-ssr
+coverage
+playwright-report
+test-results
+*.tsbuildinfo

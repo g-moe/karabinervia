@@ -1,12 +1,12 @@
-import {createListenerMiddleware} from '@reduxjs/toolkit';
-import {logAppError} from './errorsSlice';
-import {formatNumberAsHex} from 'src/utils/format';
-import {DeviceInfo} from 'src/types/types';
+import { createListenerMiddleware } from "@reduxjs/toolkit";
+import { logAppError } from "./errorsSlice";
+import { formatNumberAsHex } from "src/utils/format";
+import { DeviceInfo } from "src/types/types";
 
 export const errorsListenerMiddleware = createListenerMiddleware();
 
 const captureError = (message: string, deviceInfo: DeviceInfo) => {
-  console.error('Error captured:', {
+  console.error("Error captured:", {
     message,
     deviceInfo: {
       productName: deviceInfo.productName,
@@ -18,7 +18,7 @@ const captureError = (message: string, deviceInfo: DeviceInfo) => {
 
 errorsListenerMiddleware.startListening({
   actionCreator: logAppError,
-  effect: async ({payload: {message, deviceInfo}}, listenerApi) => {
+  effect: async ({ payload: { message, deviceInfo } }) => {
     captureError(message, deviceInfo);
   },
 });

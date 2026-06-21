@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 const Container = styled.span`
   display: inline-flex;
@@ -9,18 +9,18 @@ const Container = styled.span`
   width: 200px;
 `;
 
-const SliderInput = styled.input.attrs({type: 'range'})`
+const SliderInput = styled.input.attrs({ type: "range" })`
   accent-color: var(--color_control-border);
   width: 100%;
   flex: none;
 `;
 
 export const AccentRange: React.FC<
-  Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type'> & {
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "type"> & {
     onChange: (x: number) => void;
   }
 > = (props) => {
-  const {defaultValue, value, onChange, ...inputProps} = props;
+  const { defaultValue, value, onChange, ...inputProps } = props;
   const [currentValue, setCurrentValue] = useState<number>(
     Number(defaultValue || value || props.min || 0),
   );
@@ -32,7 +32,7 @@ export const AccentRange: React.FC<
 
   const handleChange = (newValue: number) => {
     setCurrentValue(newValue);
-    onChange && onChange(newValue);
+    onChange(newValue);
   };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,11 +42,7 @@ export const AccentRange: React.FC<
 
   return (
     <Container>
-      <SliderInput
-        {...inputProps}
-        value={currentValue}
-        onChange={handleSliderChange}
-      />
+      <SliderInput {...inputProps} value={currentValue} onChange={handleSliderChange} />
     </Container>
   );
 };

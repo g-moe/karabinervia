@@ -1,19 +1,15 @@
-import {useEffect} from 'react';
-import {updateDefinitions} from 'src/store/definitionsSlice';
-import {selectDevice, updateConnectedDevices} from 'src/store/devicesSlice';
-import {
-  getSelectedRawLayers,
-  saveKeymapSuccess,
-  setNumberOfLayers,
-} from 'src/store/keymapSlice';
-import {useAppDispatch, useAppSelector} from 'src/store/hooks';
+import { useEffect } from "react";
+import { updateDefinitions } from "src/store/definitionsSlice";
+import { selectDevice, updateConnectedDevices } from "src/store/devicesSlice";
+import { getSelectedRawLayers, saveKeymapSuccess, setNumberOfLayers } from "src/store/keymapSlice";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import {
   KARABINER_VIA_DEVICE_PATH,
   KARABINER_VIA_VENDOR_PRODUCT_ID,
   macbookConnectedDevice,
   macbookDefinition,
-} from './virtual-device';
-import {loadWorkspace, saveWorkspace, workspaceToViaLayers} from './workspace';
+} from "./virtual-device";
+import { loadWorkspace, saveWorkspace, workspaceToViaLayers } from "./workspace";
 
 export function VirtualDeviceBootstrap() {
   const dispatch = useAppDispatch();

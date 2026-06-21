@@ -1,13 +1,9 @@
-import type {VIAKey} from '@the-via/reader';
-import {useAppDispatch} from 'src/store/hooks';
-import {updateSelectedKey} from 'src/store/keymapSlice';
-import {
-  KeycapSharedProps,
-  KeyGroupProps,
-  KeysKeys,
-} from 'src/types/keyboard-rendering';
-import {getByteToKey} from 'src/utils/key';
-import {getBasicKeyDict} from 'src/utils/key-to-byte/dictionary-store';
+import type { VIAKey } from "@the-via/reader";
+import { useAppDispatch } from "src/store/hooks";
+import { updateSelectedKey } from "src/store/keymapSlice";
+import { KeycapSharedProps, KeyGroupProps, KeysKeys } from "src/types/keyboard-rendering";
+import { getByteToKey } from "src/utils/key";
+import { getBasicKeyDict } from "src/utils/key-to-byte/dictionary-store";
 import {
   calculatePointPosition,
   getBoundingBox,
@@ -17,10 +13,10 @@ import {
   getMeshName,
   getScale,
   KeycapMetric,
-} from 'src/utils/keyboard-rendering';
+} from "src/utils/keyboard-rendering";
 
 export function getKeycapSharedProps<T>(
-  k: VIAKey & {displayOnly?: boolean},
+  k: VIAKey & { displayOnly?: boolean },
   i: number,
   props: KeyGroupProps<T>,
   keysKeys: KeysKeys<T>,
@@ -28,17 +24,9 @@ export function getKeycapSharedProps<T>(
   labels: any[],
   skipFontCheck: boolean,
 ): KeycapSharedProps<T> {
-  const {
-    position,
-    rotation,
-    scale,
-    color,
-    idx,
-    onClick,
-    onPointerDown,
-    onPointerOver,
-  } = keysKeys.coords[i];
-  const isEncoder = k['ei'] !== undefined;
+  const { position, rotation, scale, color, idx, onClick, onPointerDown, onPointerOver } =
+    keysKeys.coords[i];
+  const isEncoder = k["ei"] !== undefined;
   return {
     mode: props.mode,
     position: position,
@@ -46,7 +34,7 @@ export function getKeycapSharedProps<T>(
     scale: getScale(k, scale),
     textureWidth: k.w,
     textureHeight: k.h,
-    textureOffsetX: !!k.w2 ? Math.abs(k.w2 - k.w) : 0,
+    textureOffsetX: k.w2 ? Math.abs(k.w2 - k.w) : 0,
     color: color,
     shouldRotate: isEncoder,
     onPointerDown: onPointerDown,
@@ -58,15 +46,16 @@ export function getKeycapSharedProps<T>(
     label: labels[i],
     onClick: onClick,
     key: keysKeys.indices[i],
+    keyCode: props.keyMetadata?.[i]?.code,
+    testId: props.keyMetadata?.[i]?.code ? `keycap-${props.keyMetadata[i].code}` : undefined,
     skipFontCheck,
   };
 }
 
-const getKeysKeysIndices =
-  (vendorProductId: number) => (k: VIAKey, i: number) => {
-    const isEncoder = k['ei'] !== undefined;
-    return `${vendorProductId}-${i}-${k.w}-${k.h}-${isEncoder}`;
-  };
+const getKeysKeysIndices = (vendorProductId: number) => (k: VIAKey, i: number) => {
+  const isEncoder = k["ei"] !== undefined;
+  return `${vendorProductId}-${i}-${k.w}-${k.h}-${isEncoder}`;
+};
 
 export function getLabels<T>(
   props: KeyGroupProps<T>,
@@ -94,8 +83,8 @@ export function getKeysKeys<T>(
   dispatch: ReturnType<typeof useAppDispatch>,
   getPosition: (x: number, y: number) => [number, number, number],
 ): KeysKeys<T> {
-  const {keys} = props;
-  const {rowMap} = getKeyboardRowPartitions(keys);
+  const { keys } = props;
+  const { rowMap } = getKeyboardRowPartitions(keys);
   const boxes = keys.map(getBoundingBox);
   const [minX, minY] = [
     Math.min(...boxes.map((p) => p.xStart)),
@@ -103,7 +92,7 @@ export function getKeysKeys<T>(
   ];
   const positions = keys
     .map((k) => {
-      const key = {...k};
+      const key = { ...k };
       if (minX < 0) {
         key.x = key.x - minX;
       }
@@ -120,14 +109,10 @@ export function getKeysKeys<T>(
       const [x, y] = positions[i];
       const r = (k.r * (2 * Math.PI)) / 360;
       // The 1.05mm in-between keycaps but normalized by a keycap width/height
-      const normalizedKeyXSpacing =
-        KeycapMetric.keyXSpacing / KeycapMetric.keyWidth;
-      const normalizedKeyYSpacing =
-        KeycapMetric.keyYSpacing / KeycapMetric.keyHeight;
-      const normalizedWidth =
-        (1 + normalizedKeyXSpacing) * (k.w2 || k.w) - normalizedKeyXSpacing;
-      const normalizedHeight =
-        k.h * (1 + normalizedKeyYSpacing) - normalizedKeyYSpacing;
+      const normalizedKeyXSpacing = KeycapMetric.keyXSpacing / KeycapMetric.keyWidth;
+      const normalizedKeyYSpacing = KeycapMetric.keyYSpacing / KeycapMetric.keyHeight;
+      const normalizedWidth = (1 + normalizedKeyXSpacing) * (k.w2 || k.w) - normalizedKeyXSpacing;
+      const normalizedHeight = k.h * (1 + normalizedKeyYSpacing) - normalizedKeyYSpacing;
       const meshKey = getMeshName(k, rowMap[getKeyId(k)], false);
       const paletteKey = props.keyColors ? i : k.color;
       const color = (keyColorPalette as any)[paletteKey];

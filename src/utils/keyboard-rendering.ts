@@ -1,11 +1,10 @@
 import {
   type Result,
-  type ThemeDefinition,
   type VIADefinitionV2,
   type VIADefinitionV3,
   type VIAKey,
-} from '@the-via/reader';
-import partition from 'lodash.partition';
+} from "@the-via/reader";
+import partition from "lodash.partition";
 import {
   getLabelForByte,
   getShortNameForKeycode,
@@ -19,7 +18,7 @@ import {
   isArrowKey,
   isMacroKeycodeByte,
   getMacroKeycodeIndex,
-} from './key';
+} from "./key";
 
 export const CSSVarObject = {
   keyWidth: 52,
@@ -46,15 +45,13 @@ export const getComboKeyProps = (
   k: VIAKey,
 ): {
   clipPath: null | string;
-  normalizedRects:
-    | null
-    | [[number, number, number, number], [number, number, number, number]];
+  normalizedRects: null | [[number, number, number, number], [number, number, number, number]];
 } => {
   if (k.w2 === undefined || k.h2 === undefined) {
-    return {clipPath: null, normalizedRects: null};
+    return { clipPath: null, normalizedRects: null };
   }
 
-  const {x, y, x2 = 0, y2 = 0, w, w2, h, h2} = k;
+  const { x, y, x2 = 0, y2 = 0, w, w2, h, h2 } = k;
   const boundingBoxWidth = Math.max(k.w, k.w2);
   const boundingBoxHeight = Math.max(k.h, k.h2);
   const minX = Math.min(x, x + x2);
@@ -64,7 +61,7 @@ export const getComboKeyProps = (
       ? [x + x2 - minX, x - minX, y + y2 - minY, y - minY, w2, w, h2, h]
       : [x - minX, x + x2 - minX, y - minY, y + y2 - minY, w, w2, h, h2];
   const getPolygonPath = (corners: number[][]) =>
-    `polygon(${corners.map((c) => `${100 * c[0]}% ${100 * c[1]}%`).join(',')})`;
+    `polygon(${corners.map((c) => `${100 * c[0]}% ${100 * c[1]}%`).join(",")})`;
 
   const corners = [
     [nx2 / boundingBoxWidth, ny2 / boundingBoxHeight],
@@ -114,10 +111,8 @@ export function calculatePointPosition({
     CSSVarObject.keyYPos * y +
     (h * CSSVarObject.keyHeight) / 2 +
     ((h - 1) * CSSVarObject.keyYSpacing) / 2;
-  const transformedXPos =
-    xPos * cosR - yPos * sinR - originX * cosR + originY * sinR + originX;
-  const transformedYPos =
-    xPos * sinR + yPos * cosR - originX * sinR - originY * cosR + originY;
+  const transformedXPos = xPos * cosR - yPos * sinR - originX * cosR + originY * sinR + originX;
+  const transformedYPos = xPos * sinR + yPos * cosR - originX * sinR - originY * cosR + originY;
 
   return [transformedXPos, transformedYPos];
 }
@@ -168,9 +163,7 @@ const sortByX = (a: VIAKey, b: VIAKey) => {
 const sortByYX = (a: VIAKey, b: VIAKey) => {
   const aPoint = calculatePointPosition(a);
   const bPoint = calculatePointPosition(b);
-  return aPoint[1] - bPoint[1] === 0
-    ? aPoint[0] - bPoint[0]
-    : aPoint[1] - bPoint[1];
+  return aPoint[1] - bPoint[1] === 0 ? aPoint[0] - bPoint[0] : aPoint[1] - bPoint[1];
 };
 
 const withinChain = (a: VIAKey, b: VIAKey) => {
@@ -191,7 +184,7 @@ const getTraversalOrder = (arr: VIAKey[]): VIAKey[] => {
     return [...chain.sort(sortByX), ...getTraversalOrder(rest)];
   }
 };
-const widthProfiles: {[a: number]: number[]} = {
+const widthProfiles: { [a: number]: number[] } = {
   1: [1, 2, 3, 4],
   1.25: [4],
   1.5: [2, 4],
@@ -218,9 +211,7 @@ const getRowForKey = (k: VIAKey, suggestedRow: number) => {
 };
 
 const getRowProfiles = (partitionedKeys: VIAKey[][]) => {
-  const allUniformR1 = !partitionedKeys.some((kArr) =>
-    kArr.some((k) => k.w !== 1 || k.h !== 1),
-  );
+  const allUniformR1 = !partitionedKeys.some((kArr) => kArr.some((k) => k.w !== 1 || k.h !== 1));
   switch (allUniformR1 || partitionedKeys.length) {
     case 8: {
       return [1, 1, 1, 1, 2, 3, 4, 4];
@@ -253,19 +244,19 @@ export const getKeyId = (k: VIAKey) => {
 export const getKeyboardRowPartitions = (
   keys: VIAKey[],
 ): {
-  rowMap: {[id: string]: number};
+  rowMap: { [id: string]: number };
   partitionedKeys: VIAKey[][];
 } => {
-  const {partitionedKeys} = getTraversalOrder(keys).reduce(
-    ({prevX, partitionedKeys}, k) => {
+  const { partitionedKeys } = getTraversalOrder(keys).reduce(
+    ({ prevX, partitionedKeys }, k) => {
       const [x] = calculatePointPosition(k);
       if (prevX >= x) {
         partitionedKeys.push([]);
       }
       partitionedKeys[partitionedKeys.length - 1].push(k);
-      return {partitionedKeys, prevX: x};
+      return { partitionedKeys, prevX: x };
     },
-    {partitionedKeys: [] as VIAKey[][], prevX: Infinity},
+    { partitionedKeys: [] as VIAKey[][], prevX: Infinity },
   );
   const rowProfiles = getRowProfiles(partitionedKeys);
   return {
@@ -282,10 +273,7 @@ export const getKeyboardRowPartitions = (
 };
 
 // TODO: This code is shared across components, move to shared module?
-export const getNextKey = (
-  currIndex: number,
-  keys: VIAKey[],
-): number | null => {
+export const getNextKey = (currIndex: number, keys: VIAKey[]): number | null => {
   const displayedKeys = keys.filter((k) => !k.d);
   const currKey = keys[currIndex];
   const sortedKeys = getTraversalOrder([...displayedKeys]);
@@ -319,19 +307,7 @@ const applyRotation = (
 };
 
 export const getBoundingBox = (key: Partial<Result>): BoundingBox => {
-  const {
-    x2 = 0,
-    y2 = 0,
-    x = 0,
-    y = 0,
-    w = 1,
-    h = 1,
-    r = 0,
-    rx = 0,
-    ry = 0,
-    h2 = h,
-    w2 = w,
-  } = key;
+  const { x2 = 0, y2 = 0, x = 0, y = 0, w = 1, h = 1, r = 0, rx = 0, ry = 0, h2 = h, w2 = w } = key;
   const box = {
     xStart: Math.min(x, x + x2),
     yStart: Math.min(y, y + y2),
@@ -339,10 +315,10 @@ export const getBoundingBox = (key: Partial<Result>): BoundingBox => {
     yEnd: Math.max(y + h, y + y2 + h2),
   };
   const rotatedPoints = [
-    {x: box.xStart, y: box.yStart},
-    {x: box.xEnd, y: box.yStart},
-    {x: box.xStart, y: box.yEnd},
-    {x: box.xEnd, y: box.yEnd},
+    { x: box.xStart, y: box.yStart },
+    { x: box.xEnd, y: box.yStart },
+    { x: box.xStart, y: box.yEnd },
+    { x: box.xEnd, y: box.yEnd },
   ].map((p) => applyRotation(p.x, p.y, rx, ry, r));
   return {
     xStart: Math.min(...rotatedPoints.map((p) => p.x)),
@@ -366,8 +342,8 @@ export const calculateKeyboardFrameDimensions = (keys: Partial<Result>[]) => {
 
 export const getMeshName = (k: VIAKey, profile: number, isLastRow: boolean) => {
   // Special keys
-  if (k['ei'] !== undefined) {
-    return 'E-100';
+  if (k["ei"] !== undefined) {
+    return "E-100";
   } else if (k.h === 2 && k.w === 1) {
     return `K-R${profile}V-200`;
   } else if (k.w === 1.25 && k.w2 === 1.5) {
@@ -375,7 +351,7 @@ export const getMeshName = (k: VIAKey, profile: number, isLastRow: boolean) => {
   } else if (k.w === 1.5 && k.w2 === 2.25) {
     return `K-R2-BAE`;
   } else if (k.h > 1) {
-    return isLastRow ? 'K-R4C-100' : 'K-R4-100';
+    return isLastRow ? "K-R4C-100" : "K-R4-100";
   }
 
   if (!isLastRow) {
@@ -398,7 +374,7 @@ export const getMeshName = (k: VIAKey, profile: number, isLastRow: boolean) => {
       }
       default: {
         // Spacebars
-        return 'K-R4C-100';
+        return "K-R4C-100";
       }
     }
   }
@@ -421,16 +397,13 @@ export const getMeshName = (k: VIAKey, profile: number, isLastRow: boolean) => {
     }
     default: {
       // Spacebars
-      return 'K-R4C-100';
+      return "K-R4C-100";
     }
   }
 };
 
-export const getScale = (
-  k: VIAKey,
-  scale: [number, number, number],
-): [number, number, number] => {
-  if (k['ei'] !== undefined) {
+export const getScale = (k: VIAKey, scale: [number, number, number]): [number, number, number] => {
+  if (k["ei"] !== undefined) {
     return scale;
   } else if (k.h === 2 && k.w === 1) {
     return [1, 1, 1];
@@ -469,25 +442,22 @@ export const getScale = (
   return scale;
 };
 
-const getLabelOffsets = (
-  topLabel: string,
-  bottomLabel: string,
-): [number, number] => {
+const getLabelOffsets = (topLabel: string, bottomLabel: string): [number, number] => {
   let topLabelOffset = 0.0;
   let bottomLabelOffset = 0.0;
 
   if (topLabel.length == 1) {
-    if ('^*"'.split('').includes(topLabel[0])) {
+    if ('^*"'.split("").includes(topLabel[0])) {
       topLabelOffset = 0.2;
     }
   }
 
   if (bottomLabel.length == 1) {
-    if (',.'.split('').includes(bottomLabel[0])) {
+    if (",.".split("").includes(bottomLabel[0])) {
       bottomLabelOffset = 0.4;
-    } else if ("/\\;'[]".split('').includes(bottomLabel[0])) {
+    } else if ("/\\;'[]".split("").includes(bottomLabel[0])) {
       bottomLabelOffset = 0.3;
-    } else if ('-'.split('').includes(bottomLabel[0])) {
+    } else if ("-".split("").includes(bottomLabel[0])) {
       bottomLabelOffset = 0.1;
     }
   }
@@ -503,39 +473,33 @@ export const getLabel = (
   basicKeyToByte: Record<string, number>,
   byteToKey: Record<number, string>,
 ) => {
-  let label: string = '';
+  let label: string = "";
   let size: number = 1.0;
   let offset: [number, number] = [0, 0];
 
   // Full name
-  let tooltipLabel: string = '';
+  let tooltipLabel: string = "";
   if (
     isCustomKeycodeByte(keycodeByte, basicKeyToByte) &&
     selectedDefinition?.customKeycodes &&
-    selectedDefinition.customKeycodes[
-      getCustomKeycodeIndex(keycodeByte, basicKeyToByte)
-    ] !== undefined
+    selectedDefinition.customKeycodes[getCustomKeycodeIndex(keycodeByte, basicKeyToByte)] !==
+      undefined
   ) {
     const customKeycodeIdx = getCustomKeycodeIndex(keycodeByte, basicKeyToByte);
-    label = getShortNameForKeycode(
-      selectedDefinition.customKeycodes[customKeycodeIdx] as IKeycode,
-    );
+    label = getShortNameForKeycode(selectedDefinition.customKeycodes[customKeycodeIdx] as IKeycode);
     tooltipLabel = getShortNameForKeycode(
       selectedDefinition.customKeycodes[customKeycodeIdx] as IKeycode,
       700,
     );
   } else if (keycodeByte) {
-    label =
-      getLabelForByte(keycodeByte, width * 100, basicKeyToByte, byteToKey) ??
-      '';
-    tooltipLabel =
-      getLabelForByte(keycodeByte, 700, basicKeyToByte, byteToKey) ?? '';
+    label = getLabelForByte(keycodeByte, width * 100, basicKeyToByte, byteToKey) ?? "";
+    tooltipLabel = getLabelForByte(keycodeByte, 700, basicKeyToByte, byteToKey) ?? "";
   }
   let macroExpression: string | undefined;
   if (isMacroKeycodeByte(keycodeByte, basicKeyToByte)) {
     const macroKeycodeIdx = getMacroKeycodeIndex(keycodeByte, basicKeyToByte);
     macroExpression = macroExpressions[macroKeycodeIdx];
-    tooltipLabel = macroExpression || '';
+    tooltipLabel = macroExpression || "";
   }
 
   if (isAlpha(label) || isNumpadNumber(label)) {
@@ -543,7 +507,7 @@ export const getLabel = (
       label && {
         label: label.toUpperCase(),
         macroExpression,
-        key: (label || '') + (macroExpression || ''),
+        key: (label || "") + (macroExpression || ""),
         size: size,
         offset: offset,
       }
@@ -556,7 +520,7 @@ export const getLabel = (
         topLabel,
         bottomLabel,
         macroExpression,
-        key: (label || '') + (macroExpression || ''),
+        key: (label || "") + (macroExpression || ""),
         size: size,
         offset: getLabelOffsets(topLabel, bottomLabel),
       }
@@ -573,7 +537,7 @@ export const getLabel = (
       centerLabel: label,
       tooltipLabel,
       macroExpression,
-      key: (label || '') + (macroExpression || ''),
+      key: (label || "") + (macroExpression || ""),
       size: size,
       offset: offset,
     };

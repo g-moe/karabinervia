@@ -1,5 +1,5 @@
-import React, {Component, KeyboardEventHandler} from 'react';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import styled from "styled-components";
 
 import {
   toDegrees,
@@ -8,8 +8,8 @@ import {
   getHSV,
   getRGB,
   getHex,
-} from '../../utils/color-math';
-import {controlSurface, roundSwatchSurface} from './control-styles';
+} from "../../utils/color-math";
+import { controlSurface, roundSwatchSurface } from "./control-styles";
 
 type Color = {
   hue: number;
@@ -37,7 +37,7 @@ const ColorPickerContainer = styled.div`
   align-items: center;
 `;
 
-const ColorLens = styled.div<{$transform: string}>`
+const ColorLens = styled.div<{ $transform: string }>`
   position: absolute;
   width: 10px;
   height: 10px;
@@ -58,19 +58,10 @@ const ColorInner = styled.div`
 const ColorOuter = styled.div`
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    to right,
-    red,
-    yellow,
-    lime,
-    aqua,
-    blue,
-    magenta,
-    red
-  );
+  background: linear-gradient(to right, red, yellow, lime, aqua, blue, magenta, red);
 `;
 
-const ColorThumbnail = styled.div<{$selected: boolean; $color: string}>`
+const ColorThumbnail = styled.div<{ $selected: boolean; $color: string }>`
   ${roundSwatchSurface}
   background: ${(props) => props.$color};
 `;
@@ -94,7 +85,7 @@ const PickerContainer = styled.div`
   transform: translate3d(-205px, 50px, 0);
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 0px;
     height: 0px;
@@ -107,7 +98,7 @@ const PickerContainer = styled.div`
   }
 `;
 
-const ColorPreview = styled.div<{$color: string}>`
+const ColorPreview = styled.div<{ $color: string }>`
   width: 180px;
   height: 24px;
   border: 1px solid var(--color_separator);
@@ -141,46 +132,40 @@ export class ColorPicker extends Component<Props, State> {
   mouseDown: boolean = false;
 
   state = {
-    lensTransform: '',
+    lensTransform: "",
     showPicker: false,
     offset: [5, 5] as [number, number],
     hexColorCode: getHex(this.props.color),
   };
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.onDocumentClick);
-    document.removeEventListener('click', this.onDocumentClick);
+    document.removeEventListener("mousedown", this.onDocumentClick);
+    document.removeEventListener("click", this.onDocumentClick);
   }
 
-  componentDidUpdate({color}: {color: Color}, state: State) {
-    if (
-      this.ref &&
-      this.state.showPicker &&
-      (!state.showPicker || color !== this.props.color)
-    ) {
-      const {width, height} = this.ref.getBoundingClientRect();
+  componentDidUpdate({ color }: { color: Color }, state: State) {
+    if (this.ref && this.state.showPicker && (!state.showPicker || color !== this.props.color)) {
+      const { width, height } = this.ref.getBoundingClientRect();
       this.refWidth = width;
       this.refHeight = height;
-      const {hue, sat} = this.props.color;
+      const { hue, sat } = this.props.color;
       const offsetX = (width * hue) / 255;
       const offsetY = height * (1 - sat / 255);
-      const lensTransform = `translate3d(${offsetX - 5}px, ${
-        offsetY - 5
-      }px, 0)`;
-      this.setState({lensTransform, offset: [offsetX, offsetY]});
+      const lensTransform = `translate3d(${offsetX - 5}px, ${offsetY - 5}px, 0)`;
+      this.setState({ lensTransform, offset: [offsetX, offsetY] });
     }
   }
   componentDidMount() {
-    document.addEventListener('click', this.onDocumentClick);
-    document.addEventListener('mousedown', this.onDocumentClick);
+    document.addEventListener("click", this.onDocumentClick);
+    document.addEventListener("mousedown", this.onDocumentClick);
   }
 
   // For the color picker uses a conical gradient
   getRadialHueSat(evt: React.MouseEvent<Element>) {
-    const {offsetX, offsetY} = evt.nativeEvent;
+    const { offsetX, offsetY } = evt.nativeEvent;
     const hue = toDegrees(calcRadialHue(offsetX, offsetY) ?? 0);
     const sat = Math.min(1, calcRadialMagnitude(offsetX, offsetY) ?? 0);
-    return {hue, sat};
+    return { hue, sat };
   }
 
   // For standard color picker uses a conical gradient
@@ -191,18 +176,16 @@ export class ColorPicker extends Component<Props, State> {
     const [x, y] = [Math.max(0, offsetX), Math.max(0, offsetY)];
     const hue = 360 * Math.min(1, x / width);
     const sat = 1 - Math.min(1, y / height);
-    return {hue, sat};
+    return { hue, sat };
   }
 
   onMouseMove: React.MouseEventHandler = (evt) => {
     if (this.mouseDown) {
-      const {offsetX, offsetY} = evt.nativeEvent;
-      const lensTransform = `translate3d(${offsetX - 5}px, ${
-        offsetY - 5
-      }px, 0)`;
+      const { offsetX, offsetY } = evt.nativeEvent;
+      const lensTransform = `translate3d(${offsetX - 5}px, ${offsetY - 5}px, 0)`;
 
       const offset = [offsetX, offsetY] as [number, number];
-      const {hue, sat} = this.getLinearHueSat(offset);
+      const { hue, sat } = this.getLinearHueSat(offset);
       const hexColorCode = getHex(this.props.color);
       this.props.setColor(Math.round(255 * (hue / 360)), Math.round(255 * sat));
       this.setState({
@@ -217,17 +200,17 @@ export class ColorPicker extends Component<Props, State> {
     this.mouseDown = true;
     this.onMouseMove(evt);
     if (this.ref) {
-      this.ref.style.cursor = 'pointer';
+      this.ref.style.cursor = "pointer";
     }
   };
 
   onMouseUp = () => {
     this.mouseDown = false;
     if (this.ref) {
-      this.ref.style.cursor = 'auto';
+      this.ref.style.cursor = "auto";
     }
     if (this.props.onMouseUp) {
-      const {hue, sat} = this.getLinearHueSat(this.state.offset);
+      const { hue, sat } = this.getLinearHueSat(this.state.offset);
       this.props.onMouseUp(hue, sat);
     }
   };
@@ -236,7 +219,7 @@ export class ColorPicker extends Component<Props, State> {
     if (this.props.onOpen) {
       this.props.onOpen();
     }
-    this.setState({showPicker: true});
+    this.setState({ showPicker: true });
   };
 
   pickerContainer = React.createRef<HTMLDivElement>();
@@ -252,7 +235,7 @@ export class ColorPicker extends Component<Props, State> {
       !this.mouseDown
     ) {
       if (this.props.onClose) {
-        const {hue, sat} = this.getLinearHueSat(this.state.offset);
+        const { hue, sat } = this.getLinearHueSat(this.state.offset);
         this.props.onClose(hue, sat);
       }
       this.mouseDown = false;
@@ -274,46 +257,44 @@ export class ColorPicker extends Component<Props, State> {
 
   handleHexChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     let value = e.target.value;
-    value = value.replace(/[^A-Fa-f0-9]/g, '');
-    if (value.length > 0 && value[0] !== '#') {
+    value = value.replace(/[^A-Fa-f0-9]/g, "");
+    if (value.length > 0 && value[0] !== "#") {
       value = `#${value}`;
     }
     if (value.length > 7) {
       value = value.substring(0, 7);
     }
-    this.setState({hexColorCode: value});
+    this.setState({ hexColorCode: value });
   };
 
-  handleHexBlur: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    this.setState({hexColorCode: getHex(this.props.color)});
+  handleHexBlur: React.ChangeEventHandler<HTMLInputElement> = () => {
+    this.setState({ hexColorCode: getHex(this.props.color) });
   };
 
   handleHexSubmit: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
       if (hexColorRegex.test(this.state.hexColorCode)) {
-        var hexString = this.state.hexColorCode.replace('#', '');
+        var hexString = this.state.hexColorCode.replace("#", "");
         if (hexString.length == 3) {
           hexString = `${hexString
-            .split('')
+            .split("")
             .map((char) => char + char)
-            .join('')}`;
+            .join("")}`;
         }
         const [h, s] = getHSV(hexString);
         this.props.setColor(Math.round(255 * (h / 360)), Math.round(255 * s));
       }
-      this.setState({hexColorCode: getHex(this.props.color)});
+      this.setState({ hexColorCode: getHex(this.props.color) });
     }
   };
 
   render() {
     const color = getRGB(this.props.color);
-    const {isSelected = false} = this.props;
-    const {offset} = this.state;
+    const { isSelected = false } = this.props;
+    const { offset } = this.state;
 
-    const lensTransform = `translate3d(${offset[0] - 5}px, ${
-      offset[1] - 5
-    }px, 0)`;
+    const lensTransform = `translate3d(${offset[0] - 5}px, ${offset[1] - 5}px, 0)`;
     return (
       <>
         <ColorPickerContainer>
@@ -324,10 +305,7 @@ export class ColorPicker extends Component<Props, State> {
             onClick={this.onThumbnailClick}
           />
           {this.state.showPicker && (
-            <PickerContainer
-              ref={this.pickerContainer}
-              onMouseUp={this.onMouseUp}
-            >
+            <PickerContainer ref={this.pickerContainer} onMouseUp={this.onMouseUp}>
               <ColorHexContainer>
                 <ColorHexInput
                   type="text"
@@ -361,10 +339,8 @@ export class ColorPicker extends Component<Props, State> {
 
 export const ArrayColorPicker: React.FC<{
   color: [number, number];
-  setColor: Props['setColor'];
+  setColor: Props["setColor"];
 }> = (props) => {
-  const {color, setColor} = props;
-  return (
-    <ColorPicker color={{hue: color[0], sat: color[1]}} setColor={setColor} />
-  );
+  const { color, setColor } = props;
+  return <ColorPicker color={{ hue: color[0], sat: color[1] }} setColor={setColor} />;
 };

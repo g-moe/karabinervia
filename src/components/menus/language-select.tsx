@@ -1,29 +1,29 @@
-import {FC, useMemo, useState} from 'react';
-import {faLanguage} from '@fortawesome/free-solid-svg-icons';
-import {CategoryIconContainer} from '../panes/grid';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
-import {useTranslation} from 'react-i18next';
+import { FC, useMemo, useState } from "react";
+import { faLanguage } from "@fortawesome/free-solid-svg-icons";
+import { CategoryIconContainer } from "../panes/grid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 import {
   dropdownMenuVisibility,
   menuItemSurface,
   menuListSurface,
   scrimSurface,
-} from '../inputs/control-styles';
+} from "../inputs/control-styles";
 
 const Container = styled.div`
   position: relative;
   font-size: 18px;
 `;
 
-const LanguageList = styled.ul<{$show: boolean}>`
+const LanguageList = styled.ul<{ $show: boolean }>`
   ${menuListSurface}
   ${dropdownMenuVisibility}
   top: 30px;
   right: 0px;
 `;
 
-const LanugaeButton = styled.button<{$selected?: boolean}>`
+const LanugaeButton = styled.button<{ $selected?: boolean }>`
   ${menuItemSurface}
 `;
 
@@ -36,14 +36,14 @@ const LanguageSelectors: React.FC<{
   onClickOut: () => void;
 }> = (props) => {
   const langs = [
-    {code: 'en', lang: 'English'},
-    {code: 'zh', lang: '中文'},
-    {code: 'ko', lang: '한국어'},
-    {code: 'ja', lang: '日本語'},
-    {code: 'es', lang: 'Español'},
-    {code: 'de', lang: 'Deutsch'},
+    { code: "en", lang: "English" },
+    { code: "zh", lang: "中文" },
+    { code: "ko", lang: "한국어" },
+    { code: "ja", lang: "日本語" },
+    { code: "es", lang: "Español" },
+    { code: "de", lang: "Deutsch" },
   ];
-  const {i18n} = useTranslation();
+  const { i18n } = useTranslation();
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     props.onClickOut();
@@ -59,7 +59,7 @@ const LanguageSelectors: React.FC<{
     <>
       {props.show && <ClickCover onClick={props.onClickOut} />}
       <LanguageList $show={props.show}>
-        {langs.map(({lang, code}) => {
+        {langs.map(({ lang, code }) => {
           return (
             <LanugaeButton
               $selected={code === selectLang}
@@ -80,16 +80,9 @@ export const LanguageSelect: FC = () => {
   return (
     <Container>
       <CategoryIconContainer>
-        <FontAwesomeIcon
-          size={'xl'}
-          icon={faLanguage}
-          onClick={() => setShowList(true)}
-        />
+        <FontAwesomeIcon size={"xl"} icon={faLanguage} onClick={() => setShowList(true)} />
       </CategoryIconContainer>
-      <LanguageSelectors
-        show={showList}
-        onClickOut={() => setShowList(false)}
-      />
+      <LanguageSelectors show={showList} onClickOut={() => setShowList(false)} />
     </Container>
   );
 };

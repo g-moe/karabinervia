@@ -1,12 +1,8 @@
-import type {VIAKey} from '@the-via/reader';
-import {calculatePointPosition} from 'src/utils/keyboard-rendering';
+import type { VIAKey } from "@the-via/reader";
+import { calculatePointPosition } from "src/utils/keyboard-rendering";
 
-export const generateRowColArray = (
-  keys: VIAKey[],
-  rows: number,
-  cols: number,
-) => {
-  const matrixKeys = keys.filter((key) => key['ei'] === undefined && !key.d);
+export const generateRowColArray = (keys: VIAKey[], rows: number, cols: number) => {
+  const matrixKeys = keys.filter((key) => key["ei"] === undefined && !key.d);
   const rowKeys = matrixKeys
     .reduce(
       (sumKeys, key) => {
@@ -29,5 +25,5 @@ export const generateRowColArray = (
         .map(() => Array(rows).fill(0)),
     )
     .map((arr) => arr.sort((a, b) => a[1] - b[1]));
-  return {rowKeys, colKeys};
+  return { rowKeys, colKeys };
 };

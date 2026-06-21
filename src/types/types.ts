@@ -1,10 +1,5 @@
-import type {
-  DefinitionVersion,
-  KeyboardDefinitionIndex,
-  KeyboardDictionary,
-  VIAMenu,
-} from '@the-via/reader';
-import {TestKeyboardSoundsMode} from 'src/components/void/test-keyboard-sounds';
+import type { DefinitionVersion, KeyboardDefinitionIndex, VIAMenu } from "@the-via/reader";
+import { TestKeyboardSoundsMode } from "src/components/void/test-keyboard-sounds";
 
 export enum TestKeyState {
   Initial,
@@ -36,7 +31,7 @@ export type Layer = {
   isLoaded: boolean;
 };
 
-export type DeviceLayerMap = {[devicePath: string]: Layer[]};
+export type DeviceLayerMap = { [devicePath: string]: Layer[] };
 
 export type ConnectedDevice = DeviceInfo & {
   path: string;
@@ -58,7 +53,7 @@ export type TestKeyboardSoundsSettings = {
 
 export type Settings = {
   disableFastRemap: boolean;
-  themeMode: 'light' | 'dark';
+  themeMode: "light" | "dark";
   testKeyboardSoundsSettings: TestKeyboardSoundsSettings;
 };
 
@@ -70,12 +65,9 @@ export type StoreData = {
   settings: Settings;
 };
 
-export type VendorProductIdMap = Record<number, {v2: boolean; v3: boolean}>;
+export type VendorProductIdMap = Record<number, { v2: boolean; v3: boolean }>;
 
-export type DefinitionIndex = Pick<
-  KeyboardDefinitionIndex,
-  'generatedAt' | 'version'
-> & {
+export type DefinitionIndex = Pick<KeyboardDefinitionIndex, "generatedAt" | "version"> & {
   supportedVendorProductIdMap: VendorProductIdMap;
   hash: string;
 };

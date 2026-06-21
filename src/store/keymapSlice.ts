@@ -1,20 +1,8 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import type {
-  ConnectedDevice,
-  DeviceLayerMap,
-  Keymap,
-  Layer,
-} from '../types/types';
-import type {AppThunk, RootState} from './index';
-import {
-  getSelectedDefinition,
-  getSelectedKeyDefinitions,
-} from './definitionsSlice';
-import {
-  getSelectedConnectedDevice,
-  getSelectedDevicePath,
-  selectDevice,
-} from './devicesSlice';
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { ConnectedDevice, DeviceLayerMap, Keymap, Layer } from "../types/types";
+import type { AppThunk, RootState } from "./index";
+import { getSelectedDefinition, getSelectedKeyDefinitions } from "./definitionsSlice";
+import { getSelectedConnectedDevice, getSelectedDevicePath, selectDevice } from "./devicesSlice";
 
 type KeymapState = {
   rawDeviceMap: DeviceLayerMap;
@@ -37,22 +25,16 @@ const initialState: KeymapState = {
 const EMPTY_LAYERS: Layer[] = [];
 
 const keymapSlice = createSlice({
-  name: 'keymap',
+  name: "keymap",
   initialState,
   reducers: {
-    setSelectedPaletteColor: (
-      state,
-      action: PayloadAction<[number, number]>,
-    ) => {
+    setSelectedPaletteColor: (state, action: PayloadAction<[number, number]>) => {
       state.selectedPaletteColor = action.payload;
     },
     setNumberOfLayers: (state, action: PayloadAction<number>) => {
       state.numberOfLayers = action.payload;
     },
-    setConfigureKeyboardIsSelectable: (
-      state,
-      action: PayloadAction<boolean>,
-    ) => {
+    setConfigureKeyboardIsSelectable: (state, action: PayloadAction<boolean>) => {
       state.configureKeyboardIsSelectable = action.payload;
     },
     // Writes a single layer to the device layer map
@@ -64,7 +46,7 @@ const keymapSlice = createSlice({
         devicePath: string;
       }>,
     ) => {
-      const {layerIndex, keymap, devicePath} = action.payload;
+      const { layerIndex, keymap, devicePath } = action.payload;
       state.rawDeviceMap[devicePath] =
         state.rawDeviceMap[devicePath] ||
         Array(state.numberOfLayers).fill({
@@ -85,11 +67,8 @@ const keymapSlice = createSlice({
     updateSelectedKey: (state, action: PayloadAction<number | null>) => {
       state.selectedKey = action.payload;
     },
-    saveKeymapSuccess: (
-      state,
-      action: PayloadAction<{layers: Layer[]; devicePath: string}>,
-    ) => {
-      const {layers, devicePath} = action.payload;
+    saveKeymapSuccess: (state, action: PayloadAction<{ layers: Layer[]; devicePath: string }>) => {
+      const { layers, devicePath } = action.payload;
       state.rawDeviceMap[devicePath] = layers;
     },
     setKey: (
@@ -100,11 +79,10 @@ const keymapSlice = createSlice({
         value: number;
       }>,
     ) => {
-      const {keymapIndex, value, devicePath} = action.payload;
-      const {selectedLayerIndex} = state;
+      const { keymapIndex, value, devicePath } = action.payload;
+      const { selectedLayerIndex } = state;
 
-      state.rawDeviceMap[devicePath][selectedLayerIndex].keymap[keymapIndex] =
-        value;
+      state.rawDeviceMap[devicePath][selectedLayerIndex].keymap[keymapIndex] = value;
     },
   },
   extraReducers: (builder) => {
@@ -132,7 +110,7 @@ export const saveRawKeymapToDevice =
   (keymap: number[][], connectedDevice: ConnectedDevice): AppThunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const {path} = connectedDevice;
+    const { path } = connectedDevice;
     const definition = getSelectedDefinition(state);
     if (!path || !definition) {
       return;
@@ -142,7 +120,7 @@ export const saveRawKeymapToDevice =
       keymap: layer,
       isLoaded: true,
     }));
-    dispatch(saveKeymapSuccess({layers, devicePath: path}));
+    dispatch(saveKeymapSuccess({ layers, devicePath: path }));
   };
 
 export const updateKey =
@@ -156,44 +134,35 @@ export const updateKey =
       return;
     }
 
-    const selectedLayerIndex = getSelectedLayerIndex(state);
-    const {path} = connectedDevice;
-    const {row, col} = keys[keyIndex];
-    const {matrix} = selectedDefinition;
+    const { path } = connectedDevice;
+    const { row, col } = keys[keyIndex];
+    const { matrix } = selectedDefinition;
     const keymapIndex = row * matrix.cols + col;
 
-    dispatch(setKey({keymapIndex, value, devicePath: path}));
+    dispatch(setKey({ keymapIndex, value, devicePath: path }));
   };
 
 export const getConfigureKeyboardIsSelectable = (state: RootState) =>
   state.keymap.configureKeyboardIsSelectable;
 export const getSelectedKey = (state: RootState) => state.keymap.selectedKey;
 export const getRawDeviceMap = (state: RootState) => state.keymap.rawDeviceMap;
-export const getNumberOfLayers = (state: RootState) =>
-  state.keymap.numberOfLayers;
-export const getSelectedLayerIndex = (state: RootState) =>
-  state.keymap.selectedLayerIndex;
-export const getSelected256PaletteColor = (state: RootState) =>
-  state.keymap.selectedPaletteColor;
-export const getSelectedPaletteColor = createSelector(
-  getSelected256PaletteColor,
-  ([hue, sat]) => {
-    return [(360 * hue) / 255, sat / 255] as [number, number];
-  },
-);
+export const getNumberOfLayers = (state: RootState) => state.keymap.numberOfLayers;
+export const getSelectedLayerIndex = (state: RootState) => state.keymap.selectedLayerIndex;
+export const getSelected256PaletteColor = (state: RootState) => state.keymap.selectedPaletteColor;
+export const getSelectedPaletteColor = createSelector(getSelected256PaletteColor, ([hue, sat]) => {
+  return [(360 * hue) / 255, sat / 255] as [number, number];
+});
 
 export const getSelectedRawLayers = createSelector(
   getRawDeviceMap,
   getSelectedDevicePath,
-  (rawDeviceMap, devicePath) =>
-    (devicePath && rawDeviceMap[devicePath]) || EMPTY_LAYERS,
+  (rawDeviceMap, devicePath) => (devicePath && rawDeviceMap[devicePath]) || EMPTY_LAYERS,
 );
 
 export const getLoadProgress = createSelector(
   getSelectedRawLayers,
   getNumberOfLayers,
-  (layers, layerCount) =>
-    layers && layers.filter((layer) => layer.isLoaded).length / layerCount,
+  (layers, layerCount) => layers && layers.filter((layer) => layer.isLoaded).length / layerCount,
 );
 
 export const getSelectedRawLayer = createSelector(
@@ -210,11 +179,9 @@ export const getSelectedKeymaps = createSelector(
     if (definition && layers) {
       const rawKeymaps = layers.map((layer) => layer.keymap);
       const {
-        matrix: {cols},
+        matrix: { cols },
       } = definition;
-      return rawKeymaps.map((keymap) =>
-        keys.map(({row, col}) => keymap[row * cols + col]),
-      );
+      return rawKeymaps.map((keymap) => keys.map(({ row, col }) => keymap[row * cols + col]));
     }
     return undefined;
   },

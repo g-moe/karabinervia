@@ -1,4 +1,4 @@
-import {css} from 'styled-components';
+import { css } from "styled-components";
 
 export const controlTransition = css`
   transition:
@@ -138,14 +138,13 @@ export const modalSurface = css`
   padding: 20px;
 `;
 
-export const roundSwatchSurface = css<{$selected?: boolean}>`
+export const roundSwatchSurface = css<{ $selected?: boolean }>`
   display: inline-block;
   height: 25px;
   width: 25px;
   border-radius: 50%;
   border: 2px solid
-    ${(props) =>
-      props.$selected ? 'var(--color_accent)' : 'var(--color_separator)'};
+    ${(props) => (props.$selected ? "var(--color_accent)" : "var(--color_separator)")};
   cursor: pointer;
   box-sizing: border-box;
   ${controlTransition}
@@ -181,39 +180,29 @@ export const selectedButtonSurface = css`
   color: var(--color_control-selected-text);
 `;
 
-export const subtleSelectedSurface = css<{$selected?: boolean}>`
+export const subtleSelectedSurface = css<{ $selected?: boolean }>`
   background: ${(props) =>
-    props.$selected
-      ? 'var(--color_control-selected-subtle-bg)'
-      : 'transparent'};
+    props.$selected ? "var(--color_control-selected-subtle-bg)" : "transparent"};
   border-color: ${(props) =>
-    props.$selected
-      ? 'var(--color_control-selected-subtle-border)'
-      : 'transparent'};
+    props.$selected ? "var(--color_control-selected-subtle-border)" : "transparent"};
   color: ${(props) =>
-    props.$selected
-      ? 'var(--color_control-selected-subtle-text)'
-      : 'var(--color_text-primary)'};
+    props.$selected ? "var(--color_control-selected-subtle-text)" : "var(--color_text-primary)"};
 `;
 
-export const subtleSelectedHoverSurface = css<{$selected?: boolean}>`
+export const subtleSelectedHoverSurface = css<{ $selected?: boolean }>`
   &:hover {
     background: ${(props) =>
       props.$selected
-        ? 'var(--color_control-selected-subtle-bg)'
-        : 'var(--color_control-background-hover)'};
+        ? "var(--color_control-selected-subtle-bg)"
+        : "var(--color_control-background-hover)"};
     border-color: ${(props) =>
-      props.$selected
-        ? 'var(--color_control-selected-subtle-border)'
-        : 'transparent'};
+      props.$selected ? "var(--color_control-selected-subtle-border)" : "transparent"};
     color: ${(props) =>
-      props.$selected
-        ? 'var(--color_control-selected-subtle-text)'
-        : 'var(--color_text-primary)'};
+      props.$selected ? "var(--color_control-selected-subtle-text)" : "var(--color_text-primary)"};
   }
 `;
 
-export const iconNavButtonSurface = css<{$selected?: boolean}>`
+export const iconNavButtonSurface = css<{ $selected?: boolean }>`
   ${controlReset}
   ${controlTransition}
   position: relative;
@@ -246,7 +235,7 @@ export const iconNavButtonSurface = css<{$selected?: boolean}>`
   }
 `;
 
-export const pillButtonSurface = css<{$selected?: boolean}>`
+export const pillButtonSurface = css<{ $selected?: boolean }>`
   ${controlReset}
   ${controlTransition}
   border: 1px solid;
@@ -270,13 +259,13 @@ export const menuListSurface = css`
   ${controlTransition}
 `;
 
-export const dropdownMenuVisibility = css<{$show: boolean}>`
-  pointer-events: ${(props) => (props.$show ? 'all' : 'none')};
+export const dropdownMenuVisibility = css<{ $show: boolean }>`
+  pointer-events: ${(props) => (props.$show ? "all" : "none")};
   opacity: ${(props) => (props.$show ? 1 : 0)};
   transform: ${(props) => (props.$show ? 0 : `translateY(-5px)`)};
 `;
 
-export const menuItemSurface = css<{$selected?: boolean}>`
+export const menuItemSurface = css<{ $selected?: boolean }>`
   ${controlReset}
   ${subtleSelectedSurface}
   ${controlTransition}
@@ -297,11 +286,9 @@ export const menuItemSurface = css<{$selected?: boolean}>`
     border: none;
     background: ${(props) =>
       props.$selected
-        ? 'var(--color_control-selected-subtle-bg)'
-        : 'var(--color_control-background-hover)'};
+        ? "var(--color_control-selected-subtle-bg)"
+        : "var(--color_control-background-hover)"};
     color: ${(props) =>
-      props.$selected
-        ? 'var(--color_control-selected-subtle-text)'
-        : 'var(--color_text-primary)'};
+      props.$selected ? "var(--color_control-selected-subtle-text)" : "var(--color_text-primary)"};
   }
 `;

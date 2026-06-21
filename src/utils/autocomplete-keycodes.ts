@@ -1,4 +1,4 @@
-import {keycodesList} from './key';
+import { keycodesList } from "./key";
 const autocompleteKeycodes = {
   KC_NO: true,
   KC_A: true,
@@ -199,8 +199,7 @@ const autocompleteKeycodes = {
 
 export const getAutocompleteKeycodes = () =>
   keycodesList.filter(
-    (keycode) =>
-      !!autocompleteKeycodes[keycode.code as keyof typeof autocompleteKeycodes],
+    (keycode) => !!autocompleteKeycodes[keycode.code as keyof typeof autocompleteKeycodes],
   );
 export function isAutocompleteKeycode(keycode: string): boolean {
   const key = keycode.toUpperCase().replace(/^[+-]/, "");

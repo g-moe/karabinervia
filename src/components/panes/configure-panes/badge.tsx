@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import {useAppSelector} from 'src/store/hooks';
-import {getSelectedDefinition} from 'src/store/definitionsSlice';
-import {controlTransition} from 'src/components/inputs/control-styles';
+import styled from "styled-components";
+import { useAppSelector } from "src/store/hooks";
+import { getSelectedDefinition } from "src/store/definitionsSlice";
+import { controlTransition } from "src/components/inputs/control-styles";
 
 const Container = styled.div`
   position: absolute;

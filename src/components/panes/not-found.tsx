@@ -1,8 +1,8 @@
-import {faArrowLeft, faKeyboard} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
-import {Link} from 'wouter';
-import {PanelPane} from './pane';
+import { faArrowLeft, faKeyboard } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "styled-components";
+import { Link } from "wouter";
+import { PanelPane } from "./pane";
 
 const NotFoundPane = styled(PanelPane)`
   align-items: center;
@@ -89,9 +89,7 @@ export const NotFound = () => (
       </IconShell>
       <Eyebrow>404</Eyebrow>
       <Title>Page not found</Title>
-      <Message>
-        This route is not part of the KarabinerVIA workspace.
-      </Message>
+      <Message>This route is not part of the KarabinerVIA workspace.</Message>
       <HomeLink to="/">
         <FontAwesomeIcon icon={faArrowLeft} />
         Back to keyboard

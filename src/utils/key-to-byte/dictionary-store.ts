@@ -1,7 +1,7 @@
-import basicKeyToByte from './default';
-import v10BasicKeyToByte from './v10';
-import v11BasicKeyToByte from './v11';
-import v12BasicKeyToByte from './v12';
+import basicKeyToByte from "./default";
+import v10BasicKeyToByte from "./v10";
+import v11BasicKeyToByte from "./v11";
+import v12BasicKeyToByte from "./v12";
 export function getBasicKeyDict(version: number) {
   switch (version) {
     case 13:

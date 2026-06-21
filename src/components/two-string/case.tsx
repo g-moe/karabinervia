@@ -1,7 +1,7 @@
-import React from 'react';
-import {shallowEqual} from 'react-redux';
-import {CSSVarObject} from 'src/utils/keyboard-rendering';
-import styled from 'styled-components';
+import React from "react";
+import { shallowEqual } from "react-redux";
+import { CSSVarObject } from "src/utils/keyboard-rendering";
+import styled from "styled-components";
 
 const CaseGroup = styled.div<{}>``;
 const OuterCase = styled.div<{
@@ -28,21 +28,16 @@ const InnerCase = styled.div<{
   position: absolute;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
-  transform: translate(
-    ${(props) => props.$translateX}px,
-    ${(props) => props.$translateY}px
-  );
+  transform: translate(${(props) => props.$translateX}px, ${(props) => props.$translateY}px);
   box-shadow: var(--box-shadow-keyboard);
   border-radius: 8px;
 `;
 
 export const CaseInsideBorder = 10;
 
-export const Case = React.memo((props: {width: number; height: number}) => {
-  const properWidth =
-    props.width * CSSVarObject.keyXPos - CSSVarObject.keyXSpacing;
-  const properHeight =
-    CSSVarObject.keyYPos * props.height - CSSVarObject.keyYSpacing;
+export const Case = React.memo((props: { width: number; height: number }) => {
+  const properWidth = props.width * CSSVarObject.keyXPos - CSSVarObject.keyXSpacing;
+  const properHeight = CSSVarObject.keyYPos * props.height - CSSVarObject.keyYSpacing;
   const insideBorder = CSSVarObject.insideBorder;
   const insideWidth = properWidth + insideBorder * 1;
   const outsideWidth = properWidth + insideBorder * 3;

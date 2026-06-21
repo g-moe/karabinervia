@@ -1,14 +1,14 @@
-import React, {useMemo} from 'react';
-import styled from 'styled-components';
-import {Link, useLocation} from 'wouter';
-import PANES from '../../utils/pane-config';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {CategoryMenuTooltip} from '../inputs/tooltip';
-import {CategoryIconContainer} from '../panes/grid';
-import {ErrorLink, ErrorsPaneConfig} from '../panes/errors';
-import {useTranslation} from 'react-i18next';
-import {LanguageSelect} from './language-select';
-import {SettingsMenu} from './settings-menu';
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import { Link, useLocation } from "wouter";
+import PANES from "../../utils/pane-config";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CategoryMenuTooltip } from "../inputs/tooltip";
+import { CategoryIconContainer } from "../panes/grid";
+import { ErrorLink, ErrorsPaneConfig } from "../panes/errors";
+import { useTranslation } from "react-i18next";
+import { LanguageSelect } from "./language-select";
+import { SettingsMenu } from "./settings-menu";
 
 const Container = styled.div`
   width: 100vw;
@@ -40,24 +40,22 @@ const HeaderActions = styled.div`
 `;
 
 export const UnconnectedGlobalMenu = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const [location] = useLocation();
 
   const Panes = useMemo(() => {
-    return PANES.filter((pane) => pane.key !== ErrorsPaneConfig.key).map(
-      (pane) => {
-        return (
-          <Link key={pane.key} to={pane.path}>
-            <CategoryIconContainer $selected={pane.path === location}>
-              <FontAwesomeIcon size={'xl'} icon={pane.icon} />
-              <CategoryMenuTooltip>{t(pane.title)}</CategoryMenuTooltip>
-            </CategoryIconContainer>
-          </Link>
-        );
-      },
-    );
-  }, [location]);
+    return PANES.filter((pane) => pane.key !== ErrorsPaneConfig.key).map((pane) => {
+      return (
+        <Link key={pane.key} aria-label={t(pane.title)} to={pane.path}>
+          <CategoryIconContainer $selected={pane.path === location}>
+            <FontAwesomeIcon size={"xl"} icon={pane.icon} />
+            <CategoryMenuTooltip>{t(pane.title)}</CategoryMenuTooltip>
+          </CategoryIconContainer>
+        </Link>
+      );
+    });
+  }, [location, t]);
 
   return (
     <React.Fragment>

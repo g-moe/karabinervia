@@ -1,25 +1,17 @@
-import {useEffect, useState} from 'react';
-import styled from 'styled-components';
-import {AccentButton} from 'src/components/inputs/accent-button';
-import {
-  inputSurface,
-  selectSurface,
-} from 'src/components/inputs/control-styles';
-import {
-  ControlRow,
-  Detail,
-  Label,
-  SpanOverflowCell,
-} from 'src/components/panes/grid';
-import {PanelPane} from 'src/components/panes/pane';
-import {useAppDispatch, useAppSelector} from 'src/store/hooks';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { AccentButton } from "src/components/inputs/accent-button";
+import { inputSurface, selectSurface } from "src/components/inputs/control-styles";
+import { ControlRow, Detail, Label, SpanOverflowCell } from "src/components/panes/grid";
+import { PanelPane } from "src/components/panes/pane";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import {
   getSelectedKey,
   getSelectedLayerIndex,
   saveKeymapSuccess,
   setNumberOfLayers,
-} from 'src/store/keymapSlice';
-import {KARABINER_VIA_DEVICE_PATH, macbookLayoutKeys} from './virtual-device';
+} from "src/store/keymapSlice";
+import { KARABINER_VIA_DEVICE_PATH, macbookLayoutKeys } from "./virtual-device";
 import {
   KarabinerAction,
   KarabinerActionKind,
@@ -36,7 +28,7 @@ import {
   setAssignment,
   transparentAction,
   workspaceToViaLayers,
-} from './workspace';
+} from "./workspace";
 
 const Container = styled.div`
   display: flex;
@@ -72,23 +64,23 @@ const SelectedKeyValue = styled.span`
 
 function defaultAction(kind: KarabinerActionKind, fallbackLayerId: string) {
   switch (kind) {
-    case 'transparent':
+    case "transparent":
       return transparentAction();
-    case 'none':
+    case "none":
       return noneAction();
-    case 'modifier':
-      return modifierAction('left_control');
-    case 'layer':
+    case "modifier":
+      return modifierAction("left_control");
+    case "layer":
       return layerAction(fallbackLayerId);
-    case 'shortcut':
+    case "shortcut":
       return {
-        kind: 'shortcut' as const,
-        keyCode: 'c',
-        modifiers: ['left_command'],
+        kind: "shortcut" as const,
+        keyCode: "c",
+        modifiers: ["left_command"],
       };
-    case 'key':
+    case "key":
     default:
-      return keyAction('escape');
+      return keyAction("escape");
   }
 }
 
@@ -96,20 +88,19 @@ function ActionRows(props: {
   action: KarabinerAction;
   allowLayer: boolean;
   allowTransparent: boolean;
-  layerOptions: {value: string; label: string}[];
+  layerOptions: { value: string; label: string }[];
   onChange: (action: KarabinerAction) => void;
+  scope: "tap" | "hold";
 }) {
-  const {action, allowLayer, allowTransparent, layerOptions, onChange} = props;
-  const fallbackLayer = layerOptions[0]?.value ?? 'nav';
-  const kindOptions: {value: KarabinerActionKind; label: string}[] = [
-    ...(allowTransparent
-      ? [{value: 'transparent' as const, label: 'Transparent'}]
-      : []),
-    {value: 'none', label: 'Disabled'},
-    {value: 'key', label: 'Key'},
-    {value: 'shortcut', label: 'Shortcut'},
-    {value: 'modifier', label: 'Modifier'},
-    ...(allowLayer ? [{value: 'layer' as const, label: 'Layer Hold'}] : []),
+  const { action, allowLayer, allowTransparent, layerOptions, onChange, scope } = props;
+  const fallbackLayer = layerOptions[0]?.value ?? "nav";
+  const kindOptions: { value: KarabinerActionKind; label: string }[] = [
+    ...(allowTransparent ? [{ value: "transparent" as const, label: "Transparent" }] : []),
+    { value: "none", label: "Disabled" },
+    { value: "key", label: "Key" },
+    { value: "shortcut", label: "Shortcut" },
+    { value: "modifier", label: "Modifier" },
+    ...(allowLayer ? [{ value: "layer" as const, label: "Layer Hold" }] : []),
   ];
 
   return (
@@ -118,14 +109,10 @@ function ActionRows(props: {
         <Label>Type</Label>
         <Detail>
           <Select
+            data-testid={`${scope}-type`}
             value={action.kind}
             onChange={(event) =>
-              onChange(
-                defaultAction(
-                  event.target.value as KarabinerActionKind,
-                  fallbackLayer,
-                ),
-              )
+              onChange(defaultAction(event.target.value as KarabinerActionKind, fallbackLayer))
             }
           >
             {kindOptions.map((option) => (
@@ -136,12 +123,13 @@ function ActionRows(props: {
           </Select>
         </Detail>
       </ControlRow>
-      {action.kind === 'key' && (
+      {action.kind === "key" && (
         <ControlRow>
           <Label>Key</Label>
           <Detail>
             <Select
-              value={action.keyCode ?? 'escape'}
+              data-testid={`${scope}-key`}
+              value={action.keyCode ?? "escape"}
               onChange={(event) => onChange(keyAction(event.target.value))}
             >
               {keyOptions.map((option) => (
@@ -153,12 +141,13 @@ function ActionRows(props: {
           </Detail>
         </ControlRow>
       )}
-      {action.kind === 'modifier' && (
+      {action.kind === "modifier" && (
         <ControlRow>
           <Label>Modifier</Label>
           <Detail>
             <Select
-              value={action.keyCode ?? 'left_control'}
+              data-testid={`${scope}-modifier`}
+              value={action.keyCode ?? "left_control"}
               onChange={(event) => onChange(modifierAction(event.target.value))}
             >
               {modifierOptions.map((option) => (
@@ -170,11 +159,12 @@ function ActionRows(props: {
           </Detail>
         </ControlRow>
       )}
-      {action.kind === 'layer' && (
+      {action.kind === "layer" && (
         <ControlRow>
           <Label>Layer</Label>
           <Detail>
             <Select
+              data-testid={`${scope}-layer`}
               value={action.layerId ?? fallbackLayer}
               onChange={(event) => onChange(layerAction(event.target.value))}
             >
@@ -187,16 +177,15 @@ function ActionRows(props: {
           </Detail>
         </ControlRow>
       )}
-      {action.kind === 'shortcut' && (
+      {action.kind === "shortcut" && (
         <>
           <ControlRow>
             <Label>Main Key</Label>
             <Detail>
               <Select
-                value={action.keyCode ?? 'c'}
-                onChange={(event) =>
-                  onChange({...action, keyCode: event.target.value})
-                }
+                data-testid={`${scope}-main-key`}
+                value={action.keyCode ?? "c"}
+                onChange={(event) => onChange({ ...action, keyCode: event.target.value })}
               >
                 {keyOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -216,15 +205,16 @@ function ActionRows(props: {
                   return (
                     <Checkbox key={option.value}>
                       <input
+                        data-testid={`${scope}-modifier-${option.value}`}
                         type="checkbox"
                         checked={checked}
                         onChange={(event) => {
                           const next = new Set(modifiers);
                           if (event.target.checked) next.add(option.value);
                           else next.delete(option.value);
-                          onChange({...action, modifiers: [...next]});
+                          onChange({ ...action, modifiers: [...next] });
                         }}
-                      />{' '}
+                      />{" "}
                       {option.label}
                     </Checkbox>
                   );
@@ -250,9 +240,7 @@ export function KarabinerActionEditor() {
     saveWorkspace(next);
     const layers = workspaceToViaLayers(next);
     dispatch(setNumberOfLayers(layers.length));
-    dispatch(
-      saveKeymapSuccess({devicePath: KARABINER_VIA_DEVICE_PATH, layers}),
-    );
+    dispatch(saveKeymapSuccess({ devicePath: KARABINER_VIA_DEVICE_PATH, layers }));
   };
 
   useEffect(() => {
@@ -260,9 +248,7 @@ export function KarabinerActionEditor() {
     setWorkspaceState(next);
     const layers = workspaceToViaLayers(next);
     dispatch(setNumberOfLayers(layers.length));
-    dispatch(
-      saveKeymapSuccess({devicePath: KARABINER_VIA_DEVICE_PATH, layers}),
-    );
+    dispatch(saveKeymapSuccess({ devicePath: KARABINER_VIA_DEVICE_PATH, layers }));
   }, [dispatch]);
 
   if (!macKey || macKey.displayOnly) {
@@ -271,13 +257,11 @@ export function KarabinerActionEditor() {
         <PanelPane>
           <Container>
             <ControlRow>
-              <Label>
-                {macKey?.displayOnly ? 'Display Only' : 'Select a key'}
-              </Label>
+              <Label>{macKey?.displayOnly ? "Display Only" : "Select a key"}</Label>
               <Detail>
                 {macKey?.displayOnly
-                  ? 'This key is shown for physical context and cannot be edited.'
-                  : 'Click a key above to edit tap and hold actions.'}
+                  ? "This key is shown for physical context and cannot be edited."
+                  : "Click a key above to edit tap and hold actions."}
               </Detail>
             </ControlRow>
           </Container>
@@ -289,18 +273,18 @@ export function KarabinerActionEditor() {
   const current = assignmentFor(workspace, selectedLayerIndex, macKey.code);
   const selectedLayer = workspace.layers[selectedLayerIndex];
   const layerOptions = workspace.layers
-    .filter((layer) => layer.id !== 'base')
-    .map((layer) => ({value: layer.id, label: layer.name}));
+    .filter((layer) => layer.id !== "base")
+    .map((layer) => ({ value: layer.id, label: layer.name }));
 
   return (
     <SpanOverflowCell>
-        <PanelPane>
-          <Container>
+      <PanelPane>
+        <Container>
           <ControlRow>
             <Label>
               Selected Key
-              <SelectedKeyValue>
-                {macKey.code.replace(/^KC_/, '')}
+              <SelectedKeyValue data-testid="selected-key-label">
+                {macKey.code.replace(/^KC_/, "")}
               </SelectedKeyValue>
             </Label>
           </ControlRow>
@@ -308,14 +292,13 @@ export function KarabinerActionEditor() {
             <Label>Layer Name</Label>
             <Detail>
               <TextInput
-                value={selectedLayer?.name ?? ''}
+                data-testid="layer-name-input"
+                value={selectedLayer?.name ?? ""}
                 onChange={(event) =>
                   setWorkspace({
                     ...workspace,
                     layers: workspace.layers.map((layer, index) =>
-                      index === selectedLayerIndex
-                        ? {...layer, name: event.target.value}
-                        : layer,
+                      index === selectedLayerIndex ? { ...layer, name: event.target.value } : layer,
                     ),
                   })
                 }
@@ -326,6 +309,7 @@ export function KarabinerActionEditor() {
             <Label>Add Layer</Label>
             <Detail>
               <AccentButton
+                data-testid="add-layer"
                 onClick={() => {
                   const nextIndex = workspace.layers.length;
                   setWorkspace({
@@ -358,6 +342,7 @@ export function KarabinerActionEditor() {
                 }),
               )
             }
+            scope="tap"
           />
           <ActionRows
             action={current.hold}
@@ -372,17 +357,19 @@ export function KarabinerActionEditor() {
                 }),
               )
             }
+            scope="hold"
           />
           <ControlRow>
             <Label>Reset Key</Label>
             <Detail>
               <AccentButton
+                data-testid="reset-key"
                 onClick={() =>
                   setWorkspace(
                     setAssignment(workspace, selectedLayerIndex, macKey.code, {
                       tap:
                         selectedLayerIndex === 0
-                          ? keyAction(qmkToKarabiner[macKey.code] ?? 'vk_none')
+                          ? keyAction(qmkToKarabiner[macKey.code] ?? "vk_none")
                           : transparentAction(),
                       hold: transparentAction(),
                     }),
@@ -394,7 +381,7 @@ export function KarabinerActionEditor() {
             </Detail>
           </ControlRow>
         </Container>
-        </PanelPane>
+      </PanelPane>
     </SpanOverflowCell>
   );
 }

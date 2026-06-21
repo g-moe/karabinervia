@@ -1,11 +1,11 @@
-import {useMemo, useState} from 'react';
-import {getRGB} from 'src/utils/color-math';
-import styled from 'styled-components';
-import {roundSwatchSurface} from './control-styles';
-import {ColorPicker} from './color-picker';
+import { useMemo, useState } from "react";
+import { getRGB } from "src/utils/color-math";
+import styled from "styled-components";
+import { roundSwatchSurface } from "./control-styles";
+import { ColorPicker } from "./color-picker";
 
 type Props = {
-  color: {hue: number; sat: number};
+  color: { hue: number; sat: number };
   setColor: (hue: number, sat: number) => void;
 };
 
@@ -22,17 +22,17 @@ const PreviousColorContainer = styled.div`
   padding: 2px;
 `;
 
-const PreviousColorOption = styled.div<{$selected: boolean; $color: string}>`
+const PreviousColorOption = styled.div<{ $selected: boolean; $color: string }>`
   ${roundSwatchSurface}
   background: ${(props) => props.$color};
-  transform: ${(props) => (props.$selected ? 'scale(0.8)' : 'scale(0.6)')};
+  transform: ${(props) => (props.$selected ? "scale(0.8)" : "scale(0.6)")};
 `;
 
 export const ColorPalettePicker: React.FC<{
   color: [number, number];
-  setColor: Props['setColor'];
+  setColor: Props["setColor"];
 }> = (props) => {
-  const {color, setColor} = props;
+  const { color, setColor } = props;
   const [selectedColor, setSelectedColor] = useState(color);
   const [colorPickerColor, setPickerColor] = useState(color);
   const initialColors = useMemo(() => {
@@ -47,8 +47,7 @@ export const ColorPalettePicker: React.FC<{
       <PreviousColorContainer>
         {initialColors.map((savedColor, idx) => {
           const isSelected =
-            selectedColor[0] === savedColor[0] &&
-            selectedColor[1] === savedColor[1];
+            selectedColor[0] === savedColor[0] && selectedColor[1] === savedColor[1];
           return (
             <PreviousColorOption
               key={idx}
@@ -67,10 +66,9 @@ export const ColorPalettePicker: React.FC<{
       </PreviousColorContainer>
       <ColorPicker
         isSelected={
-          colorPickerColor[0] === selectedColor[0] &&
-          colorPickerColor[1] === selectedColor[1]
+          colorPickerColor[0] === selectedColor[0] && colorPickerColor[1] === selectedColor[1]
         }
-        color={{hue: colorPickerColor[0], sat: colorPickerColor[1]}}
+        color={{ hue: colorPickerColor[0], sat: colorPickerColor[1] }}
         setColor={(h, s) => {
           setSelectedColor([h, s]);
           setPickerColor([h, s]);

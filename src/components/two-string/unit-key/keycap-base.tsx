@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const KeycapContainer = styled.div`
   position: absolute;
@@ -19,7 +19,7 @@ export const KeycapContainer = styled.div`
   }
 `;
 
-export const TooltipContainer = styled.div<{$rotate: number}>`
+export const TooltipContainer = styled.div<{ $rotate: number }>`
   position: absolute;
   transform: rotate(${(p) => p.$rotate}rad);
   width: 100%;

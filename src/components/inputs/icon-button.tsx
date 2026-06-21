@@ -1,9 +1,5 @@
-import styled from 'styled-components';
-import {
-  controlReset,
-  controlTransition,
-  iconNavButtonSurface,
-} from './control-styles';
+import styled from "styled-components";
+import { controlReset, controlTransition, iconNavButtonSurface } from "./control-styles";
 
 export const IconButton = styled.button`
   ${controlReset}
@@ -19,13 +15,9 @@ export const IconButton = styled.button`
   border-radius: var(--radius_button);
   ${controlTransition}
   color: ${(props) =>
-    props.disabled
-      ? 'var(--color_control-text-disabled)'
-      : 'var(--color_control-border)'};
+    props.disabled ? "var(--color_control-text-disabled)" : "var(--color_control-border)"};
   border-color: ${(props) =>
-    props.disabled
-      ? 'var(--color_control-border-disabled)'
-      : 'var(--color_control-border)'};
+    props.disabled ? "var(--color_control-border-disabled)" : "var(--color_control-border)"};
   &:disabled {
     cursor: not-allowed;
     border-right: 1px solid var(--color_separator-opaque);
@@ -35,31 +27,25 @@ export const IconButton = styled.button`
   &:hover {
     color: ${(props) =>
       props.disabled
-        ? 'var(--color_control-text-disabled)'
-        : 'var(--color_control-selected-subtle-text)'};
+        ? "var(--color_control-text-disabled)"
+        : "var(--color_control-selected-subtle-text)"};
     border-color: ${(props) =>
-      props.disabled
-        ? 'var(--color_control-border-disabled)'
-        : 'var(--color_control-border)'};
+      props.disabled ? "var(--color_control-border-disabled)" : "var(--color_control-border)"};
     border-right: 1px solid var(--color_separator-opaque);
     background-color: ${(props) =>
-      props.disabled
-        ? 'var(--color_surface-menu)'
-        : 'var(--color_control-selected-subtle-bg)'};
+      props.disabled ? "var(--color_surface-menu)" : "var(--color_control-selected-subtle-bg)"};
   }
 
   svg {
     color: ${(props) =>
-      props.disabled
-        ? 'var(--color_control-text-disabled)'
-        : 'var(--color_control-border)'};
+      props.disabled ? "var(--color_control-text-disabled)" : "var(--color_control-border)"};
   }
   &:hover {
     svg {
       color: ${(props) =>
         props.disabled
-          ? 'var(--color_control-text-disabled)'
-          : 'var(--color_control-selected-subtle-text)'};
+          ? "var(--color_control-text-disabled)"
+          : "var(--color_control-selected-subtle-text)"};
     }
 
     color: var(--color_text-primary);
@@ -91,7 +77,7 @@ export const IconButtonContainer = styled(IconButton)`
   border-right: 1px solid var(--color_separator-opaque);
 `;
 
-export const IconToggleContainer = styled.button<{$selected: boolean}>`
+export const IconToggleContainer = styled.button<{ $selected: boolean }>`
   ${iconNavButtonSurface}
   width: 40px;
   display: inline-block;

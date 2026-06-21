@@ -1,24 +1,21 @@
-import {useEffect, useMemo, useState} from 'react';
-import {useAppDispatch, useAppSelector} from 'src/store/hooks';
-import {getSelectedKey, getSelectedLayerIndex} from 'src/store/keymapSlice';
-import {getSelectedTheme} from 'src/store/settingsSlice';
-import {KeyGroupProps, KeysKeys} from 'src/types/keyboard-rendering';
-import {getRGB} from 'src/utils/color-math';
+import { useEffect, useMemo, useState } from "react";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { getSelectedKey, getSelectedLayerIndex } from "src/store/keymapSlice";
+import { getSelectedTheme } from "src/store/settingsSlice";
+import { KeyGroupProps, KeysKeys } from "src/types/keyboard-rendering";
+import { getRGB } from "src/utils/color-math";
 import {
   calculateKeyboardFrameDimensions,
   CSSVarObject,
   getComboKeyProps,
-} from 'src/utils/keyboard-rendering';
-import {useSkipFontCheck} from 'src/utils/use-skip-font-check';
-import styled from 'styled-components';
-import {
-  getKeycapSharedProps,
-  getKeysKeys,
-} from '../n-links/key-group';
-import {CaseInsideBorder} from './case';
-import {Keycap} from './unit-key/keycap';
-import {KARABINER_VIA_VENDOR_PRODUCT_ID} from 'src/karabiner/virtual-device';
-import {getKarabinerLabels} from 'src/karabiner/labels';
+} from "src/utils/keyboard-rendering";
+import { useSkipFontCheck } from "src/utils/use-skip-font-check";
+import styled from "styled-components";
+import { getKeycapSharedProps, getKeysKeys } from "../n-links/key-group";
+import { CaseInsideBorder } from "./case";
+import { Keycap } from "./unit-key/keycap";
+import { KARABINER_VIA_VENDOR_PRODUCT_ID } from "src/karabiner/virtual-device";
+import { getKarabinerLabels } from "src/karabiner/labels";
 
 const KeyGroupContainer = styled.div<{
   height: number;
@@ -26,9 +23,9 @@ const KeyGroupContainer = styled.div<{
   $selectable: boolean;
 }>`
   position: absolute;
-  top: ${(p) => CaseInsideBorder * 1.5}px;
-  left: ${(p) => CaseInsideBorder * 1.5}px;
-  pointer-events: ${(p) => (p.$selectable ? 'all' : 'none')};
+  top: ${CaseInsideBorder * 1.5}px;
+  left: ${CaseInsideBorder * 1.5}px;
+  pointer-events: ${(p) => (p.$selectable ? "all" : "none")};
 `;
 
 const getPosition = (x: number, y: number): [number, number, number] => [
@@ -42,7 +39,7 @@ const getRGBArray = (keyColors: number[][]) => {
       hue: Math.round((255 * hue) / 360),
       sat: Math.round(255 * sat),
     });
-    const keyColor = {c: rgbStr, t: rgbStr};
+    const keyColor = { c: rgbStr, t: rgbStr };
     return keyColor;
   });
 };
@@ -53,15 +50,11 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
   const selectedLayerIndex = useAppSelector(getSelectedLayerIndex);
   const selectedTheme = useAppSelector(getSelectedTheme);
   const skipFontCheck = useSkipFontCheck();
-  const keyColorPalette = props.keyColors
-    ? getRGBArray(props.keyColors)
-    : selectedTheme;
-  const {keys, selectedKey: externalSelectedKey} = props;
-  const isKarabinerDevice =
-    props.definition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID;
+  const keyColorPalette = props.keyColors ? getRGBArray(props.keyColors) : selectedTheme;
+  const { keys, selectedKey: externalSelectedKey } = props;
+  const isKarabinerDevice = props.definition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID;
   const [isShiftPreviewActive, setIsShiftPreviewActive] = useState(false);
-  const selectedKeyIndex =
-    externalSelectedKey === undefined ? selectedKey : externalSelectedKey;
+  const selectedKeyIndex = externalSelectedKey === undefined ? selectedKey : externalSelectedKey;
   const keysKeys: KeysKeys<React.MouseEvent> = useMemo(() => {
     return getKeysKeys(props, keyColorPalette, dispatch, getPosition);
   }, [
@@ -79,8 +72,7 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
       ...keysKeys,
       coords: keysKeys.coords.map((coords, index) => {
         const key = keys[index];
-        const isShiftKey =
-          key.row === 4 && (key.col === 0 || key.col === 11);
+        const isShiftKey = key.row === 4 && (key.col === 0 || key.col === 11);
         if (!isShiftKey) {
           return coords;
         }
@@ -103,28 +95,22 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
       return undefined;
     }
     const releaseShiftPreview = () => setIsShiftPreviewActive(false);
-    window.addEventListener('pointerup', releaseShiftPreview);
-    window.addEventListener('mouseup', releaseShiftPreview);
-    window.addEventListener('blur', releaseShiftPreview);
+    window.addEventListener("pointerup", releaseShiftPreview);
+    window.addEventListener("mouseup", releaseShiftPreview);
+    window.addEventListener("blur", releaseShiftPreview);
     return () => {
-      window.removeEventListener('pointerup', releaseShiftPreview);
-      window.removeEventListener('mouseup', releaseShiftPreview);
-      window.removeEventListener('blur', releaseShiftPreview);
+      window.removeEventListener("pointerup", releaseShiftPreview);
+      window.removeEventListener("mouseup", releaseShiftPreview);
+      window.removeEventListener("blur", releaseShiftPreview);
     };
   }, [isShiftPreviewActive]);
   const labels = useMemo(() => {
     return getKarabinerLabels(selectedLayerIndex, isShiftPreviewActive);
-  }, [
-    keys,
-    props.matrixKeycodes,
-    props.definition,
-    selectedLayerIndex,
-    isShiftPreviewActive,
-  ]);
-  const {width, height} = calculateKeyboardFrameDimensions(keys);
+  }, [keys, props.matrixKeycodes, props.definition, selectedLayerIndex, isShiftPreviewActive]);
+  const { width, height } = calculateKeyboardFrameDimensions(keys);
   const elems = useMemo(() => {
     return props.keys.map((k, i) => {
-      const {key, ...sharedProps} = getKeycapSharedProps(
+      const { key, ...sharedProps } = getKeycapSharedProps(
         k,
         i,
         props,
@@ -133,13 +119,7 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
         labels,
         skipFontCheck,
       );
-      return k.d ? null : (
-        <Keycap
-          key={key}
-          {...getComboKeyProps(k)}
-          {...sharedProps}
-        />
-      );
+      return k.d ? null : <Keycap key={key} {...getComboKeyProps(k)} {...sharedProps} />;
     });
   }, [
     keys,
@@ -153,11 +133,7 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
     skipFontCheck,
   ]);
   return (
-    <KeyGroupContainer
-      height={height}
-      width={width}
-      $selectable={Boolean(props.selectable)}
-    >
+    <KeyGroupContainer height={height} width={width} $selectable={Boolean(props.selectable)}>
       {elems}
     </KeyGroupContainer>
   );

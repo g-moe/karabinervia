@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from "react";
 
 export function useSkipFontCheck() {
   const [shouldSkipFontCheck, setShouldSkipFontCheck] = useState(false);
@@ -9,7 +9,7 @@ export function useSkipFontCheck() {
     setShouldSkipFontCheck(true);
   }, []);
   useEffect(() => {
-    document.fonts.load('Fira Sans').then(allowFontCheck, skipFontCheck);
+    document.fonts.load("Fira Sans").then(allowFontCheck, skipFontCheck);
   }, []);
   return shouldSkipFontCheck;
 }

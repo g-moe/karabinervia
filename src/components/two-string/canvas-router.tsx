@@ -1,20 +1,20 @@
-import React, {useCallback, useEffect, useRef} from 'react';
-import {shallowEqual} from 'react-redux';
-import {getSelectedDefinition} from 'src/store/definitionsSlice';
-import {useAppDispatch, useAppSelector} from 'src/store/hooks';
+import React, { useCallback, useEffect, useRef } from "react";
+import { shallowEqual } from "react-redux";
+import { getSelectedDefinition } from "src/store/definitionsSlice";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
 import {
   clearSelectedKey,
   getConfigureKeyboardIsSelectable,
   getLoadProgress,
   updateSelectedKey,
-} from 'src/store/keymapSlice';
-import {useSize} from 'src/utils/use-size';
-import styled from 'styled-components';
-import {useLocation} from 'wouter';
-import {ConfigureKeyboard} from '../n-links/keyboard/configure';
-import {Test} from '../n-links/keyboard/test';
+} from "src/store/keymapSlice";
+import { useSize } from "src/utils/use-size";
+import styled from "styled-components";
+import { useLocation } from "wouter";
+import { ConfigureKeyboard } from "../n-links/keyboard/configure";
+import { Test } from "../n-links/keyboard/test";
 
-const KEYBOARD_SCENE_PATHS = ['/', '/test'];
+const KEYBOARD_SCENE_PATHS = ["/", "/test"];
 
 const KeyboardBG = styled.div<{
   onClick: () => void;
@@ -54,30 +54,26 @@ const KeyboardSceneFrame = styled.div<{
   top: 0;
   transform: ${(props) => {
     if (props.$inactive) {
-      return '';
+      return "";
     }
     if (!props.$hidden) {
-      return '';
+      return "";
     }
     if (!props.$hideTerrain) {
-      return 'translateY(-500px)';
+      return "translateY(-500px)";
     }
     if (!props.$viewportHeight) {
-      return '';
+      return "";
     }
     return `translateY(${-300 + props.$viewportHeight / 2}px)`;
   }};
   position: ${(props) =>
-    props.$inactive || (props.$hidden && !props.$hideTerrain)
-      ? 'absolute'
-      : 'relative'};
-  overflow: ${(props) => (props.$inactive ? 'hidden' : 'visible')};
-  pointer-events: ${(props) => (props.$inactive ? 'none' : 'auto')};
+    props.$inactive || (props.$hidden && !props.$hideTerrain) ? "absolute" : "relative"};
+  overflow: ${(props) => (props.$inactive ? "hidden" : "visible")};
+  pointer-events: ${(props) => (props.$inactive ? "none" : "auto")};
   z-index: 2;
   visibility: ${(props) =>
-    props.$inactive || (props.$hidden && !props.$hideTerrain)
-      ? 'hidden'
-      : 'visible'};
+    props.$inactive || (props.$hidden && !props.$hideTerrain) ? "hidden" : "visible"};
 `;
 
 export const CanvasRouter = () => {
@@ -90,20 +86,13 @@ export const CanvasRouter = () => {
   const containerDimensions = useSize(containerRef);
   const dimensions = useSize(body);
   const selectedDefinition = useAppSelector(getSelectedDefinition);
-  const showLoader =
-    path === '/' && (!selectedDefinition || loadProgress !== 1);
-  const hideConfigureScene =
-    '/' === path && (!selectedDefinition || loadProgress !== 1);
+  const showLoader = path === "/" && (!selectedDefinition || loadProgress !== 1);
+  const hideConfigureScene = "/" === path && (!selectedDefinition || loadProgress !== 1);
   const terrainOnClick = useCallback(() => {
-    if (true) {
-      dispatch(updateSelectedKey(null));
-    }
+    dispatch(updateSelectedKey(null));
   }, [dispatch]);
-  const hideCanvasScene =
-    !isKeyboardScenePath || hideConfigureScene;
-  const configureKeyboardIsSelectable = useAppSelector(
-    getConfigureKeyboardIsSelectable,
-  );
+  const hideCanvasScene = !isKeyboardScenePath || hideConfigureScene;
+  const configureKeyboardIsSelectable = useAppSelector(getConfigureKeyboardIsSelectable);
   const hideTerrainBG = showLoader;
 
   return (
@@ -114,8 +103,7 @@ export const CanvasRouter = () => {
         $inactive={!isKeyboardScenePath}
         $viewportHeight={dimensions?.height}
         onClick={(evt) => {
-          if ((evt.target as any).nodeName !== 'CANVAS')
-            dispatch(clearSelectedKey());
+          if ((evt.target as any).nodeName !== "CANVAS") dispatch(clearSelectedKey());
         }}
         ref={containerRef}
       >
@@ -140,10 +128,10 @@ const getRouteX = (route: string) => {
   const testPosition = -spaceMultiplier * 1;
   const otherPosition = -spaceMultiplier * 2;
   switch (route) {
-    case '/test': {
+    case "/test": {
       return testPosition;
     }
-    case '/': {
+    case "/": {
       return configurePosition;
     }
     default: {
@@ -164,13 +152,12 @@ const KeyboardGroupContainer = styled.div`
   left: 0;
 `;
 const KeyboardGroup = React.memo((props: any) => {
-  const {loadProgress, configureKeyboardIsSelectable, containerDimensions} =
-    props;
+  const { loadProgress, configureKeyboardIsSelectable, containerDimensions } = props;
   const [path] = useLocation();
   const ref = useRef<HTMLDivElement>(null);
   const routeX = getRouteX(path);
   const animation = {
-    transition: 'transform 0.25s ease-in-out',
+    transition: "transform 0.25s ease-in-out",
     transform: `translate(${routeX}vw, 0px)`,
   };
 
@@ -182,18 +169,18 @@ const KeyboardGroup = React.memo((props: any) => {
 
   const removeTransition = useCallback(() => {
     if (ref.current) {
-      ref.current.style.transition = '';
+      ref.current.style.transition = "";
     }
   }, [ref.current]);
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.addEventListener('transitionend', removeTransition);
+      ref.current.addEventListener("transitionend", removeTransition);
       ref.current.style.transform = animation.transform;
     }
     return () => {
       if (ref.current) {
-        ref.current?.removeEventListener('transitionend', removeTransition);
+        ref.current?.removeEventListener("transitionend", removeTransition);
       }
     };
   }, []);
@@ -215,18 +202,18 @@ const KeyboardGroup = React.memo((props: any) => {
   );
 }, shallowEqual);
 const Keyboards = React.memo((props: any) => {
-  const {dimensions, configureKeyboardIsSelectable} = props;
+  const { dimensions, configureKeyboardIsSelectable } = props;
   return (
     <>
-      <KeyboardRouteGroup $position={0}>
+      <KeyboardRouteGroup data-testid="keyboard-route-configure" $position={0}>
         <ConfigureKeyboard
           dimensions={dimensions}
           selectable={configureKeyboardIsSelectable}
-          nDimension={'2D'}
+          nDimension={"2D"}
         />
       </KeyboardRouteGroup>
-      <KeyboardRouteGroup $position={1}>
-        <Test dimensions={dimensions} nDimension={'2D'} />
+      <KeyboardRouteGroup data-testid="keyboard-route-test" $position={1}>
+        <Test dimensions={dimensions} nDimension={"2D"} />
       </KeyboardRouteGroup>
     </>
   );

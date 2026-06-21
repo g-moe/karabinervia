@@ -1,11 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import {AccentButton} from './accent-button';
+import React from "react";
+import styled from "styled-components";
+import { AccentButton } from "./accent-button";
 type Props = {
   onLoad: (files: File[]) => void;
   multiple?: boolean;
   inputRef?: React.MutableRefObject<HTMLInputElement | undefined>;
   children: string;
+  buttonTestId?: string;
+  inputTestId?: string;
 };
 
 export function AccentUploadButton(props: Props) {
@@ -15,9 +17,13 @@ export function AccentUploadButton(props: Props) {
     (input.current as any).value = null;
   }
   return (
-    <AccentButton onClick={() => input.current && input.current.click()}>
+    <AccentButton
+      data-testid={props.buttonTestId}
+      onClick={() => input.current && input.current.click()}
+    >
       {props.children}
       <HiddenFileInput
+        data-testid={props.inputTestId}
         ref={input as any}
         type="file"
         multiple={props.multiple}

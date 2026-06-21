@@ -1,10 +1,7 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import type {
-  ConnectedDevice,
-  ConnectedDevices,
-} from '../types/types';
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { ConnectedDevice, ConnectedDevices } from "../types/types";
 
-import type {RootState} from './index';
+import type { RootState } from "./index";
 
 type DevicesState = {
   selectedDevicePath: string | null;
@@ -17,7 +14,7 @@ const initialState: DevicesState = {
 };
 
 const deviceSlice = createSlice({
-  name: 'devices',
+  name: "devices",
   initialState,
   reducers: {
     // TODO: change to just pass the device path instead of the whole device
@@ -28,10 +25,7 @@ const deviceSlice = createSlice({
         state.selectedDevicePath = action.payload.path;
       }
     },
-    updateConnectedDevices: (
-      state,
-      action: PayloadAction<ConnectedDevices>,
-    ) => {
+    updateConnectedDevices: (state, action: PayloadAction<ConnectedDevices>) => {
       state.connectedDevicePaths = action.payload;
     },
     clearAllDevices: (state) => {
@@ -41,18 +35,12 @@ const deviceSlice = createSlice({
   },
 });
 
-export const {
-  clearAllDevices,
-  selectDevice,
-  updateConnectedDevices,
-} = deviceSlice.actions;
+export const { clearAllDevices, selectDevice, updateConnectedDevices } = deviceSlice.actions;
 
 export default deviceSlice.reducer;
 
-export const getConnectedDevices = (state: RootState) =>
-  state.devices.connectedDevicePaths;
-export const getSelectedDevicePath = (state: RootState) =>
-  state.devices.selectedDevicePath;
+export const getConnectedDevices = (state: RootState) => state.devices.connectedDevicePaths;
+export const getSelectedDevicePath = (state: RootState) => state.devices.selectedDevicePath;
 export const getSelectedConnectedDevice = createSelector(
   getConnectedDevices,
   getSelectedDevicePath,

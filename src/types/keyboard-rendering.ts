@@ -1,5 +1,5 @@
-import type {VIADefinitionV2, VIADefinitionV3, VIAKey} from '@the-via/reader';
-import {TestKeyState} from 'src/types/types';
+import type { VIADefinitionV2, VIADefinitionV3, VIAKey } from "@the-via/reader";
+import { TestKeyState } from "src/types/types";
 
 export enum DisplayMode {
   Test = 1,
@@ -18,18 +18,29 @@ export type KeyColorPair = {
   t: string;
 };
 
-export type NDimension = '2D';
+export type NDimension = "2D";
+
+type RenderableVIAKey = VIAKey & {
+  displayOnly?: boolean;
+  ei?: number;
+};
+
+export type KeyRenderMetadata = {
+  code?: string;
+  displayOnly?: boolean;
+};
 
 export type KeyboardCanvasContentProps<T> = {
   selectable: boolean;
   matrixKeycodes: number[];
-  keys: (VIAKey & {ei?: number})[];
+  keys: RenderableVIAKey[];
   definition: VIADefinitionV2 | VIADefinitionV3;
   pressedKeys?: TestKeyState[];
   mode: DisplayMode;
   showMatrix?: boolean;
   selectedKey?: number;
   keyColors?: number[][];
+  keyMetadata?: KeyRenderMetadata[];
   onKeycapPointerDown?: (e: T, idx: number) => void;
   onKeycapPointerOver?: (e: T, idx: number) => void;
   onKeycapClick?: (e: T, idx: number) => void;
@@ -37,22 +48,20 @@ export type KeyboardCanvasContentProps<T> = {
   height: number;
 };
 
-export type KeyboardCanvasProps<T> = Omit<
-  KeyboardCanvasContentProps<T>,
-  'width' | 'height'
-> & {
+export type KeyboardCanvasProps<T> = Omit<KeyboardCanvasContentProps<T>, "width" | "height"> & {
   shouldHide?: boolean;
   containerDimensions: DOMRect;
 };
 
 export type KeyGroupProps<T> = {
   selectable?: boolean;
-  keys: (VIAKey & {displayOnly?: boolean})[];
+  keys: RenderableVIAKey[];
   matrixKeycodes: number[];
   definition: VIADefinitionV2 | VIADefinitionV3;
   mode: DisplayMode;
   pressedKeys?: TestKeyState[];
   keyColors?: number[][];
+  keyMetadata?: KeyRenderMetadata[];
   selectedKey?: number;
   onKeycapPointerDown?: (e: T, idx: number) => void;
   onKeycapPointerOver?: (e: T, idx: number) => void;
@@ -87,8 +96,10 @@ export type KeycapSharedProps<T> = {
   textureHeight: number;
   mode: DisplayMode;
   key: string;
+  keyCode?: string;
+  testId?: string;
   skipFontCheck: boolean;
-} & Omit<KeyCoords<T>, 'meshKey'>;
+} & Omit<KeyCoords<T>, "meshKey">;
 
 export type TwoStringKeycapProps = {
   clipPath: null | string;

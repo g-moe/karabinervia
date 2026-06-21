@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const SvgIcTune24Px: React.FC<{}> = (props) => (
   <svg width={17.187} height={17.187} {...props}>
@@ -9,5 +9,5 @@ const SvgIcTune24Px: React.FC<{}> = (props) => (
   </svg>
 );
 
-export const title = 'Settings';
+export const title = "Settings";
 export const component = SvgIcTune24Px;

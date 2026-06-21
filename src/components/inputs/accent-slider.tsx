@@ -1,5 +1,5 @@
-import React, {useRef} from 'react';
-import styled from 'styled-components';
+import React, { useRef } from "react";
+import styled from "styled-components";
 
 export const HiddenInput = styled.input`
   opacity: 0;
@@ -13,7 +13,7 @@ const Switch = styled.label`
   width: 60px;
   height: 34px;
 `;
-const Slider = styled.span<{$ischecked?: boolean}>`
+const Slider = styled.span<{ $ischecked?: boolean }>`
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -21,15 +21,13 @@ const Slider = styled.span<{$ischecked?: boolean}>`
   right: 0;
   bottom: 0;
   background-color: ${(props) =>
-    props.$ischecked
-      ? 'var(--color_control-selected-bg)'
-      : 'var(--color_control-background)'};
+    props.$ischecked ? "var(--color_control-selected-bg)" : "var(--color_control-background)"};
   -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 4px;
   &:before {
     position: absolute;
-    content: '';
+    content: "";
     height: 26px;
     width: 26px;
     left: 4px;
@@ -37,11 +35,11 @@ const Slider = styled.span<{$ischecked?: boolean}>`
     border-radius: 4px;
     background-color: ${(props) =>
       !props.$ischecked
-        ? 'var(--color_control-background-hover)'
-        : 'var(--color_control-selected-text)'};
+        ? "var(--color_control-background-hover)"
+        : "var(--color_control-selected-text)"};
     -webkit-transition: 0.4s;
     transition: 0.4s;
-    ${(props) => (props.$ischecked ? 'transform: translateX(26px)' : '')};
+    ${(props) => (props.$ischecked ? "transform: translateX(26px)" : "")};
   }
 `;
 
@@ -51,7 +49,7 @@ type Props = {
 };
 
 export function AccentSlider(props: Props) {
-  const {isChecked, onChange} = props;
+  const { isChecked, onChange } = props;
 
   const [isHiddenChecked, setIsHiddenChecked] = React.useState(isChecked);
   const ref = useRef<HTMLInputElement>(null);
@@ -72,12 +70,7 @@ export function AccentSlider(props: Props) {
 
   return (
     <Switch>
-      <HiddenInput
-        ref={ref}
-        type="checkbox"
-        checked={isHiddenChecked}
-        onChange={hiddenOnChange}
-      />
+      <HiddenInput ref={ref} type="checkbox" checked={isHiddenChecked} onChange={hiddenOnChange} />
       <Slider $ischecked={isHiddenChecked} />
     </Switch>
   );

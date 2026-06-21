@@ -1,31 +1,27 @@
-import {FC, useState} from 'react';
-import {faBars} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import styled from 'styled-components';
-import {useDispatch} from 'react-redux';
-import {useTranslation} from 'react-i18next';
-import {AccentSlider} from '../inputs/accent-slider';
-import {
-  dropdownMenuVisibility,
-  menuListSurface,
-  scrimSurface,
-} from '../inputs/control-styles';
-import {CategoryIconContainer} from '../panes/grid';
-import {Detail, Label} from '../panes/grid';
-import {useAppSelector} from 'src/store/hooks';
+import { FC, useState } from "react";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { AccentSlider } from "../inputs/accent-slider";
+import { dropdownMenuVisibility, menuListSurface, scrimSurface } from "../inputs/control-styles";
+import { CategoryIconContainer } from "../panes/grid";
+import { Detail, Label } from "../panes/grid";
+import { useAppSelector } from "src/store/hooks";
 import {
   getDisableFastRemap,
   getThemeMode,
   toggleFastRemap,
   toggleThemeMode,
-} from 'src/store/settingsSlice';
+} from "src/store/settingsSlice";
 
 const Container = styled.div`
   position: relative;
   font-size: 18px;
 `;
 
-const MenuPanel = styled.div<{$show: boolean}>`
+const MenuPanel = styled.div<{ $show: boolean }>`
   ${menuListSurface}
   ${dropdownMenuVisibility}
   width: 360px;
@@ -48,7 +44,7 @@ const ClickCover = styled.div`
 `;
 
 export const SettingsMenu: FC = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const disableFastRemap = useAppSelector(getDisableFastRemap);
@@ -62,7 +58,7 @@ export const SettingsMenu: FC = () => {
       {showMenu && <ClickCover onClick={() => setShowMenu(false)} />}
       <MenuPanel $show={showMenu}>
         <MenuRow>
-          <Label>{t('Fast Key Mapping')}</Label>
+          <Label>{t("Fast Key Mapping")}</Label>
           <Detail>
             <AccentSlider
               onChange={() => dispatch(toggleFastRemap())}
@@ -71,11 +67,11 @@ export const SettingsMenu: FC = () => {
           </Detail>
         </MenuRow>
         <MenuRow>
-          <Label>{t('Light Mode')}</Label>
+          <Label>{t("Light Mode")}</Label>
           <Detail>
             <AccentSlider
               onChange={() => dispatch(toggleThemeMode())}
-              isChecked={themeMode === 'light'}
+              isChecked={themeMode === "light"}
             />
           </Detail>
         </MenuRow>

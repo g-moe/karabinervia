@@ -34,14 +34,8 @@ export function setGlobalAmpGain(ampGain: number) {
   }
   // This fixes a crackle sound when changing volume slider quickly
   // while playing a note.
-  globalAmp.gain.setValueAtTime(
-    globalAmp.gain.value,
-    getAudioContext().currentTime,
-  );
-  globalAmp.gain.linearRampToValueAtTime(
-    globalAmpGain,
-    getAudioContext().currentTime + 0.2,
-  );
+  globalAmp.gain.setValueAtTime(globalAmp.gain.value, getAudioContext().currentTime);
+  globalAmp.gain.linearRampToValueAtTime(globalAmpGain, getAudioContext().currentTime + 0.2);
 }
 
 function midiNoteToFrequency(midiNote: number): number {
@@ -74,10 +68,7 @@ export class Note {
     this.osc.start(startTime);
     this.ampSustainTime = startTime + ampAttack + ampDecay;
     this.amp.gain.linearRampToValueAtTime(ampGain, startTime + ampAttack);
-    this.amp.gain.linearRampToValueAtTime(
-      ampGain * ampSustain,
-      this.ampSustainTime,
-    );
+    this.amp.gain.linearRampToValueAtTime(ampGain * ampSustain, this.ampSustainTime);
   }
 
   noteOff(): void {
@@ -85,13 +76,9 @@ export class Note {
     // in the middle of sustain, i.e. after the previous
     // gain ramp ends.
     if (this.audioContext.currentTime >= this.ampSustainTime) {
-      this.amp.gain.setValueAtTime(
-        ampGain * ampSustain,
-        this.audioContext.currentTime,
-      );
+      this.amp.gain.setValueAtTime(ampGain * ampSustain, this.audioContext.currentTime);
     }
-    const stopTime =
-      Math.max(this.audioContext.currentTime, this.ampSustainTime) + ampRelease;
+    const stopTime = Math.max(this.audioContext.currentTime, this.ampSustainTime) + ampRelease;
     this.osc.stop(stopTime);
     this.amp.gain.linearRampToValueAtTime(0, stopTime);
   }

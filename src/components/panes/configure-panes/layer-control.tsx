@@ -1,14 +1,10 @@
-import {useMemo} from 'react';
-import {useDispatch} from 'react-redux';
-import {useAppSelector} from 'src/store/hooks';
-import {
-  getNumberOfLayers,
-  getSelectedLayerIndex,
-  setLayer,
-} from 'src/store/keymapSlice';
-import styled from 'styled-components';
-import {useTranslation} from 'react-i18next';
-import {pillButtonSurface} from 'src/components/inputs/control-styles';
+import { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "src/store/hooks";
+import { getNumberOfLayers, getSelectedLayerIndex, setLayer } from "src/store/keymapSlice";
+import styled from "styled-components";
+import { useTranslation } from "react-i18next";
+import { pillButtonSurface } from "src/components/inputs/control-styles";
 
 const Container = styled.div`
   position: absolute;
@@ -22,7 +18,7 @@ const Label = styled.label`
   color: var(--color_text-primary);
   margin-right: 6px;
 `;
-const LayerButton = styled.button<{$selected?: boolean}>`
+const LayerButton = styled.button<{ $selected?: boolean }>`
   ${pillButtonSurface}
   font-variant-numeric: tabular-nums;
   font-size: 20px;
@@ -31,31 +27,29 @@ const LayerButton = styled.button<{$selected?: boolean}>`
 `;
 
 export const LayerControl = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const numberOfLayers = useAppSelector(getNumberOfLayers);
   const selectedLayerIndex = useAppSelector(getSelectedLayerIndex);
 
   const Layers = useMemo(
     () =>
-      new Array(numberOfLayers)
-        .fill(0)
-        .map((_, idx) => idx)
-        .map((layerLabel) => (
-          <LayerButton
-            key={layerLabel}
-            $selected={layerLabel === selectedLayerIndex}
-            onClick={() => dispatch(setLayer(layerLabel))}
-          >
-            {layerLabel}
-          </LayerButton>
-        )),
+      Array.from({ length: numberOfLayers }, (_, layerLabel) => (
+        <LayerButton
+          key={layerLabel}
+          aria-label={`Layer ${layerLabel}`}
+          $selected={layerLabel === selectedLayerIndex}
+          onClick={() => dispatch(setLayer(layerLabel))}
+        >
+          {layerLabel}
+        </LayerButton>
+      )),
     [numberOfLayers, selectedLayerIndex],
   );
 
   return (
     <Container>
-      <Label>{t('Layer')}</Label>
+      <Label>{t("Layer")}</Label>
       {Layers}
     </Container>
   );

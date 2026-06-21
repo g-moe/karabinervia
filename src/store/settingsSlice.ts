@@ -1,9 +1,9 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import type {Settings, TestKeyboardSoundsSettings} from '../types/types';
-import type {PropertiesOfType} from '../types/generic-types';
-import {getSettings, setSettings} from '../utils/device-store';
-import type {RootState} from '.';
-import {APPLE_KEYCAP_THEME_BY_MODE} from 'src/utils/themes';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { Settings, TestKeyboardSoundsSettings } from "../types/types";
+import type { PropertiesOfType } from "../types/generic-types";
+import { getSettings, setSettings } from "../utils/device-store";
+import type { RootState } from ".";
+import { APPLE_KEYCAP_THEME_BY_MODE } from "src/utils/themes";
 
 // TODO: why are these settings mixed? Is it because we only want some of them cached? SHould we rename to "CachedSettings"?
 type SettingsState = Settings & {
@@ -17,23 +17,20 @@ const initialState: SettingsState = {
   allowGlobalHotKeys: false,
 };
 
-const toggleBool = (
-  state: SettingsState,
-  key: keyof PropertiesOfType<SettingsState, boolean>,
-) => {
+const toggleBool = (state: SettingsState, key: keyof PropertiesOfType<SettingsState, boolean>) => {
   state[key] = !state[key];
   setSettings(state);
 };
 
 const settingsSlice = createSlice({
-  name: 'settings',
+  name: "settings",
   initialState,
   reducers: {
     toggleFastRemap: (state) => {
-      toggleBool(state, 'disableFastRemap');
+      toggleBool(state, "disableFastRemap");
     },
     toggleThemeMode: (state) => {
-      const newThemeMode = state.themeMode === 'light' ? 'dark' : 'light';
+      const newThemeMode = state.themeMode === "light" ? "dark" : "light";
       document.documentElement.dataset.themeMode = newThemeMode;
       state.themeMode = newThemeMode;
       setSettings(state);
@@ -68,12 +65,9 @@ export const {
 
 export default settingsSlice.reducer;
 
-export const getAllowGlobalHotKeys = (state: RootState) =>
-  state.settings.allowGlobalHotKeys;
-export const getDisableFastRemap = (state: RootState) =>
-  state.settings.disableFastRemap;
-export const getRestartRequired = (state: RootState) =>
-  state.settings.restartRequired;
+export const getAllowGlobalHotKeys = (state: RootState) => state.settings.allowGlobalHotKeys;
+export const getDisableFastRemap = (state: RootState) => state.settings.disableFastRemap;
+export const getRestartRequired = (state: RootState) => state.settings.restartRequired;
 export const getTestKeyboardSoundsSettings = (state: RootState) =>
   state.settings.testKeyboardSoundsSettings;
 export const getThemeMode = (state: RootState) => state.settings.themeMode;

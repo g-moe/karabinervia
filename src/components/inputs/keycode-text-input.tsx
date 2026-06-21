@@ -1,10 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import {
-  advancedStringToKeycode,
-  anyKeycodeToString,
-} from '../../utils/advanced-keys';
-import {inputSurface} from './control-styles';
+import React from "react";
+import styled from "styled-components";
+import { advancedStringToKeycode, anyKeycodeToString } from "../../utils/advanced-keys";
+import { inputSurface } from "./control-styles";
 
 const NormalInput = styled.input`
   ${inputSurface}
@@ -38,12 +35,8 @@ type State = {
 export class KeycodeTextInput extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const {defaultValue, basicKeyToByte, byteToKey} = props;
-    let currentValue = anyKeycodeToString(
-      defaultValue,
-      basicKeyToByte,
-      byteToKey,
-    );
+    const { defaultValue, basicKeyToByte, byteToKey } = props;
+    let currentValue = anyKeycodeToString(defaultValue, basicKeyToByte, byteToKey);
     this.state = {
       lastDefault: defaultValue,
       defaultValueAsString: currentValue,
@@ -58,17 +51,10 @@ export class KeycodeTextInput extends React.Component<Props, State> {
   // But if we get a new prop, it means our change has made it up to where it matters
   // And we should use it to represent what's actually coming from the kb
   static getDerivedStateFromProps(props: Props, state: State) {
-    if (
-      state.lastDefault !== props.defaultValue &&
-      state.currentParsed !== props.defaultValue
-    ) {
+    if (state.lastDefault !== props.defaultValue && state.currentParsed !== props.defaultValue) {
       return {
         ...state,
-        currentValue: anyKeycodeToString(
-          props.defaultValue,
-          props.basicKeyToByte,
-          props.byteToKey,
-        ),
+        currentValue: anyKeycodeToString(props.defaultValue, props.basicKeyToByte, props.byteToKey),
         currentParsed: props.defaultValue,
         lastDefault: props.defaultValue,
       };
@@ -78,44 +64,40 @@ export class KeycodeTextInput extends React.Component<Props, State> {
 
   handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = e.target.value;
-    this.setState({currentValue: value});
+    this.setState({ currentValue: value });
   };
 
   handleBlur: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    const {onBlur, basicKeyToByte} = this.props;
-    const {lastDefault} = this.state;
+    const { onBlur, basicKeyToByte } = this.props;
+    const { lastDefault } = this.state;
     const value = e.target.value.trim().toUpperCase();
     const advancedParsed = advancedStringToKeycode(value, basicKeyToByte);
     if (Object.keys(basicKeyToByte).includes(value)) {
       if (lastDefault !== basicKeyToByte[value]) {
         onBlur(basicKeyToByte[value]);
       }
-      this.setState({isError: false});
+      this.setState({ isError: false });
     } else if (advancedParsed !== 0) {
       if (lastDefault !== advancedParsed) {
         onBlur(advancedParsed);
       }
-      this.setState({isError: false});
-    } else if (
-      new RegExp(/^0x[0-9A-Fa-f]{1,4}$/g).test(e.target.value.trim())
-    ) {
+      this.setState({ isError: false });
+    } else if (new RegExp(/^0x[0-9A-Fa-f]{1,4}$/g).test(e.target.value.trim())) {
       onBlur(parseInt(e.target.value.trim(), 16));
-      this.setState({isError: false});
+      this.setState({ isError: false });
     } else {
-      this.setState({isError: true});
+      this.setState({ isError: true });
     }
   };
 
   render() {
-    const {currentValue, isError} = this.state;
+    const { currentValue, isError } = this.state;
     const InputComponent = isError ? ErrorInput : NormalInput;
     return (
       <InputComponent
         type="text"
         placeholder={
-          this.props.defaultValue
-            ? this.state.defaultValueAsString
-            : 'KC_NO, 0xFF, etc.'
+          this.props.defaultValue ? this.state.defaultValueAsString : "KC_NO, 0xFF, etc."
         }
         value={currentValue}
         onChange={this.handleChange}

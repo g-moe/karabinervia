@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import imgSrc from 'assets/images/chippy_600.png';
-import {Theme} from 'src/utils/themes';
+import styled from "styled-components";
+import imgSrc from "assets/images/chippy_600.png";
+import { Theme } from "src/utils/themes";
 
 const defaultChippy = {
   width: 300,
@@ -42,17 +42,13 @@ const CircleContainer = styled.div<{
     height: ${(props) => props.$containerHeight}px;
     width: ${(props) => props.$containerWidth}px;
     position: absolute;
-    content: '';
+    content: "";
     background-color: ${(p) => p.$progressColor};
     top: ${(props) => props.$containerHeight + 1}px;
     left: 0;
     right: 0;
     transition: transform 0.4s ease-out;
-    transform: translate3d(
-      0,
-      ${(props) => -(props.$progress || 0) * props.$containerHeight}px,
-      0
-    );
+    transform: translate3d(0, ${(props) => -(props.$progress || 0) * props.$containerHeight}px, 0);
   }
 `;
 
@@ -63,20 +59,20 @@ type Props = {
   theme: Theme;
 };
 
-const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
-  const {theme} = props;
+const SvgComponent: React.FC<any & { theme: Theme }> = (props) => {
+  const { theme } = props;
 
   const colorMap = {
-    'upper-body': theme.mod.t,
-    'lower-body': theme.mod.c,
-    accent: 'var(--color_accent)',
-    bowtie: 'var(--color_accent)',
-    pins: 'var(--color_accent)',
-    feet: 'var(--color_text-primary)',
-    eyeHighlight: 'var(--color_window-background)',
-    shade: 'var(--color_texture-shadow)',
-    line: 'var(--color_text-primary)',
-    shine: 'var(--color_texture-highlight)',
+    "upper-body": theme.mod.t,
+    "lower-body": theme.mod.c,
+    accent: "var(--color_accent)",
+    bowtie: "var(--color_accent)",
+    pins: "var(--color_accent)",
+    feet: "var(--color_text-primary)",
+    eyeHighlight: "var(--color_window-background)",
+    shade: "var(--color_texture-shadow)",
+    line: "var(--color_text-primary)",
+    shine: "var(--color_texture-highlight)",
   };
   return (
     <svg
@@ -86,7 +82,7 @@ const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
       y={0}
       viewBox="0 0 600 600"
       style={{
-        enableBackground: 'new 0 0 600 600',
+        enableBackground: "new 0 0 600 600",
       }}
       xmlSpace="preserve"
       {...props}
@@ -102,24 +98,24 @@ const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
           <path
             d="M26.7 66.8h546.2c9.8 0 17.7 7.9 17.7 17.7v273.3H9V84.6c0-9.8 7.9-17.8 17.7-17.8z"
             style={{
-              fill: colorMap['upper-body'],
+              fill: colorMap["upper-body"],
             }}
           />
           <path
             d="M9 357.4h581.6v113.7c0 8.4-6.9 15.3-15.3 15.3h-551c-8.4 0-15.3-6.9-15.3-15.3V357.4z"
             style={{
-              fill: colorMap['lower-body'],
+              fill: colorMap["lower-body"],
             }}
           />
         </g>
         <path
           d="M229.4 262.8s33.5 19.4 66.3 19.4c33.5 0 66.3-19.4 66.3-19.4"
           style={{
-            fill: 'none',
+            fill: "none",
             stroke: colorMap.line,
             strokeWidth: 6.8265,
-            strokeLinecap: 'round',
-            strokeLinejoin: 'round',
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
             strokeMiterlimit: 2.0408,
           }}
           id="Smile"
@@ -177,8 +173,8 @@ const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
         <path
           d="M112.4 486.3H24c-13 0-14.8-14.5-14.8-14.5S9 332.7 9 353.4c0 20.8 79.5 132.9 103.4 132.9z"
           style={{
-            fillRule: 'evenodd',
-            clipRule: 'evenodd',
+            fillRule: "evenodd",
+            clipRule: "evenodd",
             fill: colorMap.shade,
           }}
         />
@@ -226,10 +222,7 @@ const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
           className="st9"
           d="M592.9 278.5c-2.5-2.6-5.8-2.5-5.8-2.5v63.2s3.9.4 7.1-4c.7-.7 3.4-5.1 3.4-11.3v-32.4c0-7-2.7-11-4.7-13z"
         />
-        <path
-          className="st10"
-          d="M220.2 323.1v34.2l73.4-.6zM293.7 356.6l73.5-33.6v34.3"
-        />
+        <path className="st10" d="M220.2 323.1v34.2l73.4-.6zM293.7 356.6l73.5-33.6v34.3" />
       </g>
     </svg>
   );

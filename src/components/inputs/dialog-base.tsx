@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {modalSurface} from './control-styles';
+import styled from "styled-components";
+import { modalSurface } from "./control-styles";
 
 export const ModalBackground = styled.div`
   position: fixed;

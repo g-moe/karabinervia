@@ -43,3 +43,8 @@
   - [x] audit and remove remaining VIA USB/HID connection paths, keyboard API byte transport, and QMK key-byte conversion once the Karabiner workspace model fully owns key editing
 - [x] remove package.json commands that are not relevant to this fork
 - [x] replace readme with information that this is a WIP fork of via frontend so that we can map apple keyboards to karabiner...it will support editing all mac os keys except the function row, touch id, and the globe key.
+
+---
+
+- [x] upgrade Node engine/runtime target to Node 24 LTS
+- [x] implement unit tests and full Playwright end-to-end test coverage

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {buttonSurface} from './control-styles';
+import styled from "styled-components";
+import { buttonSurface } from "./control-styles";
 
 export const Button = styled.div`
   ${buttonSurface}

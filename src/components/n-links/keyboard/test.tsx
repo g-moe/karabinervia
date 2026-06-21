@@ -1,55 +1,46 @@
-import type {VIADefinitionV2, VIADefinitionV3} from '@the-via/reader';
-import type {VIAKey} from '@the-via/reader';
-import {useCallback, useContext, useEffect, useMemo} from 'react';
-import {TestKeyboardSounds} from 'src/components/void/test-keyboard-sounds';
-import {
-  getSelectedDefinition,
-  getSelectedKeyDefinitions,
-} from 'src/store/definitionsSlice';
-import {useAppDispatch, useAppSelector} from 'src/store/hooks';
-import {getSelectedKeymap, setLayer} from 'src/store/keymapSlice';
-import {
-  getTestKeyboardSoundsSettings,
-} from 'src/store/settingsSlice';
-import {DisplayMode, NDimension} from 'src/types/keyboard-rendering';
-import {TestKeyState} from 'src/types/types';
-import {matrixKeycodes} from 'src/utils/key-event';
-import {getKeyboardRowPartitions} from 'src/utils/keyboard-rendering';
-import {useGlobalKeys} from 'src/utils/use-global-keys';
-import {useLocation} from 'wouter';
-import {TestContext} from '../../panes/test';
-import {getKeyboardCanvas} from './configure';
+import type { VIADefinitionV2, VIADefinitionV3 } from "@the-via/reader";
+import type { VIAKey } from "@the-via/reader";
+import { useCallback, useContext, useEffect, useMemo } from "react";
+import { TestKeyboardSounds } from "src/components/void/test-keyboard-sounds";
+import { getSelectedDefinition, getSelectedKeyDefinitions } from "src/store/definitionsSlice";
+import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { getSelectedKeymap, setLayer } from "src/store/keymapSlice";
+import { getTestKeyboardSoundsSettings } from "src/store/settingsSlice";
+import { DisplayMode, NDimension } from "src/types/keyboard-rendering";
+import { TestKeyState } from "src/types/types";
+import { matrixKeycodes } from "src/utils/key-event";
+import { getKeyboardRowPartitions } from "src/utils/keyboard-rendering";
+import { useGlobalKeys } from "src/utils/use-global-keys";
+import { useLocation } from "wouter";
+import { TestContext } from "../../panes/test";
+import { getKeyboardCanvas } from "./configure";
 import {
   KARABINER_VIA_VENDOR_PRODUCT_ID,
   macbookEditableKeys,
   macbookLayoutKeys,
   macbookKeys,
-} from 'src/karabiner/virtual-device';
-import basicKeyToByte from 'src/utils/key-to-byte/default';
+} from "src/karabiner/virtual-device";
+import basicKeyToByte from "src/utils/key-to-byte/default";
 const EMPTY_ARR = [] as any[];
 const EMPTY_KEYMAP = [] as number[];
 
-export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
+export const Test = (props: { dimensions?: DOMRect; nDimension: NDimension }) => {
   const dispatch = useAppDispatch();
   const [path] = useLocation();
-  const isShowingTest = path === '/test';
+  const isShowingTest = path === "/test";
   const selectedDefinition = useAppSelector(getSelectedDefinition);
   const keyDefinitions = useAppSelector(getSelectedKeyDefinitions);
-  const testKeyboardSoundsSettings = useAppSelector(
-    getTestKeyboardSoundsSettings,
-  );
+  const testKeyboardSoundsSettings = useAppSelector(getTestKeyboardSoundsSettings);
   const selectedMatrixKeycodes = useAppSelector(
     (state) => getSelectedKeymap(state) || EMPTY_KEYMAP,
   );
   const isVirtualMacBook =
     !!selectedDefinition &&
-    typeof selectedDefinition !== 'string' &&
+    typeof selectedDefinition !== "string" &&
     selectedDefinition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID;
   const activeDefinition = isVirtualMacBook ? selectedDefinition : null;
 
-  const [globalPressedKeys, setGlobalPressedKeys] = useGlobalKeys(
-    isShowingTest,
-  );
+  const [globalPressedKeys, setGlobalPressedKeys] = useGlobalKeys(isShowingTest);
 
   const clearTestKeys = useCallback(() => {
     setGlobalPressedKeys(EMPTY_ARR);
@@ -61,17 +52,18 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
 
   const handleKeycapClick = useCallback(
     (_evt: unknown, idx: number) => {
-      const clickedKey = (testKeys as Array<
-        {row: number; col: number; displayOnly?: boolean} | undefined
-      >)[idx];
+      const clickedKey = (
+        testKeys as Array<{ row: number; col: number; displayOnly?: boolean } | undefined>
+      )[idx];
       if (!clickedKey || clickedKey.displayOnly) {
         return;
       }
-      const byte = basicKeyToByte[
-        macbookEditableKeys.find(
-          (key) => key.row === clickedKey.row && key.col === clickedKey.col,
-        )?.code as keyof typeof basicKeyToByte
-      ];
+      const byte =
+        basicKeyToByte[
+          macbookEditableKeys.find(
+            (key) => key.row === clickedKey.row && key.col === clickedKey.col,
+          )?.code as keyof typeof basicKeyToByte
+        ];
       const globalIndex = matrixKeycodes.indexOf(byte);
       if (globalIndex < 0) {
         return;
@@ -95,49 +87,43 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
   //// Hack to share setting a local state to avoid causing cascade of rerender
   useEffect(() => {
     if (testContext[0].clearTestKeys !== clearTestKeys) {
-      testContext[1]({clearTestKeys});
+      testContext[1]({ clearTestKeys });
     }
   }, [testContext, clearTestKeys]);
 
   useEffect(() => {
     // Remove event listeners on cleanup
-    if (path !== '/test') {
+    if (path !== "/test") {
       testContext[0].clearTestKeys();
     }
-    if (path !== '/') {
+    if (path !== "/") {
       dispatch(setLayer(0));
     }
   }, [path]); // Empty array ensures that effect is only run on mount and unmount
 
-  const virtualGlobalPressedKeys =
-    testDefinition ? macbookKeys.reduce((pressedKeys, key) => {
-      const byte = basicKeyToByte[key.code as keyof typeof basicKeyToByte];
-      pressedKeys[key.row * matrixCols + key.col] =
-        globalPressedKeys[matrixKeycodes.indexOf(byte)];
-      return pressedKeys;
-    }, [] as TestKeyState[]) : [];
+  const virtualGlobalPressedKeys = testDefinition
+    ? macbookKeys.reduce((pressedKeys, key) => {
+        const byte = basicKeyToByte[key.code as keyof typeof basicKeyToByte];
+        pressedKeys[key.row * matrixCols + key.col] =
+          globalPressedKeys[matrixKeycodes.indexOf(byte)];
+        return pressedKeys;
+      }, [] as TestKeyState[])
+    : [];
 
   const testPressedKeys = macbookLayoutKeys.map((key) =>
-        key.displayOnly
-          ? undefined
-          :
-            virtualGlobalPressedKeys[
-              key.row * matrixCols + key.col
-            ],
-      ) as TestKeyState[];
+    key.displayOnly ? undefined : virtualGlobalPressedKeys[key.row * matrixCols + key.col],
+  ) as TestKeyState[];
 
-  const {partitionedKeys} = useMemo(
+  const { partitionedKeys } = useMemo(
     () => getKeyboardRowPartitions(testKeys as VIAKey[]),
     [testKeys],
   );
-  const partitionedPressedKeys: TestKeyState[][] = partitionedKeys.map(
-    (rowArray) => {
-      return rowArray.map(
-        ({row, col}: {row: number; col: number}) =>
-          virtualGlobalPressedKeys[row * matrixCols + col],
-      ) as TestKeyState[];
-    },
-  );
+  const partitionedPressedKeys: TestKeyState[][] = partitionedKeys.map((rowArray) => {
+    return rowArray.map(
+      ({ row, col }: { row: number; col: number }) =>
+        virtualGlobalPressedKeys[row * matrixCols + col],
+    ) as TestKeyState[];
+  });
 
   if (!testDefinition) {
     return null;
@@ -148,12 +134,11 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
       <TestKeyboard
         definition={testDefinition as VIADefinitionV2}
         keys={testKeys as VIAKey[]}
+        keyMetadata={macbookLayoutKeys}
         pressedKeys={testPressedKeys}
         selectable={true}
         onKeycapClick={handleKeycapClick}
-        matrixKeycodes={
-          selectedMatrixKeycodes
-        }
+        matrixKeycodes={selectedMatrixKeycodes}
         containerDimensions={props.dimensions}
         nDimension={props.nDimension}
       />
@@ -170,7 +155,8 @@ const TestKeyboard = (props: {
   pressedKeys?: TestKeyState[];
   matrixKeycodes: number[];
   onKeycapClick?: (evt: unknown, idx: number) => void;
-  keys: (VIAKey & {ei?: number})[];
+  keys: (VIAKey & { ei?: number })[];
+  keyMetadata?: typeof macbookLayoutKeys;
   definition: VIADefinitionV2 | VIADefinitionV3;
   nDimension: NDimension;
 }) => {
@@ -180,6 +166,7 @@ const TestKeyboard = (props: {
     matrixKeycodes,
     onKeycapClick,
     keys,
+    keyMetadata,
     pressedKeys,
     definition,
     nDimension,
@@ -193,6 +180,7 @@ const TestKeyboard = (props: {
     <KeyboardCanvas
       matrixKeycodes={matrixKeycodes}
       keys={keys}
+      keyMetadata={keyMetadata}
       selectable={!!selectable}
       onKeycapClick={onKeycapClick as never}
       definition={definition}

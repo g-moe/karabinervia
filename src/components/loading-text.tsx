@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {useTranslation} from 'react-i18next';
+import styled from "styled-components";
+import { useTranslation } from "react-i18next";
 
 const LoadingText = styled.div`
   font-size: 30px;
@@ -7,8 +7,8 @@ const LoadingText = styled.div`
 `;
 
 enum LoadingLabel {
-  Searching = 'Searching for devices...',
-  Loading = 'Loading...',
+  Searching = "Searching for devices...",
+  Loading = "Loading...",
 }
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function (props: Props) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <LoadingText data-tid="loading-message">
       {t(props.isSearching ? LoadingLabel.Searching : LoadingLabel.Loading)}

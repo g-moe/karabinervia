@@ -1,35 +1,37 @@
-import {DisplayMode} from 'src/types/keyboard-rendering';
-import {getDarkenedColor} from 'src/utils/color-math';
-import {CSSVarObject} from 'src/utils/keyboard-rendering';
-import styled from 'styled-components';
-import {Keycap2DTooltip} from '../../inputs/tooltip';
+import { DisplayMode } from "src/types/keyboard-rendering";
+import { getDarkenedColor } from "src/utils/color-math";
+import { CSSVarObject } from "src/utils/keyboard-rendering";
+import styled from "styled-components";
+import { Keycap2DTooltip } from "../../inputs/tooltip";
 import {
   CanvasContainer,
   CanvasContainerBG,
   KeycapContainer,
   TestOverlay,
   TooltipContainer,
-} from './keycap-base';
+} from "./keycap-base";
 
 export const ComboKeycap = (props: any) => {
   const {
     normalizedRects,
     clipPath,
-    overflowsTexture,
-    macroData,
-    label,
+    overflowsTexture: _overflowsTexture,
+    macroData: _macroData,
+    label: _label,
     canvasRef,
     onClick,
     onPointerDown,
     onPointerOver,
     onPointerOut,
     disabled,
+    keyCode,
+    testId,
     ...otherProps
   } = props;
   const [r1, r2] = normalizedRects;
   return (
     <>
-      <KeycapContainer {...otherProps}>
+      <KeycapContainer data-key-code={keyCode} data-testid={testId} {...otherProps}>
         <ComboKeyBoundingContainer
           $selected={props.selected}
           onClick={onClick}
@@ -37,28 +39,24 @@ export const ComboKeycap = (props: any) => {
           onPointerOver={onPointerOver}
           onPointerOut={onPointerOut}
           style={{
-            cursor: !disabled ? 'pointer' : 'initial',
-            position: 'relative',
+            cursor: !disabled ? "pointer" : "initial",
+            position: "relative",
             animation: props.disabled
-              ? 'initial' // This prevents the hover animation from firing when the keycap can't be interacted with
+              ? "initial" // This prevents the hover animation from firing when the keycap can't be interacted with
               : props.selected
-              ? '.75s infinite alternate select-glow'
-              : '',
+                ? ".75s infinite alternate select-glow"
+                : "",
             transform: `translateX(${
               (-Math.abs(r1[0] - r2[0]) * CSSVarObject.keyXPos) / 2
             }px) perspective(100px) translateZ(${props.keycapZ}px)`,
-            width:
-              Math.max(r1[2], r2[2]) * CSSVarObject.keyXPos -
-              CSSVarObject.keyXSpacing,
-            height:
-              Math.max(r1[3], r2[3]) * CSSVarObject.keyYPos -
-              CSSVarObject.keyYSpacing,
+            width: Math.max(r1[2], r2[2]) * CSSVarObject.keyXPos - CSSVarObject.keyXSpacing,
+            height: Math.max(r1[3], r2[3]) * CSSVarObject.keyYPos - CSSVarObject.keyYSpacing,
             clipPath,
           }}
         >
           <ComboKeyRectContainer
             style={{
-              position: 'absolute',
+              position: "absolute",
               borderRadius: 3,
               background: getDarkenedColor(props.color.c, 0.8),
               transform: `translate(${CSSVarObject.keyXPos * r1[0]}px,${
@@ -70,7 +68,7 @@ export const ComboKeycap = (props: any) => {
           />
           <ComboKeyRectContainer
             style={{
-              position: 'absolute',
+              position: "absolute",
               borderRadius: 3,
               transform: `translate(${CSSVarObject.keyXPos * r2[0]}px,${
                 CSSVarObject.keyYPos * r2[1]
@@ -82,28 +80,24 @@ export const ComboKeycap = (props: any) => {
           />
           <ComboKeyBGContainer
             style={{
-              position: 'absolute',
+              position: "absolute",
               borderRadius: 3,
               background: getDarkenedColor(props.color.c, 0.8),
               transform: `translate(${CSSVarObject.keyXPos * r1[0] + 1}px,${
                 1 + CSSVarObject.keyYPos * r1[1]
               }px)`,
-              width:
-                r1[2] * CSSVarObject.keyXPos - CSSVarObject.keyXSpacing - 2,
-              height:
-                r1[3] * CSSVarObject.keyYPos - CSSVarObject.keyYSpacing - 2,
+              width: r1[2] * CSSVarObject.keyXPos - CSSVarObject.keyXSpacing - 2,
+              height: r1[3] * CSSVarObject.keyYPos - CSSVarObject.keyYSpacing - 2,
             }}
           />
           <CanvasContainer
             style={{
               borderRadius: 4,
               background: props.color.c,
-              position: 'absolute',
+              position: "absolute",
               transform: `translate(${
                 CSSVarObject.keyXPos * r1[0] + CSSVarObject.faceXPadding[0]
-              }px,${
-                CSSVarObject.faceYPadding[0] + CSSVarObject.keyYPos * r1[1]
-              }px)`,
+              }px,${CSSVarObject.faceYPadding[0] + CSSVarObject.keyYPos * r1[1]}px)`,
               width:
                 r1[2] * CSSVarObject.keyXPos -
                 CSSVarObject.keyXSpacing -
@@ -120,12 +114,10 @@ export const ComboKeycap = (props: any) => {
             style={{
               borderRadius: 4,
               background: props.color.c,
-              position: 'absolute',
+              position: "absolute",
               transform: `translate(${
                 CSSVarObject.keyXPos * r2[0] + CSSVarObject.faceXPadding[0]
-              }px,${
-                CSSVarObject.faceYPadding[0] + CSSVarObject.keyYPos * r2[1]
-              }px)`,
+              }px,${CSSVarObject.faceYPadding[0] + CSSVarObject.keyYPos * r2[1]}px)`,
               width:
                 r2[2] * CSSVarObject.keyXPos -
                 CSSVarObject.keyXSpacing -
@@ -142,12 +134,10 @@ export const ComboKeycap = (props: any) => {
             style={{
               borderRadius: 4,
               background: props.color.c,
-              position: 'absolute',
+              position: "absolute",
               transform: `translate(${
                 1 + CSSVarObject.keyXPos * r1[0] + CSSVarObject.faceXPadding[0]
-              }px,${
-                1 + CSSVarObject.faceYPadding[0] + CSSVarObject.keyYPos * r1[1]
-              }px)`,
+              }px,${1 + CSSVarObject.faceYPadding[0] + CSSVarObject.keyYPos * r1[1]}px)`,
               width:
                 r1[2] * CSSVarObject.keyXPos -
                 CSSVarObject.keyXSpacing -
@@ -185,11 +175,10 @@ export const ComboKeycap = (props: any) => {
   );
 };
 
-const ComboKeyBoundingContainer = styled.div<{$selected: boolean}>`
+const ComboKeyBoundingContainer = styled.div<{ $selected: boolean }>`
   box-sizing: border-box;
   transition: transform 0.2s ease-out;
-  animation: ${(p) =>
-    p.$selected ? '.75s infinite alternate select-glow' : 'initial'};
+  animation: ${(p) => (p.$selected ? ".75s infinite alternate select-glow" : "initial")};
   &:hover {
     transform: perspective(100px) translateZ(-5px);
     animation: 0.5s 1 forwards select-glow;

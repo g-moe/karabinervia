@@ -1,9 +1,9 @@
-import {PropsWithChildren, ReactNode} from 'react';
-import styled from 'styled-components';
-import {iconNavButtonSurface} from '../inputs/control-styles';
-import {CategoryMenuTooltip} from '../inputs/tooltip';
+import { PropsWithChildren, ReactNode } from "react";
+import styled from "styled-components";
+import { iconNavButtonSurface } from "../inputs/control-styles";
+import { CategoryMenuTooltip } from "../inputs/tooltip";
 
-export const BottomSection: React.FC<PropsWithChildren> = ({children}) => (
+export const BottomSection: React.FC<PropsWithChildren> = ({ children }) => (
   <BottomSectionOuter>
     <BottomSectionInner>{children}</BottomSectionInner>
   </BottomSectionOuter>
@@ -55,7 +55,7 @@ export const BottomSectionContent = styled.div`
   }
 `;
 
-const NavButton = styled.button<{$selected: boolean}>`
+const NavButton = styled.button<{ $selected: boolean }>`
   ${iconNavButtonSurface}
 `;
 
@@ -69,7 +69,13 @@ export const BottomSectionNavItem = ({
   selected: boolean;
   tooltip: ReactNode;
 }>) => (
-  <NavButton type="button" onClick={onClick} $selected={selected}>
+  <NavButton
+    type="button"
+    aria-label={typeof tooltip === "string" ? tooltip : undefined}
+    aria-pressed={selected}
+    onClick={onClick}
+    $selected={selected}
+  >
     {children}
     <CategoryMenuTooltip>{tooltip}</CategoryMenuTooltip>
   </NavButton>

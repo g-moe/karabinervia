@@ -11,8 +11,8 @@ body {
   position: relative;
   color: var(--color_text-primary);
   background-color: var(--color_app-background);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue',
-    Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   overflow: hidden;
   margin: 0;
@@ -57,7 +57,7 @@ a:hover {
 }
 
 :root,
-html[data-theme-mode='dark'] {
+html[data-theme-mode="dark"] {
   color-scheme: dark;
   --color_system-blue: #0a84ff;
   --color_system-blue-accessible: #64a8ff;
@@ -94,19 +94,18 @@ html[data-theme-mode='dark'] {
   --color_control-selected-subtle-text: var(--color_system-blue);
   --color_accent: var(--color_system-blue);
   --color_inside-accent: #ffffff;
-  --box-shadow-keycap: inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.65);
-  --box-shadow-keyboard: inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 24px 70px rgba(0, 0, 0, 0.42);
-  --box-shadow-control-raised: 0 1px 0 rgba(255, 255, 255, 0.08),
-    0 1px 2px rgba(0, 0, 0, 0.38);
+  --box-shadow-keycap:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09), inset 0 -1px 0 rgba(0, 0, 0, 0.7),
+    0 1px 2px rgba(0, 0, 0, 0.65);
+  --box-shadow-keyboard: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 70px rgba(0, 0, 0, 0.42);
+  --box-shadow-control-raised: 0 1px 0 rgba(255, 255, 255, 0.08), 0 1px 2px rgba(0, 0, 0, 0.38);
   --box-shadow-tooltip: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.32));
   --color_scrim: rgba(0, 0, 0, 0.58);
   --color_texture-highlight: rgba(255, 255, 255, 0.42);
   --color_texture-shadow: rgba(0, 0, 0, 0.28);
   --filter_control-hover: brightness(1.12);
 }
-html[data-theme-mode='light'] {
+html[data-theme-mode="light"] {
   color-scheme: light;
   --color_system-blue: #007aff;
   --color_system-blue-accessible: #006edb;
@@ -143,12 +142,11 @@ html[data-theme-mode='light'] {
   --color_control-selected-subtle-text: var(--color_system-blue);
   --color_accent: var(--color_system-blue);
   --color_inside-accent: #ffffff;
-  --box-shadow-keycap: inset 0 1px 0 rgba(255, 255, 255, 0.92),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.16);
-  --box-shadow-keyboard: inset 0 1px 0 rgba(255, 255, 255, 0.65),
-    0 24px 70px rgba(0, 0, 0, 0.16);
-  --box-shadow-control-raised: 0 1px 0 rgba(255, 255, 255, 0.7),
-    0 1px 2px rgba(0, 0, 0, 0.12);
+  --box-shadow-keycap:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92), inset 0 -1px 0 rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.16);
+  --box-shadow-keyboard: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 24px 70px rgba(0, 0, 0, 0.16);
+  --box-shadow-control-raised: 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(0, 0, 0, 0.12);
   --box-shadow-tooltip: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.18));
   --color_scrim: rgba(0, 0, 0, 0.32);
   --color_texture-highlight: rgba(255, 255, 255, 0.8);
@@ -156,8 +154,8 @@ html[data-theme-mode='light'] {
   --filter_control-hover: brightness(0.98);
 }
 
-html[data-theme-mode='dark'],
-html[data-theme-mode='light'] {
+html[data-theme-mode="dark"],
+html[data-theme-mode="light"] {
   --color_error: var(--color_system-red);
   --color_success: var(--color_system-green);
   --color_warning: var(--color_system-yellow);
@@ -186,19 +184,6 @@ html[data-theme-mode='light'] {
   flex-direction: column;
   height: 100%;
 }
-@font-face {
-  font-family: GothamRoundedBold;
-  src: url(/fonts/GothamRoundedBold_21016.ttf) format('opentype');
-}
-@font-face {
-  font-family: GothamRounded;
-  src: url(/fonts/GothamRoundedBook_21018.ttf) format('opentype');
-}
-@font-face {
-  font-family: Symbola;
-  src: url(/fonts/Symbola.ttf) format('opentype');
-}
-
 @keyframes border-glow {
   0% {
     border: 2px dashed var(--color_accent);
@@ -212,10 +197,10 @@ html[data-theme-mode='light'] {
 }
 @keyframes roll {
   0% {
-    transform:  translate3d(-50px, 0px, 0) rotate(-30deg);
+    transform: translate3d(-50px, 0px, 0) rotate(-30deg);
   }
   100% {
-    transform:   translate3d(50px, 0px, 0) rotate(30deg);
+    transform: translate3d(50px, 0px, 0) rotate(30deg);
   }
 }
 @keyframes text-glow {

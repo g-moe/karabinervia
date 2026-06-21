@@ -1,7 +1,7 @@
-import {PropsWithChildren} from 'react';
-import styled, {css} from 'styled-components';
+import { PropsWithChildren } from "react";
+import styled, { css } from "styled-components";
 
-type Direction = 'top' | 'bottom' | 'left';
+type Direction = "top" | "bottom" | "left";
 
 const tooltipTransition = css`
   transition:
@@ -33,14 +33,14 @@ const TooltipContent = styled.div`
   white-space: nowrap;
 `;
 
-const TooltipPointer = styled.div<{$direction: Direction}>`
+const TooltipPointer = styled.div<{ $direction: Direction }>`
   position: absolute;
   width: 0;
   border-style: solid;
   border-color: transparent;
 
   ${(props) =>
-    props.$direction === 'top' &&
+    props.$direction === "top" &&
     css`
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
@@ -49,7 +49,7 @@ const TooltipPointer = styled.div<{$direction: Direction}>`
     `}
 
   ${(props) =>
-    props.$direction === 'bottom' &&
+    props.$direction === "bottom" &&
     css`
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
@@ -59,7 +59,7 @@ const TooltipPointer = styled.div<{$direction: Direction}>`
     `}
 
   ${(props) =>
-    props.$direction === 'left' &&
+    props.$direction === "left" &&
     css`
       border-top: 6px solid transparent;
       border-bottom: 6px solid transparent;
@@ -82,7 +82,7 @@ const Keycap2DTooltipContent = styled(TooltipContent)`
   transform: translateX(-50%);
 `;
 
-export const Keycap2DTooltip: React.FC<PropsWithChildren> = ({children}) => (
+export const Keycap2DTooltip: React.FC<PropsWithChildren> = ({ children }) => (
   <Keycap2DTooltipContainer className="tooltip">
     <Keycap2DTooltipContent>{children}</Keycap2DTooltipContent>
     <TooltipPointer $direction="top" />
@@ -113,7 +113,7 @@ const KeycapTooltipPointer = styled.div`
   background: var(--color_tooltip-bg);
 `;
 
-export const KeycapTooltip: React.FC<PropsWithChildren> = ({children}) => (
+export const KeycapTooltip: React.FC<PropsWithChildren> = ({ children }) => (
   <KeycapTooltipContainer className="tooltip">
     <KeycapTooltipContent>{children}</KeycapTooltipContent>
     <KeycapTooltipPointer />
@@ -131,9 +131,7 @@ const FloatingTopTooltipContent = styled(TooltipContent)`
   margin-left: 18px;
 `;
 
-export const CategoryMenuTooltip: React.FC<PropsWithChildren> = ({
-  children,
-}) => (
+export const CategoryMenuTooltip: React.FC<PropsWithChildren> = ({ children }) => (
   <FloatingTopTooltipContainer className="tooltip">
     <FloatingTopTooltipContent>{children}</FloatingTopTooltipContent>
     <TooltipPointer $direction="bottom" />
@@ -151,9 +149,7 @@ const ProgressBarTooltipContent = styled(TooltipContent)`
   transform: translateX(-50%);
 `;
 
-export const ProgressBarTooltip: React.FC<PropsWithChildren> = ({
-  children,
-}) => (
+export const ProgressBarTooltip: React.FC<PropsWithChildren> = ({ children }) => (
   <ProgressBarTooltipContainer className="tooltip">
     <ProgressBarTooltipContent>{children}</ProgressBarTooltipContent>
     <TooltipPointer $direction="top" />
@@ -164,7 +160,7 @@ const IconButtonTooltipContainer = styled(FloatingTopTooltipContainer)`
   top: 50px;
 `;
 
-export const IconButtonTooltip: React.FC<PropsWithChildren> = ({children}) => (
+export const IconButtonTooltip: React.FC<PropsWithChildren> = ({ children }) => (
   <IconButtonTooltipContainer className="tooltip">
     <FloatingTopTooltipContent>{children}</FloatingTopTooltipContent>
     <TooltipPointer $direction="bottom" />
@@ -184,7 +180,7 @@ const MenuTooltipContent = styled(TooltipContent)`
   text-transform: none;
 `;
 
-export const MenuTooltip: React.FC<PropsWithChildren> = ({children}) => (
+export const MenuTooltip: React.FC<PropsWithChildren> = ({ children }) => (
   <MenuTooltipContainer className="tooltip">
     <MenuTooltipContent>{children}</MenuTooltipContent>
     <TooltipPointer $direction="left" />

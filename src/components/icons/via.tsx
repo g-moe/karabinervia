@@ -1,14 +1,10 @@
-import {SVGProps} from 'react';
+import { SVGProps } from "react";
 
 export const VIALogo = (props: SVGProps<SVGSVGElement>) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 525.74 268.41"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 525.74 268.41" {...props}>
       <defs>
-        <style>{'.cls-1{fill:currentColor}'}</style>
+        <style>{".cls-1{fill:currentColor}"}</style>
       </defs>
       <g id="Layer_2" data-name="Layer 2">
         <g id="Layer_2-2" data-name="Layer 2">

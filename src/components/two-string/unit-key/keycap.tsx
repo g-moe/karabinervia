@@ -1,43 +1,24 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {shallowEqual} from 'react-redux';
-import {TestKeyState} from 'src/types/types';
-import {getDarkenedColor} from 'src/utils/color-math';
-import {CSSVarObject} from 'src/utils/keyboard-rendering';
-import styled from 'styled-components';
-import {Keycap2DTooltip} from '../../inputs/tooltip';
-import {ComboKeycap} from './combo-keycap';
-import {EncoderKey} from './encoder';
-import {
-  CanvasContainer,
-  KeycapContainer,
-  TestOverlay,
-  TooltipContainer,
-} from './keycap-base';
-import {
-  KeycapState,
-  TwoStringKeycapProps,
-  DisplayMode,
-} from 'src/types/keyboard-rendering';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { shallowEqual } from "react-redux";
+import { TestKeyState } from "src/types/types";
+import { getDarkenedColor } from "src/utils/color-math";
+import { CSSVarObject } from "src/utils/keyboard-rendering";
+import styled from "styled-components";
+import { Keycap2DTooltip } from "../../inputs/tooltip";
+import { ComboKeycap } from "./combo-keycap";
+import { EncoderKey } from "./encoder";
+import { CanvasContainer, KeycapContainer, TestOverlay, TooltipContainer } from "./keycap-base";
+import { KeycapState, TwoStringKeycapProps, DisplayMode } from "src/types/keyboard-rendering";
 
-const getMacroData = ({
-  macroExpression,
-  label,
-}: {
-  macroExpression?: string;
-  label: string;
-}) =>
+const getMacroData = ({ macroExpression, label }: { macroExpression?: string; label: string }) =>
   label && label.length > 15
     ? label
     : macroExpression && macroExpression.length
-    ? macroExpression
-    : null;
+      ? macroExpression
+      : null;
 
-const paintKeycapLabel = (
-  canvas: HTMLCanvasElement,
-  legendColor: string,
-  label: any,
-) => {
-  const context = canvas.getContext('2d');
+const paintKeycapLabel = (canvas: HTMLCanvasElement, legendColor: string, label: any) => {
+  const context = canvas.getContext("2d");
   if (context == null) {
     return;
   }
@@ -49,13 +30,12 @@ const paintKeycapLabel = (
   canvas.style.height = `${canvasHeight}px`;
 
   context.scale(dpi, dpi);
-  const fontFamily =
-    'Fira Sans, Arial Rounded MT, Arial Rounded MT Bold, Arial';
+  const fontFamily = "Fira Sans, Arial Rounded MT, Arial Rounded MT Bold, Arial";
   // Margins from face edge to where text is drawn
-  const topLabelMargin = {x: 4, y: 4};
-  const bottomLabelMargin = {x: 4, y: 4};
-  const centerLabelMargin = {x: 3, y: 0};
-  const singleLabelMargin = {x: 4, y: 4};
+  const topLabelMargin = { x: 4, y: 4 };
+  const bottomLabelMargin = { x: 4, y: 4 };
+  const centerLabelMargin = { x: 3, y: 0 };
+  const singleLabelMargin = { x: 4, y: 4 };
 
   // Define a clipping path for the top face, so text is not drawn on the side.
   context.beginPath();
@@ -89,25 +69,14 @@ const paintKeycapLabel = (
     let fontHeight = 0.75 * fontSize;
     let faceMidLeftY = canvasHeight / 2;
     context.font = `bold ${fontSize}px ${fontFamily}`;
-    context.fillText(
-      label.label,
-      centerLabelMargin.x,
-      faceMidLeftY + 0.5 * fontHeight,
-    );
+    context.fillText(label.label, centerLabelMargin.x, faceMidLeftY + 0.5 * fontHeight);
     // return if label would have overflowed so that we know to show tooltip
-    return (
-      context.measureText(label.centerLabel).width >
-      canvasWidth - centerLabelMargin.x
-    );
-  } else if (typeof label.label === 'string') {
+    return context.measureText(label.centerLabel).width > canvasWidth - centerLabelMargin.x;
+  } else if (typeof label.label === "string") {
     let fontSize = 22;
     let fontHeight = 0.75 * fontSize;
     context.font = `bold ${fontSize}px ${fontFamily}`;
-    context.fillText(
-      label.label,
-      singleLabelMargin.x,
-      singleLabelMargin.y + fontHeight,
-    );
+    context.fillText(label.label, singleLabelMargin.x, singleLabelMargin.y + fontHeight);
   }
 };
 
@@ -118,18 +87,12 @@ const paintKeycap = (
   legendColor: string,
   label: any,
 ) => {
-  const [canvasWidth, canvasHeight] = [
-    CSSVarObject.keyWidth,
-    CSSVarObject.keyHeight,
-  ];
-  canvas.width =
-    canvasWidth * textureWidth -
-    CSSVarObject.faceXPadding.reduce((x, y) => x + y, 0);
+  const [canvasWidth, canvasHeight] = [CSSVarObject.keyWidth, CSSVarObject.keyHeight];
+  canvas.width = canvasWidth * textureWidth - CSSVarObject.faceXPadding.reduce((x, y) => x + y, 0);
   canvas.height =
-    canvasHeight * textureHeight -
-    CSSVarObject.faceYPadding.reduce((x, y) => x + y, 0);
+    canvasHeight * textureHeight - CSSVarObject.faceYPadding.reduce((x, y) => x + y, 0);
 
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext("2d");
   if (context == null) {
     return;
   }
@@ -168,8 +131,7 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
       canvasRef.current &&
       color &&
       label &&
-      (document.fonts.check('bold 16px "Fira Sans"', label.label) ||
-        skipFontCheck)
+      (document.fonts.check('bold 16px "Fira Sans"', label.label) || skipFontCheck)
     ) {
       // Only render label if it is available
       const doesOverflow = paintKeycap(
@@ -191,17 +153,12 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
     color && color.c,
     shouldRotate,
   ]);
-  useEffect(redraw, [
-    label && label.key,
-    skipFontCheck,
-    color && color.c,
-    color && color.t,
-  ]);
+  useEffect(redraw, [label && label.key, skipFontCheck, color && color.c, color && color.t]);
 
   useEffect(() => {
-    document.fonts.addEventListener('loadingdone', redraw);
+    document.fonts.addEventListener("loadingdone", redraw);
     return () => {
-      document.fonts.removeEventListener('loadingdone', redraw);
+      document.fonts.removeEventListener("loadingdone", redraw);
     };
   }, []);
 
@@ -214,8 +171,8 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
         ? KeycapState.Pressed
         : KeycapState.Unpressed
       : hovered || selected
-      ? KeycapState.Pressed
-      : KeycapState.Unpressed;
+        ? KeycapState.Pressed
+        : KeycapState.Unpressed;
   const [keycapZ] =
     pressedState === KeycapState.Pressed
       ? [zDown, rotation[2]]
@@ -225,69 +182,58 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
     DisplayMode.Test === mode
       ? pressedState === KeycapState.Unpressed
         ? wasPressed
-          ? 'var(--color_control-border)'
-          : 'var(--color_separator-opaque)'
-        : 'var(--color_control-border)'
+          ? "var(--color_control-border)"
+          : "var(--color_separator-opaque)"
+        : "var(--color_control-border)"
       : pressedState === KeycapState.Unpressed
-      ? 'var(--color_separator-opaque)'
-      : 'var(--color_separator-opaque)';
-  const keycapOpacity =
-    pressedState === KeycapState.Unpressed ? (wasPressed ? 0.28 : 0) : 0.36;
+        ? "var(--color_separator-opaque)"
+        : "var(--color_separator-opaque)";
+  const keycapOpacity = pressedState === KeycapState.Unpressed ? (wasPressed ? 0.28 : 0) : 0.36;
 
   const [onClick, onPointerOver, onPointerOut, onPointerDown] = useMemo(() => {
     const noop = () => {};
     return disabled
       ? [noop, noop, noop, noop]
       : props.mode === DisplayMode.ConfigureColors
-      ? [
-          noop,
-          (evt: React.MouseEvent) => {
-            if (props.onPointerOver) {
-              props.onPointerOver(evt, idx);
-            }
-          },
-          noop,
-          (evt: React.MouseEvent) => {
-            if (props.onPointerDown) {
-              props.onPointerDown(evt, idx);
-            }
-          },
-        ]
-      : [
-          (evt: React.MouseEvent) => props.onClick(evt, idx),
-          (evt: React.MouseEvent) => {
-            if (props.onPointerOver) {
-              props.onPointerOver(evt, idx);
-            }
-            hover(true);
-          },
-          () => hover(false),
-          (evt: React.MouseEvent) => {
-            if (props.onPointerDown) {
-              props.onPointerDown(evt, idx);
-            }
-          },
-        ];
-  }, [
-    disabled,
-    props.onClick,
-    props.onPointerDown,
-    props.onPointerOver,
-    hover,
-    idx,
-    mode,
-  ]);
+        ? [
+            noop,
+            (evt: React.MouseEvent) => {
+              if (props.onPointerOver) {
+                props.onPointerOver(evt, idx);
+              }
+            },
+            noop,
+            (evt: React.MouseEvent) => {
+              if (props.onPointerDown) {
+                props.onPointerDown(evt, idx);
+              }
+            },
+          ]
+        : [
+            (evt: React.MouseEvent) => props.onClick(evt, idx),
+            (evt: React.MouseEvent) => {
+              if (props.onPointerOver) {
+                props.onPointerOver(evt, idx);
+              }
+              hover(true);
+            },
+            () => hover(false),
+            (evt: React.MouseEvent) => {
+              if (props.onPointerDown) {
+                props.onPointerDown(evt, idx);
+              }
+            },
+          ];
+  }, [disabled, props.onClick, props.onPointerDown, props.onPointerOver, hover, idx, mode]);
   return shouldRotate ? (
     <EncoderKey
       onClick={onClick}
       size={textureWidth * CSSVarObject.keyWidth}
       style={{
         transform: `translate(${
-          props.position[0] -
-          (CSSVarObject.keyWidth * textureWidth - CSSVarObject.keyWidth) / 2
+          props.position[0] - (CSSVarObject.keyWidth * textureWidth - CSSVarObject.keyWidth) / 2
         }px,${
-          (textureWidth * (CSSVarObject.keyHeight - CSSVarObject.keyWidth)) /
-            2 +
+          (textureWidth * (CSSVarObject.keyHeight - CSSVarObject.keyWidth)) / 2 +
           props.position[1] -
           (CSSVarObject.keyHeight * textureHeight - CSSVarObject.keyHeight) / 2
         }px) rotate(${-props.rotation[2]}rad)`,
@@ -325,6 +271,8 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
   ) : (
     <>
       <KeycapContainer
+        data-key-code={props.keyCode}
+        data-testid={props.testId}
         onClick={onClick}
         onPointerDown={onPointerDown}
         onPointerOver={onPointerOver}
@@ -337,30 +285,26 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
           }px,${
             CSSVarObject.keyHeight / 2 +
             props.position[1] -
-            (CSSVarObject.keyYPos * textureHeight - CSSVarObject.keyYSpacing) /
-              2
+            (CSSVarObject.keyYPos * textureHeight - CSSVarObject.keyYSpacing) / 2
           }px) rotate(${-props.rotation[2]}rad)`,
           width: textureWidth * CSSVarObject.keyXPos - CSSVarObject.keyXSpacing,
-          height:
-            textureHeight * CSSVarObject.keyYPos - CSSVarObject.keyYSpacing,
-          cursor: !disabled ? 'pointer' : 'initial',
+          height: textureHeight * CSSVarObject.keyYPos - CSSVarObject.keyYSpacing,
+          cursor: !disabled ? "pointer" : "initial",
         }}
       >
         <GlowContainer
           $selected={selected}
           style={{
             animation: disabled
-              ? 'initial' // This prevents the hover animation from firing when the keycap can't be interacted with
+              ? "initial" // This prevents the hover animation from firing when the keycap can't be interacted with
               : selected
-              ? '.75s infinite alternate select-glow'
-              : '',
+                ? ".75s infinite alternate select-glow"
+                : "",
             background: getDarkenedColor(props.color.c, 0.8),
             transform: `perspective(100px) translateZ(${keycapZ}px)`,
             borderRadius: 3,
-            width:
-              textureWidth * CSSVarObject.keyXPos - CSSVarObject.keyXSpacing,
-            height:
-              textureHeight * CSSVarObject.keyYPos - CSSVarObject.keyYSpacing,
+            width: textureWidth * CSSVarObject.keyXPos - CSSVarObject.keyXSpacing,
+            height: textureHeight * CSSVarObject.keyYPos - CSSVarObject.keyYSpacing,
           }}
         >
           {DisplayMode.Test === mode ? (
@@ -375,7 +319,7 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
             style={{
               borderRadius: 4,
               background: props.color.c,
-              height: '100%',
+              height: "100%",
             }}
           >
             <canvas ref={canvasRef} style={{}} />
@@ -383,9 +327,7 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
         </GlowContainer>
         {(macroData || overflowsTexture) && (
           <TooltipContainer $rotate={rotation[2]}>
-            <Keycap2DTooltip>
-              {macroData || (label && label.tooltipLabel)}
-            </Keycap2DTooltip>
+            <Keycap2DTooltip>{macroData || (label && label.tooltipLabel)}</Keycap2DTooltip>
           </TooltipContainer>
         )}
       </KeycapContainer>
@@ -393,13 +335,12 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
   );
 }, shallowEqual);
 
-const GlowContainer = styled.div<{$selected: boolean}>`
+const GlowContainer = styled.div<{ $selected: boolean }>`
   box-sizing: border-box;
   padding: 2px 6px 10px 6px;
   transition: transform 0.2s ease-out;
   box-shadow: var(--box-shadow-keycap);
-  animation: ${(p) =>
-    p.$selected ? '.75s infinite alternate select-glow' : 'initial'};
+  animation: ${(p) => (p.$selected ? ".75s infinite alternate select-glow" : "initial")};
   &:hover {
     transform: perspective(100px) translateZ(-5px);
     animation: 0.5s 1 forwards select-glow;

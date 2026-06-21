@@ -1,6 +1,6 @@
-import {RootState} from './index';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {DeviceInfo} from 'src/types/types';
+import { RootState } from "./index";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { DeviceInfo } from "src/types/types";
 
 export type AppError = {
   timestamp: string;
@@ -25,23 +25,20 @@ const initialState: ErrorsState = {
 
 export const getErrorTimestamp = () => {
   const now = new Date();
-  return `${now.toLocaleTimeString([], {hour12: false})}.${now
+  return `${now.toLocaleTimeString([], { hour12: false })}.${now
     .getMilliseconds()
     .toString()
-    .padStart(3, '0')}`;
+    .padStart(3, "0")}`;
 };
 
 export const getMessageFromError = (e: Error) => e.stack || e.message;
 
 const errorsSlice = createSlice({
-  name: 'errors',
+  name: "errors",
   initialState,
   reducers: {
-    logAppError: (
-      state,
-      action: PayloadAction<Omit<AppError, 'timestamp'>>,
-    ) => {
-      state.appErrors.push({...action.payload, timestamp: getErrorTimestamp()});
+    logAppError: (state, action: PayloadAction<Omit<AppError, "timestamp">>) => {
+      state.appErrors.push({ ...action.payload, timestamp: getErrorTimestamp() });
     },
     clearAppErrors: (state) => {
       state.appErrors = [];
@@ -49,7 +46,7 @@ const errorsSlice = createSlice({
   },
 });
 
-export const {logAppError, clearAppErrors} = errorsSlice.actions;
+export const { logAppError, clearAppErrors } = errorsSlice.actions;
 
 export default errorsSlice.reducer;
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const SvgIcLightbulbOutline24Px: React.FC<{}> = (props) => (
   <svg width={11.9} height={17} {...props}>
@@ -9,5 +9,5 @@ const SvgIcLightbulbOutline24Px: React.FC<{}> = (props) => (
   </svg>
 );
 
-export const title = 'Lighting';
+export const title = "Lighting";
 export const component = SvgIcLightbulbOutline24Px;

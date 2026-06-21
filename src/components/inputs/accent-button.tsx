@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {buttonSurface, selectedButtonSurface} from './control-styles';
+import styled from "styled-components";
+import { buttonSurface, selectedButtonSurface } from "./control-styles";
 
 type AccentButtonProps = {
   disabled?: boolean;
@@ -15,23 +15,16 @@ const AccentButtonBase = styled.button<AccentButtonProps>`
   text-align: center;
   font-size: 20px;
   display: inline-block;
-  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
-  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 export const AccentButton = styled(AccentButtonBase)`
   background-color: ${(props) =>
-    props.disabled
-      ? 'var(--color_control-background-disabled)'
-      : 'var(--color_panel-background)'};
+    props.disabled ? "var(--color_control-background-disabled)" : "var(--color_panel-background)"};
   color: ${(props) =>
-    props.disabled
-      ? 'var(--color_control-text-disabled)'
-      : 'var(--color_control-text)'};
+    props.disabled ? "var(--color_control-text-disabled)" : "var(--color_control-text)"};
   border-color: ${(props) =>
-    props.disabled
-      ? 'var(--color_control-border-disabled)'
-      : 'var(--color_control-border)'};
-
+    props.disabled ? "var(--color_control-border-disabled)" : "var(--color_control-border)"};
 `;
 export const AccentButtonLarge = styled(AccentButton)`
   font-size: 24px;
@@ -42,13 +35,9 @@ export const AccentButtonLarge = styled(AccentButton)`
 export const PrimaryAccentButton = styled(AccentButtonBase)`
   ${selectedButtonSurface}
   color: ${(props) =>
-    props.disabled
-      ? 'var(--color_control-text-disabled)'
-      : 'var(--color_control-selected-text)'};
+    props.disabled ? "var(--color_control-text-disabled)" : "var(--color_control-selected-text)"};
   border-color: ${(props) =>
-    props.disabled
-      ? 'var(--color_control-border-disabled)'
-      : 'var(--color_control-border)'};
+    props.disabled ? "var(--color_control-border-disabled)" : "var(--color_control-border)"};
   background-color: ${(props) =>
-    props.disabled ? 'transparent' : 'var(--color_control-selected-bg)'};
+    props.disabled ? "transparent" : "var(--color_control-selected-bg)"};
 `;

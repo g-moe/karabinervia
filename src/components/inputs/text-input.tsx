@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {inputSurface} from './control-styles';
+import styled from "styled-components";
+import { inputSurface } from "./control-styles";
 
 const TextInput = styled.input`
   ${inputSurface}

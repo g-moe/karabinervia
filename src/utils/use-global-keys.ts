@@ -1,8 +1,8 @@
-import {useEffect, useState} from 'react';
-import {TestKeyState} from 'src/types/types';
-import {getIndexByEvent} from './key-event';
+import { useEffect, useState } from "react";
+import { TestKeyState } from "src/types/types";
+import { getIndexByEvent } from "./key-event";
 
-type TestKeys = {[code: number]: TestKeyState};
+type TestKeys = { [code: number]: TestKeyState };
 export const useGlobalKeys = (enableGlobalKeys: boolean) => {
   const selectedKeysState = useState<TestKeys>({});
   const [, setSelectedKeys] = selectedKeysState;
@@ -39,13 +39,13 @@ export const useGlobalKeys = (enableGlobalKeys: boolean) => {
       setKeyState(evt, TestKeyState.KeyUp);
     };
 
-    window.addEventListener('keydown', downHandler);
-    window.addEventListener('keyup', upHandler);
+    window.addEventListener("keydown", downHandler);
+    window.addEventListener("keyup", upHandler);
 
     // Remove event listeners on cleanup
     return () => {
-      window.removeEventListener('keydown', downHandler);
-      window.removeEventListener('keyup', upHandler);
+      window.removeEventListener("keydown", downHandler);
+      window.removeEventListener("keyup", upHandler);
     };
   }, [enableGlobalKeys]); // Empty array ensures that effect is only run on mount and unmount
   return selectedKeysState;

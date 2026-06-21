@@ -1,8 +1,8 @@
-import {useEffect} from 'react';
-import {getTestKeyboardSoundsSettings} from 'src/store/settingsSlice';
-import {TestKeyState} from 'src/types/types';
-import {Note, setGlobalAmpGain} from '../../utils/note';
-import {useAppSelector} from 'src/store/hooks';
+import { useEffect } from "react";
+import { getTestKeyboardSoundsSettings } from "src/store/settingsSlice";
+import { TestKeyState } from "src/types/types";
+import { Note, setGlobalAmpGain } from "../../utils/note";
+import { useAppSelector } from "src/store/hooks";
 
 export enum TestKeyboardSoundsMode {
   Random,
@@ -29,8 +29,7 @@ const calculateMidiNote = (
   // Map to 0..4 = bottom row to top row
   // eg. a 2 row macropad maps to the same as
   // the top two rows of a 60%
-  const adjustedRow =
-    Math.min(4, rowCount - row - 1) + Math.max(0, 5 - rowCount);
+  const adjustedRow = Math.min(4, rowCount - row - 1) + Math.max(0, 5 - rowCount);
 
   switch (mode) {
     case TestKeyboardSoundsMode.WickiHayden: {
@@ -49,9 +48,7 @@ const calculateMidiNote = (
     }
     case TestKeyboardSoundsMode.Random:
     default: {
-      return (
-        72 + transpose + Math.floor(seededRandom(row * 1000 + col) * 24) - 12
-      );
+      return 72 + transpose + Math.floor(seededRandom(row * 1000 + col) * 24) - 12;
     }
   }
 };
@@ -62,10 +59,8 @@ const turnOffAllTheNotes = () => {
 
 export const TestKeyboardSounds: React.FC<{
   pressedKeys: TestKeyState[][];
-}> = ({pressedKeys}) => {
-  const {waveform, volume, mode, transpose} = useAppSelector(
-    getTestKeyboardSoundsSettings,
-  );
+}> = ({ pressedKeys }) => {
+  const { waveform, volume, mode, transpose } = useAppSelector(getTestKeyboardSoundsSettings);
 
   useEffect(() => {
     setGlobalAmpGain(volume / 100);
@@ -81,18 +76,11 @@ export const TestKeyboardSounds: React.FC<{
           ...p,
           n.reduce((p2, n2, col) => {
             const index = `${row},${col}`;
-            const lastState =
-              lastPressedKeys?.at(row)?.at(col) ?? TestKeyState.KeyUp;
+            const lastState = lastPressedKeys?.at(row)?.at(col) ?? TestKeyState.KeyUp;
             const state = n2 ?? TestKeyState.KeyUp;
             if (state != lastState) {
               if (state == TestKeyState.KeyDown) {
-                const midiNote = calculateMidiNote(
-                  mode,
-                  transpose,
-                  rowCount,
-                  row,
-                  col,
-                );
+                const midiNote = calculateMidiNote(mode, transpose, rowCount, row, col);
                 notes[index] = new Note(midiNote, waveform);
                 notes[index].noteOn();
               } else if (state == TestKeyState.KeyUp) {
