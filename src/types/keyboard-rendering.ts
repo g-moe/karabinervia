@@ -34,6 +34,7 @@ export type KeyboardCanvasContentProps<T> = {
   keyColors?: number[][];
   onKeycapPointerDown?: (e: T, idx: number) => void;
   onKeycapPointerOver?: (e: T, idx: number) => void;
+  onKeycapClick?: (e: T, idx: number) => void;
   width: number;
   height: number;
 };
@@ -57,6 +58,7 @@ export type KeyGroupProps<T> = {
   selectedKey?: number;
   onKeycapPointerDown?: (e: T, idx: number) => void;
   onKeycapPointerOver?: (e: T, idx: number) => void;
+  onKeycapClick?: (e: T, idx: number) => void;
 };
 
 export type KeyCoords<T> = {

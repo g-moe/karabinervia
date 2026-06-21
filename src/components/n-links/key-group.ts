@@ -140,7 +140,11 @@ export function getKeysKeys<T>(
         idx: i,
         onClick: (evt: any, idx: number) => {
           evt.stopPropagation();
-          dispatch(updateSelectedKey(idx));
+          if (props.onKeycapClick) {
+            props.onKeycapClick(evt, idx);
+          } else {
+            dispatch(updateSelectedKey(idx));
+          }
         },
         onPointerDown: props.onKeycapPointerDown,
         onPointerOver: props.onKeycapPointerOver,

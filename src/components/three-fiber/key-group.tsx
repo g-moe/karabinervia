@@ -65,6 +65,7 @@ export const KeyGroup: React.FC<KeyGroupProps<ThreeEvent<MouseEvent>>> = (
     keyColorPalette,
     props.onKeycapPointerDown,
     props.onKeycapPointerOver,
+    props.onKeycapClick,
   ]);
   const labels = useMemo(() => {
     return getLabels(props, macroExpressions, basicKeyToByte, byteToKey);

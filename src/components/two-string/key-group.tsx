@@ -152,6 +152,7 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
     keyColorPalette,
     props.onKeycapPointerDown,
     props.onKeycapPointerOver,
+    props.onKeycapClick,
   ]);
   const labels = useMemo(() => {
     if (props.definition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID) {

@@ -68,6 +68,30 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
     setMatrixPressedKeys(EMPTY_ARR);
   }, [setGlobalPressedKeys, setMatrixPressedKeys]);
 
+  const handleKeycapClick = useCallback(
+    (_evt: unknown, idx: number) => {
+      const byte = isVirtualMacBook
+        ? basicKeyToByte[macbookKeys[idx]?.code as keyof typeof basicKeyToByte]
+        : selectedMatrixKeycodes[idx] ?? matrixKeycodes[idx];
+      const globalIndex = matrixKeycodes.indexOf(byte);
+      if (globalIndex < 0) {
+        return;
+      }
+
+      setGlobalPressedKeys((pressedKeys) => ({
+        ...pressedKeys,
+        [globalIndex]: TestKeyState.KeyDown,
+      }));
+      window.setTimeout(() => {
+        setGlobalPressedKeys((pressedKeys) => ({
+          ...pressedKeys,
+          [globalIndex]: TestKeyState.KeyUp,
+        }));
+      }, 160);
+    },
+    [isVirtualMacBook, selectedMatrixKeycodes, setGlobalPressedKeys],
+  );
+
   const testContext = useContext(TestContext);
   //// Hack to share setting a local state to avoid causing cascade of rerender
   useEffect(() => {
@@ -158,6 +182,8 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
         definition={testDefinition as VIADefinitionV2}
         keys={testKeys as VIAKey[]}
         pressedKeys={testPressedKeys}
+        selectable={!isTestMatrixEnabled}
+        onKeycapClick={handleKeycapClick}
         matrixKeycodes={
           isTestMatrixEnabled || isVirtualMacBook
             ? selectedMatrixKeycodes
@@ -178,6 +204,7 @@ const TestKeyboard = (props: {
   containerDimensions?: DOMRect;
   pressedKeys?: TestKeyState[];
   matrixKeycodes: number[];
+  onKeycapClick?: (evt: unknown, idx: number) => void;
   keys: (VIAKey & {ei?: number})[];
   definition: VIADefinitionV2 | VIADefinitionV3;
   nDimension: NDimension;
@@ -186,6 +213,7 @@ const TestKeyboard = (props: {
     selectable,
     containerDimensions,
     matrixKeycodes,
+    onKeycapClick,
     keys,
     pressedKeys,
     definition,
@@ -201,6 +229,7 @@ const TestKeyboard = (props: {
       matrixKeycodes={matrixKeycodes}
       keys={keys}
       selectable={!!selectable}
+      onKeycapClick={onKeycapClick as never}
       definition={definition}
       pressedKeys={pressedKeys}
       containerDimensions={containerDimensions}
