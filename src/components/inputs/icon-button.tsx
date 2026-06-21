@@ -12,9 +12,13 @@ export const IconButton = styled.button`
   line-height: initial;
   font-size: initial;
   color: ${(props) =>
-    props.disabled ? 'var(--color_label)' : 'var(--color_accent)'};
+    props.disabled
+      ? 'var(--color_control-text-disabled)'
+      : 'var(--color_control-border)'};
   border-color: ${(props) =>
-    props.disabled ? 'var(--bg_control)' : 'var(--color_accent)'};
+    props.disabled
+      ? 'var(--color_control-border-disabled)'
+      : 'var(--color_control-border)'};
   &:disabled {
     cursor: not-allowed;
     border-right: 1px solid var(--border_color_icon);
@@ -23,22 +27,30 @@ export const IconButton = styled.button`
   }
   &:hover {
     color: ${(props) =>
-      props.disabled ? 'var(--color_label)' : 'var(--color_inside-accent)'};
+      props.disabled
+        ? 'var(--color_control-text-disabled)'
+        : 'var(--color_control-selected-text)'};
     border-color: ${(props) =>
-      props.disabled ? 'var(--bg_control)' : 'var(--color_accent)'};
+      props.disabled
+        ? 'var(--color_control-border-disabled)'
+        : 'var(--color_control-border)'};
     border-right: 1px solid var(--border_color_icon);
     background-color: ${(props) =>
-      props.disabled ? 'var(--bg_menu)' : 'var(--color_accent)'};
+      props.disabled ? 'var(--bg_menu)' : 'var(--color_control-selected-bg)'};
   }
 
   svg {
     color: ${(props) =>
-      props.disabled ? 'var(--color_label)' : 'var(--color_accent)'};
+      props.disabled
+        ? 'var(--color_control-text-disabled)'
+        : 'var(--color_control-border)'};
   }
   &:hover {
     svg {
       color: ${(props) =>
-        props.disabled ? 'var(--color_label)' : 'var(--color_inside-accent)'};
+        props.disabled
+          ? 'var(--color_control-text-disabled)'
+          : 'var(--color_control-selected-text)'};
     }
 
     color: var(--color_label-highlighted);
@@ -56,7 +68,7 @@ export const IconButton = styled.button`
 export const IconButtonUnfilledContainer = styled(IconButton)`
   cursor: pointer;
   background: inherit;
-  border: 1px solid var(--color_accent);
+  border: 1px solid var(--color_control-border);
   width: 30px;
   height: 30px;
   justify-content: center;
@@ -74,17 +86,19 @@ export const IconToggleContainer = styled(IconButton)<{$selected: boolean}>`
   cursor: pointer;
   transition: all 0.4s ease;
   background: ${(props) =>
-    props.$selected ? 'var(--color_accent)' : 'var(--bg_menu)'};
+    props.$selected ? 'var(--color_control-selected-bg)' : 'var(--bg_menu)'};
   svg {
     color: ${(props) =>
-      props.$selected ? 'var(--color_inside-accent)' : 'var(--bg_icon)'};
+      props.$selected ? 'var(--color_control-selected-text)' : 'var(--bg_icon)'};
   }
   &:hover {
     background: ${(props) =>
-      props.$selected ? 'var(--color_accent)' : 'var(--bg_menu)'};
+      props.$selected ? 'var(--color_control-selected-bg)' : 'var(--bg_menu)'};
     svg {
       color: ${(props) =>
-        props.$selected ? 'var(--color_inside-accent)' : 'var(--bg_icon)'};
+        props.$selected
+          ? 'var(--color_control-selected-text)'
+          : 'var(--bg_icon)'};
     }
   }
   border-right: 1px solid var(--border_color_icon);

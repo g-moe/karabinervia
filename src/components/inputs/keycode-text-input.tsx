@@ -7,8 +7,8 @@ import {
 
 const NormalInput = styled.input`
   border: none;
-  border-bottom: 1px solid var(--bg_control);
-  color: var(--color_accent);
+  border-bottom: 1px solid var(--color_control-border-disabled);
+  color: var(--color_control-text);
   background: var(--bg_menu);
   transition: all 0.4s ease-out;
   font-size: 18px;
@@ -17,11 +17,11 @@ const NormalInput = styled.input`
   padding: 0 5px;
   &:focus {
     outline: none;
-    color: var(--color_accent);
-    border-color: var(--color_accent);
+    color: var(--color_control-text);
+    border-color: var(--color_control-border);
   }
   &::placeholder {
-    color: var(--bg_control);
+    color: var(--color_control-text-muted);
   }
 `;
 

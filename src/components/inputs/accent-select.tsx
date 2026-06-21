@@ -1,10 +1,13 @@
 import React from 'react';
 import Select, {Props} from 'react-select';
 
-const readableTextColor = 'var(--color_label-highlighted)';
-const mutedTextColor = 'var(--color_label)';
-const accentColor = 'var(--color_accent)';
-const accentTextColor = 'var(--color_inside-accent)';
+const readableTextColor = 'var(--color_control-text)';
+const mutedTextColor = 'var(--color_control-text-muted)';
+const disabledTextColor = 'var(--color_control-text-disabled)';
+const controlBorderColor = 'var(--color_control-border)';
+const disabledBorderColor = 'var(--color_control-border-disabled)';
+const selectedBackgroundColor = 'var(--color_control-selected-bg)';
+const selectedTextColor = 'var(--color_control-selected-text)';
 
 const customStyles = {
   option: (provided: any, state: any) => {
@@ -12,19 +15,19 @@ const customStyles = {
       ...provided,
       '&:hover': {
         backgroundColor: state.isSelected
-          ? 'var(--color_accent)'
+          ? selectedBackgroundColor
           : 'var(--bg_control)',
       },
       ':active': {
         backgroundColor: 'var(--bg_control)',
       },
       background: state.isSelected
-        ? accentColor
+        ? selectedBackgroundColor
         : state.isFocused
         ? 'var(--bg_control)'
         : 'var(--bg_menu)',
       color: state.isSelected
-        ? accentTextColor
+        ? selectedTextColor
         : state.isFocused
         ? readableTextColor
         : readableTextColor,
@@ -42,21 +45,21 @@ const customStyles = {
   }),
   singleValue: (provided: any, state: any) => ({
     ...provided,
-    color: state.isDisabled ? mutedTextColor : readableTextColor,
+    color: state.isDisabled ? disabledTextColor : readableTextColor,
     opacity: 1,
   }),
   dropdownIndicator: (provided: any, state: any) => ({
     ...provided,
-    color: state.isDisabled ? mutedTextColor : accentColor,
+    color: state.isDisabled ? disabledTextColor : controlBorderColor,
     opacity: state.isDisabled ? 0.75 : 1,
   }),
   indicatorSeparator: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isDisabled ? 'var(--bg_control)' : accentColor,
+    backgroundColor: state.isDisabled ? disabledBorderColor : controlBorderColor,
   }),
   menuList: (provided: any) => ({
     ...provided,
-    borderColor: 'var(--color_accent)',
+    borderColor: controlBorderColor,
     backgroundColor: 'var(--bg_menu)',
   }),
   placeholder: (provided: any) => ({
@@ -67,12 +70,12 @@ const customStyles = {
     ...provided,
     ':active': {
       backgroundColor: 'var(--bg_control)',
-      borderColor: 'var(--color_accent)',
+      borderColor: controlBorderColor,
     },
     '&:hover': {
-      borderColor: 'var(--color_accent)',
+      borderColor: controlBorderColor,
     },
-    color: state.isDisabled ? mutedTextColor : readableTextColor,
+    color: state.isDisabled ? disabledTextColor : readableTextColor,
     background: 'var(--bg_menu)',
   }),
   control: (provided: any, state: any) => {
@@ -81,13 +84,13 @@ const customStyles = {
       boxShadow: 'none',
       ':active': {
         backgroundColor: 'transparent',
-        borderColor: 'var(--color_accent)',
+        borderColor: controlBorderColor,
       },
       '&:hover': {
-        borderColor: 'var(--color_accent)',
+        borderColor: controlBorderColor,
       },
-      color: state.isDisabled ? mutedTextColor : readableTextColor,
-      borderColor: state.isDisabled ? 'var(--bg_control)' : accentColor,
+      color: state.isDisabled ? disabledTextColor : readableTextColor,
+      borderColor: state.isDisabled ? disabledBorderColor : controlBorderColor,
       background: 'var(--bg_menu)',
       overflow: 'hidden',
       opacity: 1,

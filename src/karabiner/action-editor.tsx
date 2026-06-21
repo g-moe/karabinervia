@@ -48,13 +48,13 @@ const Select = styled.select`
   height: 36px;
   min-width: 260px;
   background: var(--bg_menu);
-  color: var(--color_label-highlighted);
-  border: 1px solid var(--color_accent);
-  border-radius: 5px;
+  color: var(--color_control-text);
+  border: 1px solid var(--color_control-border);
+  border-radius: var(--radius_control);
   padding: 0 10px;
 
   option {
-    color: var(--color_label-highlighted);
+    color: var(--color_control-text);
     background: var(--bg_menu);
   }
 `;
@@ -63,13 +63,13 @@ const TextInput = styled.input`
   height: 36px;
   min-width: 260px;
   background: var(--bg_menu);
-  color: var(--color_label-highlighted);
-  border: 1px solid var(--color_accent);
-  border-radius: 5px;
+  color: var(--color_control-text);
+  border: 1px solid var(--color_control-border);
+  border-radius: var(--radius_control);
   padding: 0 10px;
 
   &::placeholder {
-    color: var(--color_label);
+    color: var(--color_control-text-muted);
   }
 `;
 
