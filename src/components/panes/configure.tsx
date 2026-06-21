@@ -16,15 +16,15 @@ import * as Keycode from "./configure-panes/keycode";
 import * as SaveLoad from "./configure-panes/save-load";
 import { LayerControl } from "./configure-panes/layer-control";
 import { Badge } from "./configure-panes/badge";
-import { useAppSelector } from "src/store/hooks";
-import { getSelectedDefinition } from "src/store/definitionsSlice";
+import { useAppSelector } from "../../store/hooks";
+import { getSelectedDefinition } from "../../store/definitionsSlice";
 import {
   clearSelectedKey,
   getLoadProgress,
   setConfigureKeyboardIsSelectable,
-} from "src/store/keymapSlice";
+} from "../../store/keymapSlice";
 import { useDispatch } from "react-redux";
-import { getSelectedTheme } from "src/store/settingsSlice";
+import { getSelectedTheme } from "../../store/settingsSlice";
 import { useTranslation } from "react-i18next";
 
 const Rows = [Keycode, SaveLoad];

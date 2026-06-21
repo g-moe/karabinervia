@@ -1,6 +1,6 @@
 import React from "react";
 import { shallowEqual } from "react-redux";
-import { CSSVarObject } from "src/utils/keyboard-rendering";
+import { CSSVarObject } from "../../utils/keyboard-rendering";
 import styled from "styled-components";
 
 const CaseGroup = styled.div<{}>``;

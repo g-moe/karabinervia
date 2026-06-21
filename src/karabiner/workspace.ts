@@ -1,6 +1,6 @@
-import type { Layer } from "src/types/types";
-import { getByteForCode } from "src/utils/key";
-import { getBasicKeyDict } from "src/utils/key-to-byte/dictionary-store";
+import type { Layer } from "../types/types";
+import { getByteForCode } from "../utils/key";
+import { getBasicKeyDict } from "../utils/key-to-byte/dictionary-store";
 import { KARABINER_VIA_PROTOCOL, macbookDefinition, macbookKeys } from "./virtual-device";
 
 export type KarabinerActionKind =

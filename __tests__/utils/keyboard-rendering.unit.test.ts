@@ -4,7 +4,7 @@ import {
   calculateKeyboardFrameDimensions,
   getBoundingBox,
   getComboKeyProps,
-} from "src/utils/keyboard-rendering";
+} from "../../src/utils/keyboard-rendering";
 
 const viaKey = (key: {
   x: number;

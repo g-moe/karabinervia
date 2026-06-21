@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { shallowEqual } from "react-redux";
-import { calculateKeyboardFrameDimensions, CSSVarObject } from "src/utils/keyboard-rendering";
+import { calculateKeyboardFrameDimensions, CSSVarObject } from "../../utils/keyboard-rendering";
 import styled from "styled-components";
-import { KeyboardCanvasProps, KeyboardCanvasContentProps } from "src/types/keyboard-rendering";
+import { KeyboardCanvasProps, KeyboardCanvasContentProps } from "../../types/keyboard-rendering";
 import { Case } from "./case";
 import { KeyGroup } from "./key-group";
 import { MatrixLines } from "./matrix-lines";

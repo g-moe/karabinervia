@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import imgSrc from "assets/images/chippy_600.png";
-import { Theme } from "src/utils/themes";
+import imgSrc from "../assets/images/chippy_600.png";
+import { Theme } from "../utils/themes";
 
 const defaultChippy = {
   width: 300,

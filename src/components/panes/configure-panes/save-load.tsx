@@ -6,17 +6,17 @@ import { AccentButton } from "../../inputs/accent-button";
 import { title, component } from "../../icons/save";
 import { PanelPane } from "../pane";
 import { Detail, Label, ControlRow, SpanOverflowCell } from "../grid";
-import { saveRawKeymapToDevice } from "src/store/keymapSlice";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { getSelectedConnectedDevice } from "src/store/devicesSlice";
+import { saveRawKeymapToDevice } from "../../../store/keymapSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { getSelectedConnectedDevice } from "../../../store/devicesSlice";
 import { useTranslation } from "react-i18next";
-import { downloadKarabiner, downloadProject } from "src/karabiner/export";
+import { downloadKarabiner, downloadProject } from "../../../karabiner/export";
 import {
   createDefaultWorkspace,
   normalizeWorkspace,
   saveWorkspace,
   workspaceToViaLayers,
-} from "src/karabiner/workspace";
+} from "../../../karabiner/workspace";
 
 const Container = styled.div`
   display: flex;

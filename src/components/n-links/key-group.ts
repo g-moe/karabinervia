@@ -1,9 +1,9 @@
 import type { VIAKey } from "@the-via/reader";
-import { useAppDispatch } from "src/store/hooks";
-import { updateSelectedKey } from "src/store/keymapSlice";
-import { KeycapSharedProps, KeyGroupProps, KeysKeys } from "src/types/keyboard-rendering";
-import { getByteToKey } from "src/utils/key";
-import { getBasicKeyDict } from "src/utils/key-to-byte/dictionary-store";
+import { useAppDispatch } from "../../store/hooks";
+import { updateSelectedKey } from "../../store/keymapSlice";
+import { KeycapSharedProps, KeyGroupProps, KeysKeys } from "../../types/keyboard-rendering";
+import { getByteToKey } from "../../utils/key";
+import { getBasicKeyDict } from "../../utils/key-to-byte/dictionary-store";
 import {
   calculatePointPosition,
   getBoundingBox,
@@ -13,7 +13,7 @@ import {
   getMeshName,
   getScale,
   KeycapMetric,
-} from "src/utils/keyboard-rendering";
+} from "../../utils/keyboard-rendering";
 
 export function getKeycapSharedProps<T>(
   k: VIAKey & { displayOnly?: boolean },

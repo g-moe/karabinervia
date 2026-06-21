@@ -1,21 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { getSelectedKey, getSelectedLayerIndex } from "src/store/keymapSlice";
-import { getSelectedTheme } from "src/store/settingsSlice";
-import { KeyGroupProps, KeysKeys } from "src/types/keyboard-rendering";
-import { getRGB } from "src/utils/color-math";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { getSelectedKey, getSelectedLayerIndex } from "../../store/keymapSlice";
+import { getSelectedTheme } from "../../store/settingsSlice";
+import { KeyGroupProps, KeysKeys } from "../../types/keyboard-rendering";
+import { getRGB } from "../../utils/color-math";
 import {
   calculateKeyboardFrameDimensions,
   CSSVarObject,
   getComboKeyProps,
-} from "src/utils/keyboard-rendering";
-import { useSkipFontCheck } from "src/utils/use-skip-font-check";
+} from "../../utils/keyboard-rendering";
+import { useSkipFontCheck } from "../../utils/use-skip-font-check";
 import styled from "styled-components";
 import { getKeycapSharedProps, getKeysKeys } from "../n-links/key-group";
 import { CaseInsideBorder } from "./case";
 import { Keycap } from "./unit-key/keycap";
-import { KARABINER_VIA_VENDOR_PRODUCT_ID } from "src/karabiner/virtual-device";
-import { getKarabinerLabels } from "src/karabiner/labels";
+import { KARABINER_VIA_VENDOR_PRODUCT_ID } from "../../karabiner/virtual-device";
+import { getKarabinerLabels } from "../../karabiner/labels";
 
 const KeyGroupContainer = styled.div<{
   height: number;

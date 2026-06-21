@@ -11,12 +11,6 @@
     "moduleResolution": "Bundler",
     "isolatedModules": true,
     "noEmit": true,
-    "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
-    "paths": {
-      "src/*": ["./src/*"],
-      "assets/*": ["./src/assets/*"]
-    },
     "types": ["vite/client", "wicg-file-system-access", "node"],
     "jsx": "react-jsx",
     "forceConsistentCasingInFileNames": true,

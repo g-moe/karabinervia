@@ -2,8 +2,8 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { KeyboardDictionary, VIAKey } from "@the-via/reader";
 import type { RootState } from "./index";
 import { getSelectedConnectedDevice, getSelectedDevicePath } from "./devicesSlice";
-import { getBasicKeyDict } from "src/utils/key-to-byte/dictionary-store";
-import { getByteToKey } from "src/utils/key";
+import { getBasicKeyDict } from "../utils/key-to-byte/dictionary-store";
+import { getByteToKey } from "../utils/key";
 
 type DefinitionsState = {
   definitions: KeyboardDictionary;

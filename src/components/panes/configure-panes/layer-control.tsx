@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "src/store/hooks";
-import { getNumberOfLayers, getSelectedLayerIndex, setLayer } from "src/store/keymapSlice";
+import { useAppSelector } from "../../../store/hooks";
+import { getNumberOfLayers, getSelectedLayerIndex, setLayer } from "../../../store/keymapSlice";
 import styled from "styled-components";
 import { useTranslation } from "react-i18next";
-import { pillButtonSurface } from "src/components/inputs/control-styles";
+import { pillButtonSurface } from "../../inputs/control-styles";
 
 const Container = styled.div`
   position: absolute;

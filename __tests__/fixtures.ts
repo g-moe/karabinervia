@@ -5,8 +5,8 @@ import {
   keyAction,
   layerAction,
   transparentAction,
-} from "src/karabiner/workspace";
-import { macbookKeys } from "src/karabiner/virtual-device";
+} from "../src/karabiner/workspace";
+import { macbookKeys } from "../src/karabiner/virtual-device";
 
 export const action = {
   key: keyAction,

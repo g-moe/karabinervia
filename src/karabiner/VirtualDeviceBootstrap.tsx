@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { updateDefinitions } from "src/store/definitionsSlice";
-import { selectDevice, updateConnectedDevices } from "src/store/devicesSlice";
-import { getSelectedRawLayers, saveKeymapSuccess, setNumberOfLayers } from "src/store/keymapSlice";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { updateDefinitions } from "../store/definitionsSlice";
+import { selectDevice, updateConnectedDevices } from "../store/devicesSlice";
+import { getSelectedRawLayers, saveKeymapSuccess, setNumberOfLayers } from "../store/keymapSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   KARABINER_VIA_DEVICE_PATH,
   KARABINER_VIA_VENDOR_PRODUCT_ID,

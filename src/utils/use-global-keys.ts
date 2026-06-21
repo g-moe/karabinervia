@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TestKeyState } from "src/types/types";
+import { TestKeyState } from "../types/types";
 import { getIndexByEvent } from "./key-event";
 
 type TestKeys = { [code: number]: TestKeyState };

@@ -1,4 +1,4 @@
-import { KeyColorPair } from "src/types/keyboard-rendering";
+import { KeyColorPair } from "../types/keyboard-rendering";
 import { AppleRendererColorByMode } from "./apple-colors";
 
 export type Theme = {

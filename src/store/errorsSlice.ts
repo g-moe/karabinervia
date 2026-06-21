@@ -1,6 +1,6 @@
 import { RootState } from "./index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DeviceInfo } from "src/types/types";
+import { DeviceInfo } from "../types/types";
 
 export type AppError = {
   timestamp: string;

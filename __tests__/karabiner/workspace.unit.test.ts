@@ -12,11 +12,11 @@ import {
   setAssignment,
   transparentAction,
   workspaceToViaLayers,
-} from "src/karabiner/workspace";
+} from "../../src/karabiner/workspace";
 import { oldOpinionatedWorkspace, assignment, keyCodes } from "../fixtures";
-import { macbookDefinition, macbookKeys } from "src/karabiner/virtual-device";
-import { getByteForCode } from "src/utils/key";
-import { getBasicKeyDict } from "src/utils/key-to-byte/dictionary-store";
+import { macbookDefinition, macbookKeys } from "../../src/karabiner/virtual-device";
+import { getByteForCode } from "../../src/utils/key";
+import { getBasicKeyDict } from "../../src/utils/key-to-byte/dictionary-store";
 
 describe("Karabiner workspace model", () => {
   it("creates a QWERTY MacBook workspace with no opinionated holds", () => {

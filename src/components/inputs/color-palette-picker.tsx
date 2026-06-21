@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { getRGB } from "src/utils/color-math";
+import { getRGB } from "../../utils/color-math";
 import styled from "styled-components";
 import { roundSwatchSurface } from "./control-styles";
 import { ColorPicker } from "./color-picker";

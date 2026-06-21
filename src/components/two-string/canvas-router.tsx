@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { shallowEqual } from "react-redux";
-import { getSelectedDefinition } from "src/store/definitionsSlice";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { getSelectedDefinition } from "../../store/definitionsSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   clearSelectedKey,
   getConfigureKeyboardIsSelectable,
   getLoadProgress,
   updateSelectedKey,
-} from "src/store/keymapSlice";
-import { useSize } from "src/utils/use-size";
+} from "../../store/keymapSlice";
+import { useSize } from "../../utils/use-size";
 import styled from "styled-components";
 import { useLocation } from "wouter";
 import { ConfigureKeyboard } from "../n-links/keyboard/configure";

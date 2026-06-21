@@ -1,10 +1,10 @@
 import { FC, useEffect } from "react";
 import type { VIAKey } from "@the-via/reader";
 import { title, component } from "../../icons/keyboard";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { getSelectedKey, updateSelectedKey } from "src/store/keymapSlice";
-import { getSelectedKeyDefinitions } from "src/store/definitionsSlice";
-import { KarabinerActionEditor } from "src/karabiner/action-editor";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { getSelectedKey, updateSelectedKey } from "../../../store/keymapSlice";
+import { getSelectedKeyDefinitions } from "../../../store/definitionsSlice";
+import { KarabinerActionEditor } from "../../../karabiner/action-editor";
 
 export const Pane: FC = () => {
   const dispatch = useAppDispatch();

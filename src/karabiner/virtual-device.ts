@@ -1,7 +1,7 @@
 import type { VIADefinitionV3, VIAKey } from "@the-via/reader";
-import type { ConnectedDevice, Layer } from "src/types/types";
-import { getByteForCode } from "src/utils/key";
-import { getBasicKeyDict } from "src/utils/key-to-byte/dictionary-store";
+import type { ConnectedDevice, Layer } from "../types/types";
+import { getByteForCode } from "../utils/key";
+import { getBasicKeyDict } from "../utils/key-to-byte/dictionary-store";
 
 export const KARABINER_VIA_DEVICE_PATH = "karabinervia://macbook-pro-touch-id";
 export const KARABINER_VIA_VENDOR_PRODUCT_ID = 0x4b560001;

@@ -1,7 +1,7 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { logAppError } from "./errorsSlice";
-import { formatNumberAsHex } from "src/utils/format";
-import { DeviceInfo } from "src/types/types";
+import { formatNumberAsHex } from "../utils/format";
+import { DeviceInfo } from "../types/types";
 
 export const errorsListenerMiddleware = createListenerMiddleware();
 

@@ -1,5 +1,5 @@
 import type { VIADefinitionV2, VIADefinitionV3, VIAKey } from "@the-via/reader";
-import { TestKeyState } from "src/types/types";
+import { TestKeyState } from "./types";
 
 export enum DisplayMode {
   Test = 1,

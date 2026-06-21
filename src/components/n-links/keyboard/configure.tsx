@@ -1,10 +1,13 @@
 import type { VIAKey } from "@the-via/reader";
-import { getSelectedDefinition, getSelectedKeyDefinitions } from "src/store/definitionsSlice";
-import { useAppSelector } from "src/store/hooks";
-import { getSelectedKeymap } from "src/store/keymapSlice";
-import { DisplayMode, NDimension } from "src/types/keyboard-rendering";
+import { getSelectedDefinition, getSelectedKeyDefinitions } from "../../../store/definitionsSlice";
+import { useAppSelector } from "../../../store/hooks";
+import { getSelectedKeymap } from "../../../store/keymapSlice";
+import { DisplayMode, NDimension } from "../../../types/keyboard-rendering";
 import { KeyboardCanvas as StringKeyboardCanvas } from "../../two-string/keyboard-canvas";
-import { KARABINER_VIA_VENDOR_PRODUCT_ID, macbookLayoutKeys } from "src/karabiner/virtual-device";
+import {
+  KARABINER_VIA_VENDOR_PRODUCT_ID,
+  macbookLayoutKeys,
+} from "../../../karabiner/virtual-device";
 
 const EMPTY_KEYMAP = [] as number[];
 

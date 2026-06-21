@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { AccentButton } from "src/components/inputs/accent-button";
-import { inputSurface, selectSurface } from "src/components/inputs/control-styles";
-import { ControlRow, Detail, Label, SpanOverflowCell } from "src/components/panes/grid";
-import { PanelPane } from "src/components/panes/pane";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
+import { AccentButton } from "../components/inputs/accent-button";
+import { inputSurface, selectSurface } from "../components/inputs/control-styles";
+import { ControlRow, Detail, Label, SpanOverflowCell } from "../components/panes/grid";
+import { PanelPane } from "../components/panes/pane";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   getSelectedKey,
   getSelectedLayerIndex,
   saveKeymapSuccess,
   setNumberOfLayers,
-} from "src/store/keymapSlice";
+} from "../store/keymapSlice";
 import { KARABINER_VIA_DEVICE_PATH, macbookLayoutKeys } from "./virtual-device";
 import {
   KarabinerAction,

@@ -13,12 +13,12 @@ import {
 import { AccentSlider } from "../inputs/accent-slider";
 import { AccentButton } from "../inputs/accent-button";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "src/store/hooks";
-import { getSelectedDefinition } from "src/store/definitionsSlice";
+import { useAppSelector } from "../../store/hooks";
+import { getSelectedDefinition } from "../../store/definitionsSlice";
 import {
   getTestKeyboardSoundsSettings,
   setTestKeyboardSoundsSettings,
-} from "src/store/settingsSlice";
+} from "../../store/settingsSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { AccentSelect } from "../inputs/accent-select";

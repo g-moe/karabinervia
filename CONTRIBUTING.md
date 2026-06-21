@@ -45,7 +45,3 @@ All tests live under `__tests__`.
 - Unit tests mirror source paths under `__tests__`.
 - End-to-end tests live under `__tests__/__e2e__`.
 - Production app typechecking does not include tests; `tsconfig.test.json` typechecks tests explicitly.
-
-## GitHub OAuth
-
-GitHub save/load flows require `VITE_GITHUB_CLIENT_ID` at build time and a deployment endpoint at `POST /api/GithubOAuth`. Copy `.env.example` when enabling that path locally or in a deployment.

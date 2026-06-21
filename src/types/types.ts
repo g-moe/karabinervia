@@ -1,5 +1,5 @@
 import type { DefinitionVersion, KeyboardDefinitionIndex, VIAMenu } from "@the-via/reader";
-import { TestKeyboardSoundsMode } from "src/components/void/test-keyboard-sounds";
+import { TestKeyboardSoundsMode } from "../components/void/test-keyboard-sounds";
 
 export enum TestKeyState {
   Initial,

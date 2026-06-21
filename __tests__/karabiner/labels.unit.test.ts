@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { getKarabinerLabels } from "src/karabiner/labels";
+import { getKarabinerLabels } from "../../src/karabiner/labels";
 import {
   createDefaultWorkspace,
   keyAction,
   layerAction,
   saveWorkspace,
   setAssignment,
-} from "src/karabiner/workspace";
+} from "../../src/karabiner/workspace";
 import { assignment } from "../fixtures";
-import { macbookLayoutKeys } from "src/karabiner/virtual-device";
+import { macbookLayoutKeys } from "../../src/karabiner/virtual-device";
 
 const labelFor = (labels: any[], code: string) => {
   const index = macbookLayoutKeys.findIndex((key) => key.code === code);

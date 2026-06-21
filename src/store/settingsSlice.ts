@@ -3,7 +3,7 @@ import type { Settings, TestKeyboardSoundsSettings } from "../types/types";
 import type { PropertiesOfType } from "../types/generic-types";
 import { getSettings, setSettings } from "../utils/device-store";
 import type { RootState } from ".";
-import { APPLE_KEYCAP_THEME_BY_MODE } from "src/utils/themes";
+import { APPLE_KEYCAP_THEME_BY_MODE } from "../utils/themes";
 
 // TODO: why are these settings mixed? Is it because we only want some of them cached? SHould we rename to "CachedSettings"?
 type SettingsState = Settings & {

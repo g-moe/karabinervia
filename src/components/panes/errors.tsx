@@ -3,10 +3,10 @@ import { faCancel, faComputer, faDownload, faWarning } from "@fortawesome/free-s
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PropsWithChildren, useState } from "react";
 import { useDispatch } from "react-redux";
-import { AppError, clearAppErrors, getAppErrors } from "src/store/errorsSlice";
-import { useAppSelector } from "src/store/hooks";
-import { DeviceInfo } from "src/types/types";
-import { formatNumberAsHex } from "src/utils/format";
+import { AppError, clearAppErrors, getAppErrors } from "../../store/errorsSlice";
+import { useAppSelector } from "../../store/hooks";
+import { DeviceInfo } from "../../types/types";
+import { formatNumberAsHex } from "../../utils/format";
 import styled from "styled-components";
 import { Link, useLocation } from "wouter";
 import { IconButtonContainer } from "../inputs/icon-button";

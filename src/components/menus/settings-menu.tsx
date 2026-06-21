@@ -8,13 +8,13 @@ import { AccentSlider } from "../inputs/accent-slider";
 import { dropdownMenuVisibility, menuListSurface, scrimSurface } from "../inputs/control-styles";
 import { CategoryIconContainer } from "../panes/grid";
 import { Detail, Label } from "../panes/grid";
-import { useAppSelector } from "src/store/hooks";
+import { useAppSelector } from "../../store/hooks";
 import {
   getDisableFastRemap,
   getThemeMode,
   toggleFastRemap,
   toggleThemeMode,
-} from "src/store/settingsSlice";
+} from "../../store/settingsSlice";
 
 const Container = styled.div`
   position: relative;

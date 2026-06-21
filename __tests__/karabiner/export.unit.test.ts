@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { karabinerJson } from "src/karabiner/export";
+import { karabinerJson } from "../../src/karabiner/export";
 import {
   createDefaultWorkspace,
   keyAction,
   layerAction,
   setAssignment,
-} from "src/karabiner/workspace";
+} from "../../src/karabiner/workspace";
 import { action, assignment } from "../fixtures";
 
 describe("Karabiner export", () => {

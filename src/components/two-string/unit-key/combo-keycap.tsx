@@ -1,6 +1,6 @@
-import { DisplayMode } from "src/types/keyboard-rendering";
-import { getDarkenedColor } from "src/utils/color-math";
-import { CSSVarObject } from "src/utils/keyboard-rendering";
+import { DisplayMode } from "../../../types/keyboard-rendering";
+import { getDarkenedColor } from "../../../utils/color-math";
+import { CSSVarObject } from "../../../utils/keyboard-rendering";
 import styled from "styled-components";
 import { Keycap2DTooltip } from "../../inputs/tooltip";
 import {

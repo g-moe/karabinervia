@@ -1,5 +1,5 @@
 import type { VIAKey } from "@the-via/reader";
-import { calculatePointPosition } from "src/utils/keyboard-rendering";
+import { calculatePointPosition } from "../../utils/keyboard-rendering";
 
 export const generateRowColArray = (keys: VIAKey[], rows: number, cols: number) => {
   const matrixKeys = keys.filter((key) => key["ei"] === undefined && !key.d);

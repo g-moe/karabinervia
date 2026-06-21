@@ -1,16 +1,16 @@
 import type { VIADefinitionV2, VIADefinitionV3 } from "@the-via/reader";
 import type { VIAKey } from "@the-via/reader";
 import { useCallback, useContext, useEffect, useMemo } from "react";
-import { TestKeyboardSounds } from "src/components/void/test-keyboard-sounds";
-import { getSelectedDefinition, getSelectedKeyDefinitions } from "src/store/definitionsSlice";
-import { useAppDispatch, useAppSelector } from "src/store/hooks";
-import { getSelectedKeymap, setLayer } from "src/store/keymapSlice";
-import { getTestKeyboardSoundsSettings } from "src/store/settingsSlice";
-import { DisplayMode, NDimension } from "src/types/keyboard-rendering";
-import { TestKeyState } from "src/types/types";
-import { matrixKeycodes } from "src/utils/key-event";
-import { getKeyboardRowPartitions } from "src/utils/keyboard-rendering";
-import { useGlobalKeys } from "src/utils/use-global-keys";
+import { TestKeyboardSounds } from "../../void/test-keyboard-sounds";
+import { getSelectedDefinition, getSelectedKeyDefinitions } from "../../../store/definitionsSlice";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { getSelectedKeymap, setLayer } from "../../../store/keymapSlice";
+import { getTestKeyboardSoundsSettings } from "../../../store/settingsSlice";
+import { DisplayMode, NDimension } from "../../../types/keyboard-rendering";
+import { TestKeyState } from "../../../types/types";
+import { matrixKeycodes } from "../../../utils/key-event";
+import { getKeyboardRowPartitions } from "../../../utils/keyboard-rendering";
+import { useGlobalKeys } from "../../../utils/use-global-keys";
 import { useLocation } from "wouter";
 import { TestContext } from "../../panes/test";
 import { getKeyboardCanvas } from "./configure";
@@ -19,8 +19,8 @@ import {
   macbookEditableKeys,
   macbookLayoutKeys,
   macbookKeys,
-} from "src/karabiner/virtual-device";
-import basicKeyToByte from "src/utils/key-to-byte/default";
+} from "../../../karabiner/virtual-device";
+import basicKeyToByte from "../../../utils/key-to-byte/default";
 const EMPTY_ARR = [] as any[];
 const EMPTY_KEYMAP = [] as number[];
 

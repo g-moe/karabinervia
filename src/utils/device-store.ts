@@ -1,6 +1,6 @@
 import { current } from "@reduxjs/toolkit";
-import { TestKeyboardSoundsMode } from "src/components/void/test-keyboard-sounds";
-import { APPLE_KEYCAP_THEME_BY_MODE } from "src/utils/themes";
+import { TestKeyboardSoundsMode } from "../components/void/test-keyboard-sounds";
+import { APPLE_KEYCAP_THEME_BY_MODE } from "./themes";
 import { Store } from "../shims/via-app-store";
 import type { Settings, StoreData } from "../types/types";
 
