@@ -1,7 +1,5 @@
-import {ThreeEvent} from '@react-three/fiber';
-import {VIADefinitionV2, VIADefinitionV3, VIAKey} from '@the-via/reader';
+import type {VIADefinitionV2, VIADefinitionV3, VIAKey} from '@the-via/reader';
 import {TestKeyState} from 'src/types/types';
-import {BufferGeometry} from 'three';
 
 export enum DisplayMode {
   Test = 1,
@@ -20,7 +18,7 @@ export type KeyColorPair = {
   t: string;
 };
 
-export type NDimension = '2D' | '3D';
+export type NDimension = '2D';
 
 export type KeyboardCanvasContentProps<T> = {
   selectable: boolean;
@@ -95,7 +93,3 @@ export type KeycapSharedProps<T> = {
 export type TwoStringKeycapProps = {
   clipPath: null | string;
 } & KeycapSharedProps<React.MouseEvent<Element, MouseEvent>>;
-
-export type ThreeFiberKeycapProps = {
-  keycapGeometry: BufferGeometry;
-} & KeycapSharedProps<ThreeEvent<MouseEvent>>;

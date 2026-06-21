@@ -3,9 +3,8 @@ import {
   advancedStringToKeycode,
 } from './advanced-keys';
 import {
-  BuiltInKeycodeModule,
-  VIADefinitionV3,
-  VIADefinitionV2,
+  type VIADefinitionV3,
+  type VIADefinitionV2,
 } from '@the-via/reader';
 
 export interface IKeycode {
@@ -937,12 +936,12 @@ export function getKeycodes(numMacros = 16): IKeycodeMenu[] {
 }
 
 export const categoriesForKeycodeModule = (
-  keycodeModule: BuiltInKeycodeModule | 'default',
+  keycodeModule: 'qmk_lighting' | 'wt_lighting' | 'default',
 ) =>
   ({
     default: ['basic', 'media', 'macro', 'layers', 'special'],
-    [BuiltInKeycodeModule.WTLighting]: [],
-    [BuiltInKeycodeModule.QMKLighting]: [],
+    wt_lighting: [],
+    qmk_lighting: [],
   }[keycodeModule]);
 
 export const getKeycodesForKeyboard = (

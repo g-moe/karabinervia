@@ -1,17 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import ChippyLoader from '../chippy-loader';
 import LoadingText from '../loading-text';
 import {CenterPane, ConfigureBasePane} from './pane';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {
-  CustomFeaturesV2,
-  isVIADefinitionV2,
-  isVIADefinitionV3,
-  VIADefinitionV2,
-  VIADefinitionV3,
-} from '@the-via/reader';
+import type {VIADefinitionV2, VIADefinitionV3} from '@the-via/reader';
 import {ConfigureFlexCell} from './grid';
 import {
   BottomSection,
@@ -21,162 +13,41 @@ import {
   BottomSectionTopBar,
 } from './bottom-section';
 import * as Keycode from './configure-panes/keycode';
-import * as Macros from './configure-panes/macros';
 import * as SaveLoad from './configure-panes/save-load';
-import * as Layouts from './configure-panes/layouts';
-import * as RotaryEncoder from './configure-panes/custom/satisfaction75';
-import {makeCustomMenus} from './configure-panes/custom/menu-generator';
 import {LayerControl} from './configure-panes/layer-control';
 import {Badge} from './configure-panes/badge';
-import {AccentButtonLarge} from '../inputs/accent-button';
 import {useAppSelector} from 'src/store/hooks';
 import {getSelectedDefinition} from 'src/store/definitionsSlice';
 import {
   clearSelectedKey,
   getLoadProgress,
-  getNumberOfLayers,
   setConfigureKeyboardIsSelectable,
 } from 'src/store/keymapSlice';
 import {useDispatch} from 'react-redux';
-import {reloadConnectedDevices} from 'src/store/devicesThunks';
-import {getV3MenuComponents} from 'src/store/menusSlice';
-import {getIsMacroFeatureSupported} from 'src/store/macrosSlice';
-import {getConnectedDevices, getSupportedIds} from 'src/store/devicesSlice';
-import {isElectron} from 'src/utils/running-context';
-import {useAppDispatch} from 'src/store/hooks';
-import {getRenderMode, getSelectedTheme} from 'src/store/settingsSlice';
+import {getSelectedTheme} from 'src/store/settingsSlice';
 import {useTranslation} from 'react-i18next';
-import {KARABINER_VIA_VENDOR_PRODUCT_ID} from 'src/karabiner/virtual-device';
 
-const Rows = [
-  Keycode,
-  Macros,
-  Layouts,
-  SaveLoad,
-  RotaryEncoder,
-  ...makeCustomMenus([]),
-];
-function getCustomPanes(customFeatures: CustomFeaturesV2[]) {
-  if (
-    customFeatures.find((feature) => feature === CustomFeaturesV2.RotaryEncoder)
-  ) {
-    return [RotaryEncoder];
-  }
-  return [];
-}
+const Rows = [Keycode, SaveLoad];
 
 const getRowsForKeyboard = (): typeof Rows => {
-  const showMacros = useAppSelector(getIsMacroFeatureSupported);
-  const v3Menus = useAppSelector(getV3MenuComponents);
   const selectedDefinition = useAppSelector(getSelectedDefinition);
-  const numberOfLayers = useAppSelector(getNumberOfLayers);
 
   if (!selectedDefinition) {
     return [];
-  } else if (
-    selectedDefinition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID
-  ) {
-    return [Keycode, SaveLoad];
-  } else if (isVIADefinitionV2(selectedDefinition)) {
-    return getRowsForKeyboardV2(selectedDefinition, showMacros, numberOfLayers);
-  } else if (isVIADefinitionV3(selectedDefinition)) {
-    return [
-      ...filterInferredRows(selectedDefinition, showMacros, numberOfLayers, [
-        Keycode,
-        Layouts,
-        Macros,
-        SaveLoad,
-      ]),
-      ...v3Menus,
-    ];
-  } else {
-    return [];
   }
-};
-
-const filterInferredRows = (
-  selectedDefinition: VIADefinitionV3 | VIADefinitionV2,
-  showMacros: boolean,
-  numberOfLayers: number,
-  rows: typeof Rows,
-): typeof Rows => {
-  const {layouts} = selectedDefinition;
-  let removeList: typeof Rows = [];
-  // LAYOUTS IS INFERRED, filter out if doesn't exist
-  if (
-    !(layouts.optionKeys && Object.entries(layouts.optionKeys).length !== 0)
-  ) {
-    removeList = [...removeList, Layouts];
-  }
-
-  if (numberOfLayers === 0) {
-    removeList = [...removeList, Keycode, SaveLoad];
-  }
-
-  if (!showMacros) {
-    removeList = [...removeList, Macros];
-  }
-  let filteredRows = rows.filter(
-    (row) => !removeList.includes(row),
-  ) as typeof Rows;
-  return filteredRows;
-};
-
-const getRowsForKeyboardV2 = (
-  selectedDefinition: VIADefinitionV2,
-  showMacros: boolean,
-  numberOfLayers: number,
-): typeof Rows => {
-  let rows: typeof Rows = [Keycode, Layouts, Macros, SaveLoad];
-  if (isVIADefinitionV2(selectedDefinition)) {
-    const {customFeatures} = selectedDefinition;
-    if (customFeatures) {
-      rows = [...rows, ...getCustomPanes(customFeatures)];
-    }
-  }
-  return filterInferredRows(
-    selectedDefinition,
-    showMacros,
-    numberOfLayers,
-    rows,
-  );
+  return Rows;
 };
 
 const Loader: React.FC<{
   loadProgress: number;
   selectedDefinition: VIADefinitionV2 | VIADefinitionV3 | null;
 }> = (props) => {
-  const {t} = useTranslation();
   const {loadProgress, selectedDefinition} = props;
-  const dispatch = useAppDispatch();
   const theme = useAppSelector(getSelectedTheme);
-
-  const connectedDevices = useAppSelector(getConnectedDevices);
-  const supportedIds = useAppSelector(getSupportedIds);
-  const noSupportedIds = !Object.values(supportedIds).length;
-  const noConnectedDevices = !Object.values(connectedDevices).length;
-  const [showButton, setShowButton] = useState<boolean>(false);
-
-  useEffect(() => {
-    // TODO: Remove the timeout because it is funky
-    const timeout = setTimeout(() => {
-      if (!selectedDefinition) {
-        setShowButton(true);
-      }
-    }, 3000);
-    return () => clearTimeout(timeout);
-  }, [selectedDefinition]);
   return (
     <LoaderPane>
       {<ChippyLoader theme={theme} progress={loadProgress || null} />}
-      {(showButton || noConnectedDevices) && !noSupportedIds && !isElectron ? (
-        <AccentButtonLarge onClick={() => dispatch(reloadConnectedDevices())}>
-          {t('Authorize device')}
-          <TrailingIcon icon={faPlus} />
-        </AccentButtonLarge>
-      ) : (
-        <LoadingText isSearching={!selectedDefinition} />
-      )}
+      <LoadingText isSearching={!selectedDefinition} />
     </LoaderPane>
   );
 };
@@ -194,10 +65,6 @@ const LoaderPane = styled(CenterPane)`
   z-index: 4;
 `;
 
-const TrailingIcon = styled(FontAwesomeIcon)`
-  margin-left: 10px;
-`;
-
 const ConfigureOverlay = styled(ConfigureFlexCell)`
   pointer-events: none;
   position: absolute;
@@ -213,16 +80,13 @@ const ConfigureControls = styled.div`
 export const ConfigurePane = () => {
   const selectedDefinition = useAppSelector(getSelectedDefinition);
   const loadProgress = useAppSelector(getLoadProgress);
-  const renderMode = useAppSelector(getRenderMode);
 
   const showLoader = !selectedDefinition || loadProgress !== 1;
   return showLoader ? (
-    renderMode === '2D' ? (
-      <Loader
-        selectedDefinition={selectedDefinition || null}
-        loadProgress={loadProgress}
-      />
-    ) : null
+    <Loader
+      selectedDefinition={selectedDefinition || null}
+      loadProgress={loadProgress}
+    />
   ) : (
     <ConfigureBasePane>
       <ConfigureGrid />

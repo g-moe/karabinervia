@@ -1,4 +1,4 @@
-import {getBoundingBox, Result, VIAKey} from '@the-via/reader';
+import type {VIAKey} from '@the-via/reader';
 import {useAppDispatch} from 'src/store/hooks';
 import {updateSelectedKey} from 'src/store/keymapSlice';
 import {
@@ -10,6 +10,7 @@ import {getByteToKey} from 'src/utils/key';
 import {getBasicKeyDict} from 'src/utils/key-to-byte/dictionary-store';
 import {
   calculatePointPosition,
+  getBoundingBox,
   getKeyboardRowPartitions,
   getKeyId,
   getLabel,
@@ -95,7 +96,7 @@ export function getKeysKeys<T>(
 ): KeysKeys<T> {
   const {keys} = props;
   const {rowMap} = getKeyboardRowPartitions(keys);
-  const boxes = (keys as unknown as Result[]).map(getBoundingBox);
+  const boxes = keys.map(getBoundingBox);
   const [minX, minY] = [
     Math.min(...boxes.map((p) => p.xStart)),
     Math.min(...boxes.map((p) => p.yStart)),

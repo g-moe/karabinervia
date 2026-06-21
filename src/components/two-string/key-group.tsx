@@ -1,8 +1,6 @@
 import {useEffect, useMemo, useState} from 'react';
-import {getBasicKeyToByte} from 'src/store/definitionsSlice';
 import {useAppDispatch, useAppSelector} from 'src/store/hooks';
 import {getSelectedKey, getSelectedLayerIndex} from 'src/store/keymapSlice';
-import {getExpressions} from 'src/store/macrosSlice';
 import {getSelectedTheme} from 'src/store/settingsSlice';
 import {KeyGroupProps, KeysKeys} from 'src/types/keyboard-rendering';
 import {getRGB} from 'src/utils/color-math';
@@ -13,11 +11,9 @@ import {
 } from 'src/utils/keyboard-rendering';
 import {useSkipFontCheck} from 'src/utils/use-skip-font-check';
 import styled from 'styled-components';
-import {Color} from 'three';
 import {
   getKeycapSharedProps,
   getKeysKeys,
-  getLabels,
 } from '../n-links/key-group';
 import {CaseInsideBorder} from './case';
 import {Keycap} from './unit-key/keycap';
@@ -46,8 +42,7 @@ const getRGBArray = (keyColors: number[][]) => {
       hue: Math.round((255 * hue) / 360),
       sat: Math.round(255 * sat),
     });
-    const srgbStr = `#${new Color(rgbStr).getHexString()}`;
-    const keyColor = {c: srgbStr, t: srgbStr};
+    const keyColor = {c: rgbStr, t: rgbStr};
     return keyColor;
   });
 };
@@ -57,13 +52,10 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
   const selectedKey = useAppSelector(getSelectedKey);
   const selectedLayerIndex = useAppSelector(getSelectedLayerIndex);
   const selectedTheme = useAppSelector(getSelectedTheme);
-  const macroExpressions = useAppSelector(getExpressions);
   const skipFontCheck = useSkipFontCheck();
   const keyColorPalette = props.keyColors
     ? getRGBArray(props.keyColors)
     : selectedTheme;
-  const {basicKeyToByte, byteToKey} = useAppSelector(getBasicKeyToByte);
-  const macros = useAppSelector((state) => state.macros);
   const {keys, selectedKey: externalSelectedKey} = props;
   const isKarabinerDevice =
     props.definition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID;
@@ -121,17 +113,12 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
     };
   }, [isShiftPreviewActive]);
   const labels = useMemo(() => {
-    if (isKarabinerDevice) {
-      return getKarabinerLabels(selectedLayerIndex, isShiftPreviewActive);
-    }
-    return getLabels(props, macroExpressions, basicKeyToByte, byteToKey);
+    return getKarabinerLabels(selectedLayerIndex, isShiftPreviewActive);
   }, [
     keys,
     props.matrixKeycodes,
-    macros,
     props.definition,
     selectedLayerIndex,
-    isKarabinerDevice,
     isShiftPreviewActive,
   ]);
   const {width, height} = calculateKeyboardFrameDimensions(keys);

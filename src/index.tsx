@@ -1,4 +1,3 @@
-import '@webscopeio/react-textarea-autocomplete/style.css';
 import {createRoot} from 'react-dom/client';
 import './app.global.css';
 import Root from './containers/Root';

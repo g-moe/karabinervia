@@ -1,7 +1,6 @@
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {splitVendorChunkPlugin} from 'vite';
 import {createHtmlPlugin} from 'vite-plugin-html';
 import fs from 'fs';
 
@@ -18,7 +17,6 @@ export default defineConfig({
         },
       },
     }),
-    splitVendorChunkPlugin(),
   ],
   assetsInclude: ['**/*.glb'],
   envDir: '.',
@@ -31,13 +29,5 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['@the-via/reader'],
-    esbuildOptions: {
-      // Node.js global to browser globalThis
-      define: {
-        global: 'globalThis',
-      },
-      // Enable esbuild polyfill plugins
-      plugins: [],
-    },
   },
 });

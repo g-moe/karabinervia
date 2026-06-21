@@ -1,4 +1,3 @@
-import {useProgress} from '@react-three/drei';
 import React, {useCallback, useEffect, useRef} from 'react';
 import {shallowEqual} from 'react-redux';
 import {getSelectedDefinition} from 'src/store/definitionsSlice';
@@ -9,12 +8,13 @@ import {
   getLoadProgress,
   updateSelectedKey,
 } from 'src/store/keymapSlice';
-import {OVERRIDE_HID_CHECK} from 'src/utils/override';
 import {useSize} from 'src/utils/use-size';
 import styled from 'styled-components';
 import {useLocation} from 'wouter';
 import {ConfigureKeyboard} from '../n-links/keyboard/configure';
 import {Test} from '../n-links/keyboard/test';
+
+const KEYBOARD_SCENE_PATHS = ['/', '/test'];
 
 const KeyboardBG = styled.div<{
   onClick: () => void;
@@ -46,12 +46,16 @@ const KeyboardRouteGroup = styled.div<{
 const KeyboardSceneFrame = styled.div<{
   $hidden: boolean;
   $hideTerrain: boolean;
+  $inactive: boolean;
   $viewportHeight?: number;
 }>`
-  height: 500px;
+  height: ${(props) => (props.$inactive ? 0 : 500)}px;
   width: 100%;
   top: 0;
   transform: ${(props) => {
+    if (props.$inactive) {
+      return '';
+    }
     if (!props.$hidden) {
       return '';
     }
@@ -64,19 +68,24 @@ const KeyboardSceneFrame = styled.div<{
     return `translateY(${-300 + props.$viewportHeight / 2}px)`;
   }};
   position: ${(props) =>
-    props.$hidden && !props.$hideTerrain ? 'absolute' : 'relative'};
-  overflow: visible;
+    props.$inactive || (props.$hidden && !props.$hideTerrain)
+      ? 'absolute'
+      : 'relative'};
+  overflow: ${(props) => (props.$inactive ? 'hidden' : 'visible')};
+  pointer-events: ${(props) => (props.$inactive ? 'none' : 'auto')};
   z-index: 2;
   visibility: ${(props) =>
-    props.$hidden && !props.$hideTerrain ? 'hidden' : 'visible'};
+    props.$inactive || (props.$hidden && !props.$hideTerrain)
+      ? 'hidden'
+      : 'visible'};
 `;
 
 export const CanvasRouter = () => {
   const [path] = useLocation();
+  const isKeyboardScenePath = KEYBOARD_SCENE_PATHS.includes(path);
   const body = useRef(document.body);
   const containerRef = useRef(null);
   const loadProgress = useAppSelector(getLoadProgress);
-  const {progress} = useProgress();
   const dispatch = useAppDispatch();
   const containerDimensions = useSize(containerRef);
   const dimensions = useSize(body);
@@ -84,16 +93,14 @@ export const CanvasRouter = () => {
   const showLoader =
     path === '/' && (!selectedDefinition || loadProgress !== 1);
   const hideConfigureScene =
-    '/' === path &&
-    (!selectedDefinition || (loadProgress + progress / 100) / 2 !== 1);
+    '/' === path && (!selectedDefinition || loadProgress !== 1);
   const terrainOnClick = useCallback(() => {
     if (true) {
       dispatch(updateSelectedKey(null));
     }
   }, [dispatch]);
-  const showAuthorizeButton = true;
   const hideCanvasScene =
-    !showAuthorizeButton || ['/errors'].includes(path) || hideConfigureScene;
+    !isKeyboardScenePath || hideConfigureScene;
   const configureKeyboardIsSelectable = useAppSelector(
     getConfigureKeyboardIsSelectable,
   );
@@ -104,6 +111,7 @@ export const CanvasRouter = () => {
       <KeyboardSceneFrame
         $hidden={hideCanvasScene}
         $hideTerrain={hideTerrainBG}
+        $inactive={!isKeyboardScenePath}
         $viewportHeight={dimensions?.height}
         onClick={(evt) => {
           if ((evt.target as any).nodeName !== 'CANVAS')

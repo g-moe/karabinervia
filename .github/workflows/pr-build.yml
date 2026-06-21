@@ -18,10 +18,11 @@ jobs:
       - name: Use Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-      - name: npm install and build
+          node-version: 24
+          cache: pnpm
+      - name: Enable pnpm
+        uses: pnpm/action-setup@v4
+      - name: Install and build
         run: |
-          npm ci
-          npm run refresh-kbs
-          npm run build
+          pnpm install --frozen-lockfile
+          pnpm build

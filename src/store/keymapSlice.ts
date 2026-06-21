@@ -7,18 +7,14 @@ import type {
 } from '../types/types';
 import type {AppThunk, RootState} from './index';
 import {
-  getDefinitions,
   getSelectedDefinition,
   getSelectedKeyDefinitions,
 } from './definitionsSlice';
 import {
   getSelectedConnectedDevice,
   getSelectedDevicePath,
-  getSelectedKeyboardAPI,
   selectDevice,
 } from './devicesSlice';
-import {KeyboardAPI} from 'src/utils/keyboard-api';
-import {KARABINER_VIA_DEVICE_PATH} from 'src/karabiner/virtual-device';
 
 type KeymapState = {
   rawDeviceMap: DeviceLayerMap;
@@ -37,6 +33,8 @@ const initialState: KeymapState = {
   configureKeyboardIsSelectable: false,
   selectedPaletteColor: [0, 0],
 };
+
+const EMPTY_LAYERS: Layer[] = [];
 
 const keymapSlice = createSlice({
   name: 'keymap',
@@ -130,49 +128,16 @@ export const {
 
 export default keymapSlice.reducer;
 
-export const loadKeymapFromDevice =
-  (connectedDevice: ConnectedDevice): AppThunk =>
-  async (dispatch, getState) => {
-    const state = getState();
-
-    if (getLoadProgress(state) === 1) {
-      return;
-    }
-
-    const {path, vendorProductId, requiredDefinitionVersion} = connectedDevice;
-    const api = getSelectedKeyboardAPI(state) as KeyboardAPI;
-
-    const numberOfLayers = await api.getLayerCount();
-    dispatch(setNumberOfLayers(numberOfLayers));
-
-    const {matrix} =
-      getDefinitions(state)[vendorProductId][requiredDefinitionVersion];
-
-    for (var layerIndex = 0; layerIndex < numberOfLayers; layerIndex++) {
-      const keymap = await api.readRawMatrix(matrix, layerIndex);
-      dispatch(loadLayerSuccess({layerIndex, keymap, devicePath: path}));
-    }
-  };
-
-// TODO: why isn't this keymap of type Keymap i.e. number[]?
-// TODO: should this be using the current selected device? not sure
 export const saveRawKeymapToDevice =
   (keymap: number[][], connectedDevice: ConnectedDevice): AppThunk =>
   async (dispatch, getState) => {
     const state = getState();
     const {path} = connectedDevice;
-    const api = getSelectedKeyboardAPI(state);
     const definition = getSelectedDefinition(state);
-    const isVirtualDevice = path === KARABINER_VIA_DEVICE_PATH;
-    if (!path || !definition || (!api && !isVirtualDevice)) {
+    if (!path || !definition) {
       return;
     }
 
-    const {matrix} = definition;
-
-    if (!isVirtualDevice && api) {
-      await api.writeRawMatrix(matrix, keymap);
-    }
     const layers = keymap.map((layer) => ({
       keymap: layer,
       isLoaded: true,
@@ -186,14 +151,8 @@ export const updateKey =
     const state = getState();
     const keys = getSelectedKeyDefinitions(state);
     const connectedDevice = getSelectedConnectedDevice(state);
-    const api = getSelectedKeyboardAPI(state);
     const selectedDefinition = getSelectedDefinition(state);
     if (!connectedDevice || !keys || !selectedDefinition) {
-      return;
-    }
-
-    const isVirtualDevice = connectedDevice.path === KARABINER_VIA_DEVICE_PATH;
-    if (!isVirtualDevice && !api) {
       return;
     }
 
@@ -202,10 +161,6 @@ export const updateKey =
     const {row, col} = keys[keyIndex];
     const {matrix} = selectedDefinition;
     const keymapIndex = row * matrix.cols + col;
-
-    if (!isVirtualDevice && api) {
-      await api.setKey(selectedLayerIndex, row, col, value);
-    }
 
     dispatch(setKey({keymapIndex, value, devicePath: path}));
   };
@@ -230,7 +185,8 @@ export const getSelectedPaletteColor = createSelector(
 export const getSelectedRawLayers = createSelector(
   getRawDeviceMap,
   getSelectedDevicePath,
-  (rawDeviceMap, devicePath) => (devicePath && rawDeviceMap[devicePath]) || [],
+  (rawDeviceMap, devicePath) =>
+    (devicePath && rawDeviceMap[devicePath]) || EMPTY_LAYERS,
 );
 
 export const getLoadProgress = createSelector(

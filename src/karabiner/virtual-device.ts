@@ -1,4 +1,4 @@
-import {KeyColorType, type VIADefinitionV3, type VIAKey} from '@the-via/reader';
+import type {VIADefinitionV3, VIAKey} from '@the-via/reader';
 import type {ConnectedDevice, Layer} from 'src/types/types';
 import {getByteForCode} from 'src/utils/key';
 import {getBasicKeyDict} from 'src/utils/key-to-byte/dictionary-store';
@@ -14,6 +14,12 @@ type MacKey = VIAKey & {
   displayBottomLabel?: string;
   displayOnly?: boolean;
 };
+
+const KeyColorType = {
+  Alpha: 'alpha' as VIAKey['color'],
+  Mod: 'mod' as VIAKey['color'],
+  Accent: 'accent' as VIAKey['color'],
+} as const;
 
 const key = (
   row: number,

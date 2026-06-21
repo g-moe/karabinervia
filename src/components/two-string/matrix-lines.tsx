@@ -1,4 +1,4 @@
-import {VIAKey} from '@the-via/reader';
+import type {VIAKey} from '@the-via/reader';
 import {CSSVarObject} from 'src/utils/keyboard-rendering';
 import styled from 'styled-components';
 import {generateRowColArray} from '../n-links/matrix-lines';

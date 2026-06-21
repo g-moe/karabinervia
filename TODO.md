@@ -35,7 +35,11 @@
 
 ---
 
-- [ ] move to pnpm, with workspace rul for minimum release age to be 14 days
-- [ ] major upgrades for packages
-- [ ] remove package.json commands that are not relevant to this fork
-- [ ] replace readme with information that this is a WIP fork of via frontend so that we can map apple keyboards to karabiner...it will support editing all mac os keys except the function row, touch id, and the globe key.
+- [x] move to pnpm, with workspace rul for minimum release age to be 14 days
+- [x] major upgrades for packages
+- [x] remove dendencies that are no longer relevant to this fork - hard audit
+  - [x] remove legacy 3D/WebGL renderer and React Three dependency stack now that the Mac planner is 2D only
+  - [x] remove React-18-only VIA macro script editor autocomplete dependency
+  - [x] audit and remove remaining VIA USB/HID connection paths, keyboard API byte transport, and QMK key-byte conversion once the Karabiner workspace model fully owns key editing
+- [x] remove package.json commands that are not relevant to this fork
+- [x] replace readme with information that this is a WIP fork of via frontend so that we can map apple keyboards to karabiner...it will support editing all mac os keys except the function row, touch id, and the globe key.

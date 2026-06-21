@@ -1,4 +1,4 @@
-import {VIAKey} from '@the-via/reader';
+import type {VIAKey} from '@the-via/reader';
 import {calculatePointPosition} from 'src/utils/keyboard-rendering';
 
 export const generateRowColArray = (

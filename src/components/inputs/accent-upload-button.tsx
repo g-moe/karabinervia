@@ -9,7 +9,7 @@ type Props = {
 };
 
 export function AccentUploadButton(props: Props) {
-  const input = props.inputRef || React.useRef<HTMLInputElement>();
+  const input = props.inputRef || React.useRef<HTMLInputElement>(undefined);
   function onChange(e: any) {
     props.onLoad(e.target.files as File[]);
     (input.current as any).value = null;

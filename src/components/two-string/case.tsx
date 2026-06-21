@@ -5,24 +5,24 @@ import styled from 'styled-components';
 
 const CaseGroup = styled.div<{}>``;
 const OuterCase = styled.div<{
-  background: string;
+  $background: string;
   height: number;
   width: number;
 }>`
-  background: ${(props) => props.background};
+  background: ${(props) => props.$background};
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   border-radius: 8px;
   box-shadow: var(--box-shadow-keyboard);
 `;
 const InnerCase = styled.div<{
-  background: string;
+  $background: string;
   height: number;
   width: number;
   $translateX: number;
   $translateY: number;
 }>`
-  background: ${(props) => props.background};
+  background: ${(props) => props.$background};
   top: 0;
   left: 0;
   position: absolute;
@@ -53,12 +53,12 @@ export const Case = React.memo((props: {width: number; height: number}) => {
   return (
     <CaseGroup>
       <OuterCase
-        background="var(--color_keyboard-case)"
+        $background="var(--color_keyboard-case)"
         width={outsideWidth}
         height={outsideHeight}
       ></OuterCase>
       <InnerCase
-        background="linear-gradient(200deg, var(--color_keyboard-case) 40%, var(--color_app-background), var(--color_keyboard-case) 80%)"
+        $background="linear-gradient(200deg, var(--color_keyboard-case) 40%, var(--color_app-background), var(--color_keyboard-case) 80%)"
         width={insideWidth}
         height={insideHeight}
         $translateX={insideWidth - properWidth}

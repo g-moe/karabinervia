@@ -1,14 +1,11 @@
 import {
-  getBoundingBox,
-  Result,
-  ThemeDefinition,
-  VIADefinitionV2,
-  VIADefinitionV3,
-  VIAKey,
+  type Result,
+  type ThemeDefinition,
+  type VIADefinitionV2,
+  type VIADefinitionV3,
+  type VIAKey,
 } from '@the-via/reader';
 import partition from 'lodash.partition';
-import {Color} from 'three';
-import {getThemeFromStore} from './device-store';
 import {
   getLabelForByte,
   getShortNameForKeycode,
@@ -298,15 +295,65 @@ export const getNextKey = (
     : keys.indexOf(sortedKeys[(sortedIndex + 1) % sortedKeys.length]);
 };
 
-export const makeSRGBTheme = (theme: ThemeDefinition) =>
-  Object.entries(theme).reduce((p, [key, colorPair]) => {
-    const c = `#${new Color(colorPair.c).convertSRGBToLinear().getHexString()}`;
-    const t = `#${new Color(colorPair.t).convertSRGBToLinear().getHexString()}`;
-    return {...p, [key]: {c, t}};
-  }, {}) as ReturnType<typeof getThemeFromStore>;
+type BoundingBox = {
+  xStart: number;
+  xEnd: number;
+  yStart: number;
+  yEnd: number;
+};
+
+const applyRotation = (
+  x: number,
+  y: number,
+  xOrigin: number,
+  yOrigin: number,
+  rotation: number,
+) => {
+  const rad = (rotation * Math.PI) / 180;
+  const normX = x - xOrigin;
+  const normY = y - yOrigin;
+  return {
+    x: xOrigin + normX * Math.cos(rad) - normY * Math.sin(rad),
+    y: yOrigin + normX * Math.sin(rad) + normY * Math.cos(rad),
+  };
+};
+
+export const getBoundingBox = (key: Partial<Result>): BoundingBox => {
+  const {
+    x2 = 0,
+    y2 = 0,
+    x = 0,
+    y = 0,
+    w = 1,
+    h = 1,
+    r = 0,
+    rx = 0,
+    ry = 0,
+    h2 = h,
+    w2 = w,
+  } = key;
+  const box = {
+    xStart: Math.min(x, x + x2),
+    yStart: Math.min(y, y + y2),
+    xEnd: Math.max(x + w, x + x2 + w2),
+    yEnd: Math.max(y + h, y + y2 + h2),
+  };
+  const rotatedPoints = [
+    {x: box.xStart, y: box.yStart},
+    {x: box.xEnd, y: box.yStart},
+    {x: box.xStart, y: box.yEnd},
+    {x: box.xEnd, y: box.yEnd},
+  ].map((p) => applyRotation(p.x, p.y, rx, ry, r));
+  return {
+    xStart: Math.min(...rotatedPoints.map((p) => p.x)),
+    xEnd: Math.max(...rotatedPoints.map((p) => p.x)),
+    yStart: Math.min(...rotatedPoints.map((p) => p.y)),
+    yEnd: Math.max(...rotatedPoints.map((p) => p.y)),
+  };
+};
 
 export const calculateKeyboardFrameDimensions = (keys: Partial<Result>[]) => {
-  const boundingBoxes = keys.map(getBoundingBox as any) as any[];
+  const boundingBoxes = keys.map(getBoundingBox);
   const minX = Math.min(...boundingBoxes.map((b) => b.xStart));
   const minY = Math.min(...boundingBoxes.map((b) => b.yStart));
   const width = Math.max(...boundingBoxes.map((b) => b.xEnd)) - minX;

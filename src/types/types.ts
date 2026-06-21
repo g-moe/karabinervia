@@ -38,19 +38,6 @@ export type Layer = {
 
 export type DeviceLayerMap = {[devicePath: string]: Layer[]};
 
-export type WebVIADevice = Device & {
-  _device: HIDDevice;
-};
-
-// Refers to a device that may or may not have an associated definition but does have a valid protocol version
-export type AuthorizedDevice = DeviceInfo & {
-  path: string;
-  vendorProductId: number;
-  protocol: number;
-  requiredDefinitionVersion: DefinitionVersion;
-  hasResolvedDefinition: false;
-};
-
 export type ConnectedDevice = DeviceInfo & {
   path: string;
   vendorProductId: number;
@@ -59,14 +46,7 @@ export type ConnectedDevice = DeviceInfo & {
   hasResolvedDefinition: true;
 };
 
-export type AuthorizedDevices = Record<string, AuthorizedDevice>;
 export type ConnectedDevices = Record<string, ConnectedDevice>;
-
-export type MacroEditorSettings = {
-  recordDelaysEnabled: boolean;
-  smartOptimizeEnabled: boolean;
-  tapEnterAtEOMEnabled: boolean;
-};
 
 export type TestKeyboardSoundsSettings = {
   isEnabled: boolean;
@@ -78,9 +58,7 @@ export type TestKeyboardSoundsSettings = {
 
 export type Settings = {
   disableFastRemap: boolean;
-  renderMode: '3D' | '2D';
   themeMode: 'light' | 'dark';
-  macroEditor: MacroEditorSettings;
   testKeyboardSoundsSettings: TestKeyboardSoundsSettings;
 };
 
@@ -89,8 +67,6 @@ export type CommonMenusMap = {
 };
 
 export type StoreData = {
-  definitionIndex: DefinitionIndex;
-  definitions: KeyboardDictionary;
   settings: Settings;
 };
 

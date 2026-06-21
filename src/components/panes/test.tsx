@@ -2,7 +2,6 @@ import React, {FC, useContext} from 'react';
 import fullKeyboardDefinition from '../../utils/test-keyboard-definition.json';
 import {Pane} from './pane';
 import styled from 'styled-components';
-import {PROTOCOL_GAMMA} from '../../utils/keyboard-api';
 import {ControlRow, Label, Detail} from './grid';
 import {
   BottomSection,
@@ -15,20 +14,13 @@ import {AccentSlider} from '../inputs/accent-slider';
 import {AccentButton} from '../inputs/accent-button';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from 'src/store/hooks';
-import {getSelectedConnectedDevice} from 'src/store/devicesSlice';
+import {getSelectedDefinition} from 'src/store/definitionsSlice';
 import {
-  getSelectedDefinition,
-  getSelectedKeyDefinitions,
-} from 'src/store/definitionsSlice';
-import {
-  getIsTestMatrixEnabled,
-  setTestMatrixEnabled,
   getTestKeyboardSoundsSettings,
   setTestKeyboardSoundsSettings,
 } from 'src/store/settingsSlice';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCircleQuestion} from '@fortawesome/free-solid-svg-icons';
-import {useProgress} from '@react-three/drei';
 import {AccentSelect} from '../inputs/accent-select';
 import {AccentRange} from '../inputs/accent-range';
 import {TestKeyboardSoundsMode} from '../void/test-keyboard-sounds';
@@ -56,25 +48,13 @@ export const TestContext = React.createContext([
 export const Test: FC = () => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
-  const selectedDevice = useAppSelector(getSelectedConnectedDevice);
   const selectedDefinition = useAppSelector(getSelectedDefinition);
-  const keyDefinitions = useAppSelector(getSelectedKeyDefinitions);
-  const isTestMatrixEnabled = useAppSelector(getIsTestMatrixEnabled);
   const testKeyboardSoundsSettings = useAppSelector(
     getTestKeyboardSoundsSettings,
   );
 
   const [testContextObj] = useContext(TestContext);
-  const {progress} = useProgress();
-
-  const hasTestMatrixDevice =
-    selectedDevice && selectedDefinition && keyDefinitions;
-  const canUseMatrixState =
-    hasTestMatrixDevice && PROTOCOL_GAMMA <= selectedDevice.protocol;
-
-  const testDefinition = isTestMatrixEnabled
-    ? selectedDefinition
-    : fullKeyboardDefinition;
+  const testDefinition = selectedDefinition ?? fullKeyboardDefinition;
 
   if (!testDefinition || typeof testDefinition === 'string') {
     return null;
@@ -120,7 +100,7 @@ export const Test: FC = () => {
     (opt) => opt.value === testKeyboardSoundsSettings.mode,
   );
 
-  return progress !== 100 ? null : (
+  return (
     <TestPane>
       <BottomSection>
         <BottomSectionTopBar>
@@ -140,20 +120,6 @@ export const Test: FC = () => {
                 </AccentButton>
               </Detail>
             </ControlRow>
-            {canUseMatrixState && selectedDefinition ? (
-              <ControlRow>
-                <Label>{t('Test Matrix')}</Label>
-                <Detail>
-                  <AccentSlider
-                    isChecked={isTestMatrixEnabled}
-                    onChange={(val) => {
-                      dispatch(setTestMatrixEnabled(val));
-                      testContextObj.clearTestKeys();
-                    }}
-                  />
-                </Detail>
-              </ControlRow>
-            ) : null}
             <ControlRow>
               <Label>{t('Key Sounds')}</Label>
               <Detail>

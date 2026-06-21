@@ -1,65 +1,31 @@
-# [VIA Web Application](https://usevia.app) - Your keyboards best friend
+# WIP - KarabinerVIA
 
-![android-chrome-192x192](https://user-images.githubusercontent.com/1714072/222621960-ddfb8ee6-a486-4c66-8852-b204ba7c807b.png)
+KarabinerVIA is a work-in-progress fork of the VIA frontend. The goal is to keep the strong visual keyboard-planning workflow from VIA while replacing the QMK/device backend with a Mac and Karabiner-focused model.
 
-[![Azure Static Web Apps CI/CD](https://github.com/the-via/app/actions/workflows/azure.yml/badge.svg)](https://github.com/the-via/app/actions/workflows/azure.yml)
+This fork is currently scoped to Apple laptop keyboards. It is intended to help plan QWERTY macOS layouts with layers, tap actions, hold actions, and Karabiner export support.
 
-VIA is a powerful, open-source web-based interface for configuring your [QMK](https://qmk.fm)-powered mechanical keyboard. It allows you to customize your keymaps, create macros, and adjust RGB settings (if it has RGB) on the fly, without needing to recompile your keyboard's firmware. This makes keyboard customization easier and more accessible for everyone.
+## Current Scope
 
-## Getting VIA to support your keyboard
+- Visual planning for a MacBook Pro keyboard with Touch ID.
+- Karabiner-oriented key/action modeling instead of live QMK device configuration.
+- Editing for macOS keys except the function row, Touch ID, and the globe key.
+- A single local workspace rather than hardware connection management.
 
-Are you a keyboard maker or a developer interested in adding support for your keyboard? We welcome contributions to the VIA project!
+## Development
 
-1. The source code of the keyboard **has to be merged** in [QMK Firmware Repositories](https://github.com/qmk/qmk_firmware) Master branch.
-2. Your `keymaps/via` keymap **has to be merged** in [VIA's QMK Userspace Repository](https://github.com/the-via/qmk_userspace_via) Main branch.
-3. Create a definition in JSON format for your keyboard and submit it as a pull request to [VIA's Keyboards Repository](https://github.com/the-via/keyboards) Master branch.
-
-Please follow our [Specification documentation](https://www.caniusevia.com/docs/specification) carefully to ensure your pull request is smoothly reviewed and merged.
-
-## Local development setup
-
-Start by cloning [`the-via/keyboards`](github.com/the-via/keyboards) then install dependencies with `npm install` and finally `npm run build`. You should see
-the output folder `dist`. This should be copied or symlinked to our repo's `public/definitions` folder.
+This project uses pnpm. Dependency installs are gated by a 14-day minimum release age in `pnpm-workspace.yaml`.
 
 ```bash
-# Inside the-via/app
-public/definitions -> ../../keyboards/dist
+pnpm install
+pnpm dev
 ```
 
-### Useful commands
+The local dev server runs with Vite. Build the app with:
 
-#### `npm run dev`
+```bash
+pnpm build
+```
 
-Runs the app in the development mode.
-Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
+## Upstream
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
-
-#### `npm run build`
-
-Builds a static copy of your site to the `build/` folder.
-Your app is ready to be deployed!
-
-#### `npm run test`
-
-Launches the application test runner.
-Run with the `--watch` flag (`npm test -- --watch`) to run in interactive watch mode.
-
----
-
-This project is tested with [BrowserStack](https://www.browserstack.com/).
-
-## Looking for an offline app?
-
-@cebby2420 has kindly made a desktop app that does so.
-
-You can find it at [https://github.com/cebby2420/via-desktop](https://github.com/cebby2420/via-desktop).
-
-**NOTE: This project has no official affiliation with VIA, and we cannot provide support for it.**
-
-## Facing Issues?
-
-If you encounter any issues or bugs while using the [VIA web application](https://usevia.app), please report them by opening an issue in the [Issues section](https://github.com/the-via/app/issues). This will help us to track down and resolve problems, and improve the VIA experience for everyone.
-
-Before reporting, please make sure to check if an issue has already been reported. Thank you!
+KarabinerVIA is derived from the open-source VIA app. This fork is not affiliated with VIA, QMK, Apple, or Karabiner-Elements.

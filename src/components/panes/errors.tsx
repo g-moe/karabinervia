@@ -152,7 +152,6 @@ const ErrorToolbar = styled(IconButtonGroupContainer)`
 `;
 
 enum ErrorPaneMenu {
-  KeyboardAPI,
   App,
 }
 

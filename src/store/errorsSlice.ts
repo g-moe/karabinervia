@@ -2,13 +2,6 @@ import {RootState} from './index';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {DeviceInfo} from 'src/types/types';
 
-export type KeyboardAPIError = {
-  commandName: string;
-  commandBytes: number[];
-  responseBytes: number[];
-  deviceInfo: DeviceInfo;
-};
-
 export type AppError = {
   timestamp: string;
   message: string;
@@ -38,12 +31,7 @@ export const getErrorTimestamp = () => {
     .padStart(3, '0')}`;
 };
 
-export const extractMessageFromKeyboardAPIError = (error: KeyboardAPIError) =>
-  `Command Name: ${error.commandName}
-Command: ${formatBytes(error.commandBytes)}
-Response: ${formatBytes(error.responseBytes)}`;
 export const getMessageFromError = (e: Error) => e.stack || e.message;
-const formatBytes = (bytes: number[]) => bytes.join(' ');
 
 const errorsSlice = createSlice({
   name: 'errors',
@@ -55,22 +43,13 @@ const errorsSlice = createSlice({
     ) => {
       state.appErrors.push({...action.payload, timestamp: getErrorTimestamp()});
     },
-    logKeyboardAPIError: (state, action: PayloadAction<KeyboardAPIError>) => {
-      const {deviceInfo} = action.payload;
-      state.appErrors.push({
-        timestamp: getErrorTimestamp(),
-        message: extractMessageFromKeyboardAPIError(action.payload),
-        deviceInfo,
-      });
-    },
     clearAppErrors: (state) => {
       state.appErrors = [];
     },
   },
 });
 
-export const {logKeyboardAPIError, logAppError, clearAppErrors} =
-  errorsSlice.actions;
+export const {logAppError, clearAppErrors} = errorsSlice.actions;
 
 export default errorsSlice.reducer;
 

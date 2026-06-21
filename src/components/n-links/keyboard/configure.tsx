@@ -6,11 +6,12 @@ import {
 import {useAppSelector} from 'src/store/hooks';
 import {getSelectedKeymap} from 'src/store/keymapSlice';
 import {DisplayMode, NDimension} from 'src/types/keyboard-rendering';
-import {KeyboardCanvas as FiberKeyboardCanvas} from '../../three-fiber/keyboard-canvas';
 import {KeyboardCanvas as StringKeyboardCanvas} from '../../two-string/keyboard-canvas';
 
-export const getKeyboardCanvas = (dimension: '2D' | '3D') =>
-  dimension === '2D' ? StringKeyboardCanvas : FiberKeyboardCanvas;
+const EMPTY_KEYMAP = [] as number[];
+
+export const getKeyboardCanvas = (_dimension: NDimension) =>
+  StringKeyboardCanvas;
 
 export const ConfigureKeyboard = (props: {
   selectable?: boolean;
@@ -19,7 +20,7 @@ export const ConfigureKeyboard = (props: {
 }) => {
   const {selectable, dimensions} = props;
   const matrixKeycodes = useAppSelector(
-    (state) => getSelectedKeymap(state) || [],
+    (state) => getSelectedKeymap(state) || EMPTY_KEYMAP,
   );
   const keys: (VIAKey & {ei?: number})[] = useAppSelector(
     getSelectedKeyDefinitions,

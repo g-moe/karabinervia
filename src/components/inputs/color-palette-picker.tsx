@@ -1,4 +1,3 @@
-import {Color} from '@the-via/reader';
 import {useMemo, useState} from 'react';
 import {getRGB} from 'src/utils/color-math';
 import styled from 'styled-components';
@@ -6,7 +5,7 @@ import {roundSwatchSurface} from './control-styles';
 import {ColorPicker} from './color-picker';
 
 type Props = {
-  color: Color;
+  color: {hue: number; sat: number};
   setColor: (hue: number, sat: number) => void;
 };
 
