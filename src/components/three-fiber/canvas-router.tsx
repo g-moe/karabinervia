@@ -308,7 +308,13 @@ const Keyboards = React.memo((props: any) => {
       <group position-x={designPosition}>
         <Design dimensions={dimensions} nDimension={'3D'} />
       </group>
-      <group position-x={debugPosition}></group>
+      <group position-x={debugPosition}>
+        <ConfigureKeyboard
+          dimensions={dimensions}
+          selectable={true}
+          nDimension={'3D'}
+        />
+      </group>
     </>
   );
 }, shallowEqual);

@@ -574,6 +574,7 @@ export function getKeycodes(numMacros = 16): IKeycodeMenu[] {
         },
         {name: 'Num\nLock', code: 'KC_NLCK', keys: 'num', shortName: 'N.Lck'},
         {name: 'Caps Lock', code: 'KC_CAPS', keys: 'caps_lock', width: 1750},
+        {name: 'Fn', code: 'KC_FN', keys: 'fn'},
         {name: 'Enter', code: 'KC_ENT', keys: 'enter', width: 2250},
         {name: '1', code: 'KC_P1', keys: 'num_1', title: 'Numpad 1'},
         {name: '2', code: 'KC_P2', keys: 'num_2', title: 'Numpad 2'},

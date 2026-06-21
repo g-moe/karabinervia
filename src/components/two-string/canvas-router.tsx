@@ -249,7 +249,13 @@ const Keyboards = React.memo((props: any) => {
       <KeyboardRouteGroup $position={2}>
         <Design dimensions={dimensions} nDimension={'2D'} />
       </KeyboardRouteGroup>
-      <KeyboardRouteGroup $position={3}></KeyboardRouteGroup>
+      <KeyboardRouteGroup $position={3}>
+        <ConfigureKeyboard
+          dimensions={dimensions}
+          selectable={true}
+          nDimension={'2D'}
+        />
+      </KeyboardRouteGroup>
     </>
   );
 }, shallowEqual);
