@@ -60,9 +60,21 @@ const centerLabel = (label: string) => ({
   offset: [0, 0],
 });
 
+const twoLineLabel = (topLabel: string, bottomLabel: string) => ({
+  topLabel,
+  bottomLabel,
+  key: `${topLabel}:${bottomLabel}`,
+  size: 0.75,
+  offset: [0, 0],
+});
+
 export const getKarabinerLabels = (layerIndex: number) => {
   const workspace = loadWorkspace();
   return macbookLayoutKeys.map((macKey) => {
+    if (macKey.displayTopLabel && macKey.displayBottomLabel) {
+      return twoLineLabel(macKey.displayTopLabel, macKey.displayBottomLabel);
+    }
+
     const displayLabel = getMacbookKeyLabel(macKey);
     if (macKey.displayOnly && displayLabel) {
       return centerLabel(displayLabel);

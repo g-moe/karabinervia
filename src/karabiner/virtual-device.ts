@@ -10,6 +10,8 @@ export const KARABINER_VIA_PROTOCOL = 11;
 type MacKey = VIAKey & {
   code: string;
   displayLabel?: string;
+  displayTopLabel?: string;
+  displayBottomLabel?: string;
   displayOnly?: boolean;
 };
 
@@ -24,6 +26,8 @@ const key = (
   h = 1,
   displayLabel?: string,
   displayOnly = false,
+  displayTopLabel?: string,
+  displayBottomLabel?: string,
 ): MacKey => ({
   row,
   col,
@@ -38,6 +42,8 @@ const key = (
   color,
   code,
   displayLabel,
+  displayTopLabel,
+  displayBottomLabel,
   displayOnly,
 });
 
@@ -46,24 +52,39 @@ const displayKey = (
   x: number,
   w: number,
   code: string,
-  displayLabel: string,
-) => key(0, col, x, 0, w, code, KeyColorType.Mod, 0.65, displayLabel, true);
+  displayTopLabel: string,
+  displayBottomLabel: string,
+) =>
+  key(
+    0,
+    col,
+    x,
+    0,
+    w,
+    code,
+    KeyColorType.Mod,
+    1,
+    undefined,
+    true,
+    displayTopLabel,
+    displayBottomLabel,
+  );
 
 export const macbookLayoutKeys: MacKey[] = [
   key(0, 0, 0, 0, 1.25, 'KC_ESC', KeyColorType.Accent),
-  displayKey(1, 1.55, 1, 'KC_F1', 'F1'),
-  displayKey(2, 2.55, 1, 'KC_F2', 'F2'),
-  displayKey(3, 3.55, 1, 'KC_F3', 'F3'),
-  displayKey(4, 4.55, 1, 'KC_F4', 'F4'),
-  displayKey(5, 5.55, 1, 'KC_F5', 'F5'),
-  displayKey(6, 6.55, 1, 'KC_F6', 'F6'),
-  displayKey(7, 7.55, 1, 'KC_F7', 'F7'),
-  displayKey(8, 8.55, 1, 'KC_F8', 'F8'),
-  displayKey(9, 9.55, 1, 'KC_F9', 'F9'),
-  displayKey(10, 10.55, 1, 'KC_F10', 'F10'),
-  displayKey(11, 11.55, 1, 'KC_F11', 'F11'),
-  displayKey(12, 12.55, 1, 'KC_F12', 'F12'),
-  displayKey(13, 14.65, 1.4, 'KC_NO', 'Touch ID'),
+  displayKey(1, 1.25, 1, 'KC_F1', '☀︎−', 'F1'),
+  displayKey(2, 2.25, 1, 'KC_F2', '☀︎+', 'F2'),
+  displayKey(3, 3.25, 1, 'KC_F3', '▣', 'F3'),
+  displayKey(4, 4.25, 1, 'KC_F4', '⌕', 'F4'),
+  displayKey(5, 5.25, 1, 'KC_F5', '🎙', 'F5'),
+  displayKey(6, 6.25, 1, 'KC_F6', '☾', 'F6'),
+  displayKey(7, 7.25, 1, 'KC_F7', '⏮', 'F7'),
+  displayKey(8, 8.25, 1, 'KC_F8', '⏯', 'F8'),
+  displayKey(9, 9.25, 1, 'KC_F9', '⏭', 'F9'),
+  displayKey(10, 10.25, 1, 'KC_F10', '🔇', 'F10'),
+  displayKey(11, 11.25, 1, 'KC_F11', '🔉', 'F11'),
+  displayKey(12, 12.25, 1, 'KC_F12', '🔊', 'F12'),
+  displayKey(13, 13.25, 2.8, 'KC_NO', 'Touch', 'ID'),
 
   key(1, 0, 0, 1, 1, 'KC_GRV'),
   key(1, 1, 1, 1, 1, 'KC_1'),
@@ -157,10 +178,19 @@ export const macbookDefinition: VIADefinitionV3 = {
     width: 16.05,
     height: 6.45,
     optionKeys: {},
-    keys: macbookLayoutKeys.map(({code, displayLabel, displayOnly, ...viaKey}) => ({
-      ...viaKey,
-      displayOnly,
-    })),
+    keys: macbookLayoutKeys.map(
+      ({
+        code,
+        displayLabel,
+        displayTopLabel,
+        displayBottomLabel,
+        displayOnly,
+        ...viaKey
+      }) => ({
+        ...viaKey,
+        displayOnly,
+      }),
+    ),
   },
 };
 
