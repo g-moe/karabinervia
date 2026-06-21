@@ -4,6 +4,7 @@
 - [x] replace QMK/VIA special-key legends with Mac-style labels
 - [x] show shifted physical legends on number and symbol keys
 - [x] preview shifted legends while holding either Shift key
+- [x] proper layer setup for default mac os
 
 - [ ] removal not-needed
 - all themes but default dark and default light

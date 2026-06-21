@@ -218,9 +218,9 @@ export function createDefaultLayers(): Layer[] {
     );
   });
   return [
-    {keymap: base, isLoaded: true},
-    {keymap: [...blank], isLoaded: true},
-    {keymap: [...blank], isLoaded: true},
-    {keymap: [...blank], isLoaded: true},
+    {keymap: [...base], isLoaded: true},
+    {keymap: [...base], isLoaded: true},
+    {keymap: [...base], isLoaded: true},
+    {keymap: [...base], isLoaded: true},
   ];
 }

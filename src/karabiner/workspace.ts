@@ -166,41 +166,42 @@ const sameAction = (a: KarabinerAction, b: KarabinerAction) =>
 const sameAssignment = (a: KarabinerAssignment, b: KarabinerAssignment) =>
   sameAction(a.tap, b.tap) && sameAction(a.hold, b.hold);
 
-const emptyPlanningLayers = (): KarabinerLayer[] => [
-  {
-    id: 'layer_1',
-    name: 'Layer 1',
-    assignments: {},
-  },
-  {
-    id: 'layer_2',
-    name: 'Layer 2',
-    assignments: {},
-  },
-  {
-    id: 'layer_3',
-    name: 'Layer 3',
-    assignments: {},
-  },
-];
-
-export function createDefaultWorkspace(): KarabinerWorkspace {
-  const baseAssignments = Object.fromEntries(
+const createBaseAssignments = () =>
+  Object.fromEntries(
     macbookKeys.map((key) => [
       key.code,
       assignment(keyAction(qmkToKarabiner[key.code] ?? 'vk_none')),
     ]),
   );
 
+const createPlanningLayers = (): KarabinerLayer[] => [
+  {
+    id: 'layer_1',
+    name: 'Layer 1',
+    assignments: createBaseAssignments(),
+  },
+  {
+    id: 'layer_2',
+    name: 'Layer 2',
+    assignments: createBaseAssignments(),
+  },
+  {
+    id: 'layer_3',
+    name: 'Layer 3',
+    assignments: createBaseAssignments(),
+  },
+];
+
+export function createDefaultWorkspace(): KarabinerWorkspace {
   return {
     version: 1,
     layers: [
       {
         id: BASE_LAYER_ID,
         name: 'Base',
-        assignments: baseAssignments,
+        assignments: createBaseAssignments(),
       },
-      ...emptyPlanningLayers(),
+      ...createPlanningLayers(),
     ],
   };
 }
@@ -240,10 +241,14 @@ function migrateOpinionatedDefaults(workspace: KarabinerWorkspace) {
   const oldLayerIds = new Set(['nav', 'numbers', 'symbols']);
   next.layers = [
     ...next.layers.filter((layer) => !oldLayerIds.has(layer.id)),
-    ...emptyPlanningLayers().filter(
+    ...createPlanningLayers().filter(
       (layer) => !next.layers.some((current) => current.id === layer.id),
     ),
-  ];
+  ].map((layer) =>
+    Object.keys(layer.assignments).length === 0
+      ? {...layer, assignments: createBaseAssignments()}
+      : layer,
+  );
 
   return next;
 }
