@@ -156,6 +156,33 @@ const assignment = (
   hold: KarabinerAction = transparentAction(),
 ): KarabinerAssignment => ({tap, hold});
 
+const sameAction = (a: KarabinerAction, b: KarabinerAction) =>
+  a.kind === b.kind &&
+  a.keyCode === b.keyCode &&
+  a.layerId === b.layerId &&
+  JSON.stringify(a.modifiers ?? []) === JSON.stringify(b.modifiers ?? []);
+
+const sameAssignment = (a: KarabinerAssignment, b: KarabinerAssignment) =>
+  sameAction(a.tap, b.tap) && sameAction(a.hold, b.hold);
+
+const emptyPlanningLayers = (): KarabinerLayer[] => [
+  {
+    id: 'layer_1',
+    name: 'Layer 1',
+    assignments: {},
+  },
+  {
+    id: 'layer_2',
+    name: 'Layer 2',
+    assignments: {},
+  },
+  {
+    id: 'layer_3',
+    name: 'Layer 3',
+    assignments: {},
+  },
+];
+
 export function createDefaultWorkspace(): KarabinerWorkspace {
   const baseAssignments = Object.fromEntries(
     macbookKeys.map((key) => [
@@ -163,9 +190,6 @@ export function createDefaultWorkspace(): KarabinerWorkspace {
       assignment(keyAction(qmkToKarabiner[key.code] ?? 'vk_none')),
     ]),
   );
-
-  baseAssignments.KC_CAPS = assignment(keyAction('escape'), layerAction('nav'));
-  baseAssignments.KC_SPC = assignment(keyAction('spacebar'), layerAction('numbers'));
 
   return {
     version: 1,
@@ -175,50 +199,52 @@ export function createDefaultWorkspace(): KarabinerWorkspace {
         name: 'Base',
         assignments: baseAssignments,
       },
-      {
-        id: 'nav',
-        name: 'Nav',
-        assignments: {
-          KC_H: assignment(keyAction('left_arrow')),
-          KC_J: assignment(keyAction('down_arrow')),
-          KC_K: assignment(keyAction('up_arrow')),
-          KC_L: assignment(keyAction('right_arrow')),
-          KC_U: assignment(keyAction('home')),
-          KC_I: assignment(keyAction('page_up')),
-          KC_O: assignment(keyAction('end')),
-          KC_N: assignment(keyAction('delete_or_backspace')),
-          KC_M: assignment(keyAction('delete_forward')),
-        },
-      },
-      {
-        id: 'numbers',
-        name: 'Numbers',
-        assignments: {
-          KC_U: assignment(keyAction('7')),
-          KC_I: assignment(keyAction('8')),
-          KC_O: assignment(keyAction('9')),
-          KC_J: assignment(keyAction('4')),
-          KC_K: assignment(keyAction('5')),
-          KC_L: assignment(keyAction('6')),
-          KC_M: assignment(keyAction('1')),
-          KC_COMM: assignment(keyAction('2')),
-          KC_DOT: assignment(keyAction('3')),
-          KC_SPC: assignment(keyAction('0')),
-        },
-      },
-      {
-        id: 'symbols',
-        name: 'Symbols',
-        assignments: {},
-      },
+      ...emptyPlanningLayers(),
     ],
   };
+}
+
+function migrateOpinionatedDefaults(workspace: KarabinerWorkspace) {
+  const next: KarabinerWorkspace = {
+    ...workspace,
+    layers: workspace.layers.map((layer) => ({
+      ...layer,
+      assignments: {...layer.assignments},
+    })),
+  };
+  const baseLayer = next.layers.find((layer) => layer.id === BASE_LAYER_ID);
+  const defaultBase = createDefaultWorkspace().layers[0];
+  const oldCaps = assignment(keyAction('escape'), layerAction('nav'));
+  const oldSpace = assignment(keyAction('spacebar'), layerAction('numbers'));
+
+  if (
+    baseLayer?.assignments.KC_CAPS &&
+    sameAssignment(baseLayer.assignments.KC_CAPS, oldCaps)
+  ) {
+    baseLayer.assignments.KC_CAPS = defaultBase.assignments.KC_CAPS;
+  }
+  if (
+    baseLayer?.assignments.KC_SPC &&
+    sameAssignment(baseLayer.assignments.KC_SPC, oldSpace)
+  ) {
+    baseLayer.assignments.KC_SPC = defaultBase.assignments.KC_SPC;
+  }
+
+  const oldLayerIds = new Set(['nav', 'numbers', 'symbols']);
+  next.layers = [
+    ...next.layers.filter((layer) => !oldLayerIds.has(layer.id)),
+    ...emptyPlanningLayers().filter(
+      (layer) => !next.layers.some((current) => current.id === layer.id),
+    ),
+  ];
+
+  return next;
 }
 
 export function loadWorkspace(): KarabinerWorkspace {
   try {
     const saved = localStorage.getItem(KARABINER_WORKSPACE_STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
+    if (saved) return migrateOpinionatedDefaults(JSON.parse(saved));
   } catch (error) {
     console.warn('Unable to load KarabinerVIA workspace', error);
   }
