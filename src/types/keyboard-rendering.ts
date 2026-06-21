@@ -49,7 +49,7 @@ export type KeyboardCanvasProps<T> = Omit<
 
 export type KeyGroupProps<T> = {
   selectable?: boolean;
-  keys: VIAKey[];
+  keys: (VIAKey & {displayOnly?: boolean})[];
   matrixKeycodes: number[];
   definition: VIADefinitionV2 | VIADefinitionV3;
   mode: DisplayMode;

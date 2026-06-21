@@ -19,7 +19,7 @@ import {
 } from 'src/utils/keyboard-rendering';
 
 export function getKeycapSharedProps<T>(
-  k: VIAKey,
+  k: VIAKey & {displayOnly?: boolean},
   i: number,
   props: KeyGroupProps<T>,
   keysKeys: KeysKeys<T>,
@@ -51,7 +51,7 @@ export function getKeycapSharedProps<T>(
     onPointerDown: onPointerDown,
     onPointerOver: onPointerOver,
     keyState: props.pressedKeys ? props.pressedKeys[i] : -1,
-    disabled: !props.selectable,
+    disabled: !props.selectable || Boolean(k.displayOnly),
     selected: i === selectedKeyIndex,
     idx: idx,
     label: labels[i],

@@ -4,10 +4,12 @@ import glbSrc from 'assets/models/keyboard_components.glb';
 import {useMemo} from 'react';
 import {getBasicKeyToByte} from 'src/store/definitionsSlice';
 import {useAppDispatch, useAppSelector} from 'src/store/hooks';
-import {getSelectedKey} from 'src/store/keymapSlice';
+import {getSelectedKey, getSelectedLayerIndex} from 'src/store/keymapSlice';
 import {getExpressions} from 'src/store/macrosSlice';
 import {getSelectedSRGBTheme} from 'src/store/settingsSlice';
 import {KeyGroupProps, KeysKeys} from 'src/types/keyboard-rendering';
+import {getKarabinerLabels} from 'src/karabiner/labels';
+import {KARABINER_VIA_VENDOR_PRODUCT_ID} from 'src/karabiner/virtual-device';
 import {getRGB} from 'src/utils/color-math';
 import {
   calculateKeyboardFrameDimensions,
@@ -47,6 +49,7 @@ export const KeyGroup: React.FC<KeyGroupProps<ThreeEvent<MouseEvent>>> = (
   const dispatch = useAppDispatch();
   const keycapScene = useGLTF(glbSrc, true).scene;
   const selectedKey = useAppSelector(getSelectedKey);
+  const selectedLayerIndex = useAppSelector(getSelectedLayerIndex);
   const selectedSRGBTheme = useAppSelector(getSelectedSRGBTheme);
   const macroExpressions = useAppSelector(getExpressions);
   const skipFontCheck = useSkipFontCheck();
@@ -68,8 +71,11 @@ export const KeyGroup: React.FC<KeyGroupProps<ThreeEvent<MouseEvent>>> = (
     props.onKeycapClick,
   ]);
   const labels = useMemo(() => {
+    if (props.definition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID) {
+      return getKarabinerLabels(selectedLayerIndex);
+    }
     return getLabels(props, macroExpressions, basicKeyToByte, byteToKey);
-  }, [keys, props.matrixKeycodes, macros, props.definition]);
+  }, [keys, props.matrixKeycodes, macros, props.definition, selectedLayerIndex]);
   const {width, height} = calculateKeyboardFrameDimensions(keys);
   const elems = useMemo(() => {
     return props.keys.map((k, i) => {

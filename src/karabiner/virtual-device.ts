@@ -9,6 +9,8 @@ export const KARABINER_VIA_PROTOCOL = 11;
 
 type MacKey = VIAKey & {
   code: string;
+  displayLabel?: string;
+  displayOnly?: boolean;
 };
 
 const key = (
@@ -20,6 +22,8 @@ const key = (
   code: string,
   color: VIAKey['color'] = KeyColorType.Alpha,
   h = 1,
+  displayLabel?: string,
+  displayOnly = false,
 ): MacKey => ({
   row,
   col,
@@ -33,10 +37,33 @@ const key = (
   w,
   color,
   code,
+  displayLabel,
+  displayOnly,
 });
 
-export const macbookKeys: MacKey[] = [
+const displayKey = (
+  col: number,
+  x: number,
+  w: number,
+  code: string,
+  displayLabel: string,
+) => key(0, col, x, 0, w, code, KeyColorType.Mod, 0.65, displayLabel, true);
+
+export const macbookLayoutKeys: MacKey[] = [
   key(0, 0, 0, 0, 1.25, 'KC_ESC', KeyColorType.Accent),
+  displayKey(1, 1.55, 1, 'KC_F1', 'F1'),
+  displayKey(2, 2.55, 1, 'KC_F2', 'F2'),
+  displayKey(3, 3.55, 1, 'KC_F3', 'F3'),
+  displayKey(4, 4.55, 1, 'KC_F4', 'F4'),
+  displayKey(5, 5.55, 1, 'KC_F5', 'F5'),
+  displayKey(6, 6.55, 1, 'KC_F6', 'F6'),
+  displayKey(7, 7.55, 1, 'KC_F7', 'F7'),
+  displayKey(8, 8.55, 1, 'KC_F8', 'F8'),
+  displayKey(9, 9.55, 1, 'KC_F9', 'F9'),
+  displayKey(10, 10.55, 1, 'KC_F10', 'F10'),
+  displayKey(11, 11.55, 1, 'KC_F11', 'F11'),
+  displayKey(12, 12.55, 1, 'KC_F12', 'F12'),
+  displayKey(13, 14.65, 1.4, 'KC_NO', 'Touch ID'),
 
   key(1, 0, 0, 1, 1, 'KC_GRV'),
   key(1, 1, 1, 1, 1, 'KC_1'),
@@ -95,18 +122,26 @@ export const macbookKeys: MacKey[] = [
   key(4, 10, 11.2, 4, 1, 'KC_SLSH'),
   key(4, 11, 12.2, 4, 2.65, 'KC_RSFT', KeyColorType.Mod),
 
-  key(5, 0, 0, 5, 1, 'KC_FN', KeyColorType.Mod),
-  key(5, 1, 1, 5, 1.2, 'KC_LCTL', KeyColorType.Mod),
-  key(5, 2, 2.2, 5, 1.2, 'KC_LALT', KeyColorType.Mod),
-  key(5, 3, 3.4, 5, 1.45, 'KC_LGUI', KeyColorType.Mod),
+  key(5, 0, 0, 5, 1, 'KC_FN', KeyColorType.Mod, 1, 'fn'),
+  key(5, 1, 1, 5, 1.2, 'KC_LCTL', KeyColorType.Mod, 1, '⌃'),
+  key(5, 2, 2.2, 5, 1.2, 'KC_LALT', KeyColorType.Mod, 1, '⌥'),
+  key(5, 3, 3.4, 5, 1.45, 'KC_LGUI', KeyColorType.Mod, 1, '⌘'),
   key(5, 4, 4.85, 5, 5.45, 'KC_SPC'),
-  key(5, 5, 10.3, 5, 1.45, 'KC_RGUI', KeyColorType.Mod),
-  key(5, 6, 11.75, 5, 1.2, 'KC_RALT', KeyColorType.Mod),
+  key(5, 5, 10.3, 5, 1.45, 'KC_RGUI', KeyColorType.Mod, 1, '⌘'),
+  key(5, 6, 11.75, 5, 1.2, 'KC_RALT', KeyColorType.Mod, 1, '⌥'),
   key(5, 7, 13.05, 5.5, 1, 'KC_LEFT', KeyColorType.Mod, 0.5),
   key(5, 8, 14.05, 5, 1, 'KC_UP', KeyColorType.Mod, 0.5),
   key(5, 9, 14.05, 5.5, 1, 'KC_DOWN', KeyColorType.Mod, 0.5),
   key(5, 10, 15.05, 5.5, 1, 'KC_RGHT', KeyColorType.Mod, 0.5),
 ];
+
+export const macbookEditableKeys = macbookLayoutKeys.filter(
+  (key) => !key.displayOnly,
+);
+export const macbookKeys = macbookEditableKeys;
+
+export const getMacbookKeyLabel = (key: {displayLabel?: string}) =>
+  key.displayLabel;
 
 export const macbookDefinition: VIADefinitionV3 = {
   name: 'MacBook Pro Touch ID',
@@ -122,7 +157,10 @@ export const macbookDefinition: VIADefinitionV3 = {
     width: 16.05,
     height: 6.45,
     optionKeys: {},
-    keys: macbookKeys.map(({code, ...viaKey}) => viaKey),
+    keys: macbookLayoutKeys.map(({code, displayLabel, displayOnly, ...viaKey}) => ({
+      ...viaKey,
+      displayOnly,
+    })),
   },
 };
 

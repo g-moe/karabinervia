@@ -29,6 +29,8 @@ import {TestContext} from '../../panes/test';
 import {getKeyboardCanvas} from './configure';
 import {
   KARABINER_VIA_VENDOR_PRODUCT_ID,
+  macbookEditableKeys,
+  macbookLayoutKeys,
   macbookKeys,
 } from 'src/karabiner/virtual-device';
 import basicKeyToByte from 'src/utils/key-to-byte/default';
@@ -68,10 +70,27 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
     setMatrixPressedKeys(EMPTY_ARR);
   }, [setGlobalPressedKeys, setMatrixPressedKeys]);
 
+  const testDefinition = isTestMatrixEnabled || isVirtualMacBook
+    ? selectedDefinition
+    : fullKeyboardDefinition;
+  const testKeys = isTestMatrixEnabled || isVirtualMacBook
+    ? keyDefinitions
+    : fullKeyboardDefinition.layouts.keys;
+
   const handleKeycapClick = useCallback(
     (_evt: unknown, idx: number) => {
+      const clickedKey = (testKeys as Array<
+        {row: number; col: number; displayOnly?: boolean} | undefined
+      >)[idx];
+      if (!clickedKey || clickedKey.displayOnly) {
+        return;
+      }
       const byte = isVirtualMacBook
-        ? basicKeyToByte[macbookKeys[idx]?.code as keyof typeof basicKeyToByte]
+        ? basicKeyToByte[
+            macbookEditableKeys.find(
+              (key) => key.row === clickedKey.row && key.col === clickedKey.col,
+            )?.code as keyof typeof basicKeyToByte
+          ]
         : selectedMatrixKeycodes[idx] ?? matrixKeycodes[idx];
       const globalIndex = matrixKeycodes.indexOf(byte);
       if (globalIndex < 0) {
@@ -89,7 +108,7 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
         }));
       }, 160);
     },
-    [isVirtualMacBook, selectedMatrixKeycodes, setGlobalPressedKeys],
+    [isVirtualMacBook, selectedMatrixKeycodes, setGlobalPressedKeys, testKeys],
   );
 
   const testContext = useContext(TestContext);
@@ -123,13 +142,6 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
         )
       : [];
 
-  const testDefinition = isTestMatrixEnabled || isVirtualMacBook
-    ? selectedDefinition
-    : fullKeyboardDefinition;
-  const testKeys = isTestMatrixEnabled || isVirtualMacBook
-    ? keyDefinitions
-    : fullKeyboardDefinition.layouts.keys;
-
   if (!testDefinition || typeof testDefinition === 'string') {
     return null;
   }
@@ -147,6 +159,19 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
   const testPressedKeys = isTestMatrixEnabled
     ? (matrixPressedKeysMapped as TestKeyState[])
     : isVirtualMacBook
+    ? (macbookLayoutKeys.map((key) =>
+        key.displayOnly
+          ? undefined
+          :
+            virtualGlobalPressedKeys[
+              key.row * testDefinition.matrix.cols + key.col
+            ],
+      ) as TestKeyState[])
+    : (globalPressedKeys as TestKeyState[]);
+
+  const testPressedKeys2 = isTestMatrixEnabled
+    ? (matrixPressedKeys as TestKeyState[])
+    : isVirtualMacBook
     ? (macbookKeys.map(
         (key) =>
           virtualGlobalPressedKeys[
@@ -159,19 +184,16 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
     () => getKeyboardRowPartitions(testKeys as VIAKey[]),
     [testKeys],
   );
-  const testPressedKeys2 = isTestMatrixEnabled
-    ? (matrixPressedKeys as TestKeyState[])
-    : isVirtualMacBook
-    ? (virtualGlobalPressedKeys as TestKeyState[])
-    : (globalPressedKeys as TestKeyState[]);
   const partitionedPressedKeys: TestKeyState[][] = partitionedKeys.map(
     (rowArray) => {
       return rowArray.map(
         ({row, col}: {row: number; col: number}) =>
-          testPressedKeys2[
-            (row * testDefinition.matrix.cols +
-              col) as keyof typeof testPressedKeys2
-          ],
+          isVirtualMacBook
+            ? virtualGlobalPressedKeys[row * testDefinition.matrix.cols + col]
+            : testPressedKeys2[
+                (row * testDefinition.matrix.cols +
+                  col) as keyof typeof testPressedKeys2
+              ],
       ) as TestKeyState[];
     },
   );

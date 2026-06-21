@@ -12,7 +12,7 @@ import {
 } from 'src/store/keymapSlice';
 import {
   KARABINER_VIA_DEVICE_PATH,
-  macbookKeys,
+  macbookLayoutKeys,
 } from './virtual-device';
 import {
   KarabinerAction,
@@ -259,7 +259,7 @@ export function KarabinerActionEditor() {
   const selectedKey = useAppSelector(getSelectedKey);
   const selectedLayerIndex = useAppSelector(getSelectedLayerIndex);
   const [workspace, setWorkspaceState] = useState(() => loadWorkspace());
-  const macKey = selectedKey === null ? null : macbookKeys[selectedKey];
+  const macKey = selectedKey === null ? null : macbookLayoutKeys[selectedKey];
 
   const setWorkspace = (next: ReturnType<typeof loadWorkspace>) => {
     setWorkspaceState(next);
@@ -277,14 +277,18 @@ export function KarabinerActionEditor() {
     dispatch(saveKeymapSuccess({devicePath: KARABINER_VIA_DEVICE_PATH, layers}));
   }, [dispatch]);
 
-  if (!macKey) {
+  if (!macKey || macKey.displayOnly) {
     return (
       <SpanOverflowCell>
         <Pane>
           <Container>
             <ControlRow>
-              <Label>Select a key</Label>
-              <Detail>Click a key above to edit tap and hold actions.</Detail>
+              <Label>{macKey?.displayOnly ? 'Display Only' : 'Select a key'}</Label>
+              <Detail>
+                {macKey?.displayOnly
+                  ? 'This key is shown for physical context and cannot be edited.'
+                  : 'Click a key above to edit tap and hold actions.'}
+              </Detail>
             </ControlRow>
           </Container>
         </Pane>
