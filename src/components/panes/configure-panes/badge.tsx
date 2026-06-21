@@ -78,7 +78,7 @@ const KeyboardButton = styled.button<{$selected?: boolean}>`
     props.$selected ? 'var(--bg_icon-highlighted)' : 'transparent'};
   color: ${(props) =>
     props.$selected
-      ? 'var(--color_icon_highlighted)'
+      ? 'var(--color_icon-highlighted)'
       : 'var(--color_label-highlighted)'};
   cursor: pointer;
   text-align: left;
@@ -91,7 +91,7 @@ const KeyboardButton = styled.button<{$selected?: boolean}>`
       props.$selected ? 'var(--bg_icon-highlighted)' : 'var(--bg_control)'};
     color: ${(props) =>
       props.$selected
-        ? 'var(--color_control-highlighted)'
+        ? 'var(--color_icon-highlighted)'
         : 'var(--color_label-highlighted)'};
   }
 `;

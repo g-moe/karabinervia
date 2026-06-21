@@ -27,7 +27,7 @@ const customStyles = {
         ? accentTextColor
         : state.isFocused
         ? readableTextColor
-        : mutedTextColor,
+        : readableTextColor,
     };
   },
   container: (provided: any) => ({

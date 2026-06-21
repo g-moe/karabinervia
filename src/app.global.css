@@ -70,7 +70,7 @@ a:hover {
 }
 
 html[data-theme-mode='dark'] {
-  --color_label: var(--color_medium-grey);
+  --color_label: #a8a8a8;
   --color_label-highlighted: var(--color_light-grey);
   --color_error: var(--color_error);
   --border_color_icon: var(--color_medium-grey);
@@ -88,7 +88,7 @@ html[data-theme-mode='dark'] {
   --bg_control-disabled: transparent;
 }
 html[data-theme-mode='light'] {
-  --color_label: var(--color_medium-grey);
+  --color_label: #545454;
   --color_label-highlighted: var(--color_light-jet);
   --color_error: var(--color_error);
   --border_color_icon: var(--color_medium-grey);
