@@ -11,6 +11,8 @@
     "moduleResolution": "Bundler",
     "isolatedModules": true,
     "noEmit": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
     "paths": {
       "src/*": ["./src/*"],
       "assets/*": ["./src/assets/*"]
