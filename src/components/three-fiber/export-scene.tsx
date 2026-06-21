@@ -43,7 +43,10 @@ export const ExportScene = () => {
           position: 'absolute',
           bottom: 0,
           zIndex: 19,
-          background: 'blue',
+          background: 'var(--color_control-selected-bg)',
+          border: '1px solid var(--color_control-border)',
+          borderRadius: 'var(--radius_control)',
+          color: 'var(--color_control-selected-text)',
         }}
         onClick={onButtonClick}
       >

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {buttonSurface, selectedButtonSurface} from './control-styles';
 
 type AccentButtonProps = {
   disabled?: boolean;
@@ -6,28 +7,22 @@ type AccentButtonProps = {
 };
 
 const AccentButtonBase = styled.button<AccentButtonProps>`
+  ${buttonSurface}
   height: 40px;
   padding: 0 15px;
   line-height: 40px;
   min-width: 100px;
   text-align: center;
-  outline: none;
   font-size: 20px;
-  border-radius: var(--radius_control);
-  color: var(--color_control-border);
-  border: 1px solid var(--color_control-border);
   display: inline-block;
-  box-sizing: border-box;
   pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-
-  &:hover {
-    border: 1px solid var(--color_control-border);
-  }
 `;
 export const AccentButton = styled(AccentButtonBase)`
   background-color: ${(props) =>
-    props.disabled ? 'var(--bg_control-disabled)' : 'var(--bg_outside-accent)'};
+    props.disabled
+      ? 'var(--color_control-background-disabled)'
+      : 'var(--color_panel-background)'};
   color: ${(props) =>
     props.disabled
       ? 'var(--color_control-text-disabled)'
@@ -37,9 +32,6 @@ export const AccentButton = styled(AccentButtonBase)`
       ? 'var(--color_control-border-disabled)'
       : 'var(--color_control-border)'};
 
-  &:hover {
-    filter: var(--filter_control-hover);
-  }
 `;
 export const AccentButtonLarge = styled(AccentButton)`
   font-size: 24px;
@@ -48,6 +40,7 @@ export const AccentButtonLarge = styled(AccentButton)`
 `;
 
 export const PrimaryAccentButton = styled(AccentButtonBase)`
+  ${selectedButtonSurface}
   color: ${(props) =>
     props.disabled
       ? 'var(--color_control-text-disabled)'
@@ -58,7 +51,4 @@ export const PrimaryAccentButton = styled(AccentButtonBase)`
       : 'var(--color_control-border)'};
   background-color: ${(props) =>
     props.disabled ? 'transparent' : 'var(--color_control-selected-bg)'};
-  &:hover {
-    filter: var(--filter_control-hover);
-  }
 `;

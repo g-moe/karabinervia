@@ -2,13 +2,13 @@ import React from 'react';
 import {getAutocompleteKeycodes} from '../../utils/autocomplete-keycodes';
 import styled from 'styled-components';
 const Keycode = styled.span`
-  color: var(--color_detail-text);
+  color: var(--color_text-secondary);
   display: flex;
   padding-left: 10px;
 `;
 
 const KeycodeLabel = styled.span`
-  color: var(--color_label);
+  color: var(--color_text-secondary);
   display: flex;
 `;
 const Item = styled.div<{$selected?: boolean}>`
@@ -18,10 +18,12 @@ const Item = styled.div<{$selected?: boolean}>`
   display: flex;
   justify-content: space-between;
   background-color: ${(props) =>
-    !props.$selected ? 'var(--bg_menu)' : 'var(--bg_control)'};
+    !props.$selected
+      ? 'var(--color_surface-menu)'
+      : 'var(--color_control-background-hover)'};
 
   &:hover {
-    background-color: var(--bg_control);
+    background-color: var(--color_control-background-hover);
   }
 `;
 

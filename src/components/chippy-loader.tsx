@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 import imgSrc from 'assets/images/chippy_600.png';
 import {Theme} from 'src/utils/themes';
-import {getDarkenedColor} from 'src/utils/color-math';
-import {getSelectedTheme} from 'src/store/settingsSlice';
-import {useAppSelector} from 'src/store/hooks';
 
 const defaultChippy = {
   width: 300,
@@ -25,7 +22,7 @@ const CircleContainer = styled.div<{
   $progressColor: string;
 }>`
   border-radius: 50%;
-  background-color: var(--bg_icon);
+  background-color: var(--color_control-background);
   height: ${(props) => props.$containerHeight}px;
   width: ${(props) => props.$containerWidth}px;
   position: relative;
@@ -69,14 +66,17 @@ type Props = {
 const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
   const {theme} = props;
 
-  const darkAccent = getDarkenedColor(theme.accent.c, 0.8);
   const colorMap = {
     'upper-body': theme.mod.t,
     'lower-body': theme.mod.c,
-    accent: darkAccent,
-    bowtie: darkAccent,
-    pins: darkAccent,
-    feet: '#000',
+    accent: 'var(--color_accent)',
+    bowtie: 'var(--color_accent)',
+    pins: 'var(--color_accent)',
+    feet: 'var(--color_text-primary)',
+    eyeHighlight: 'var(--color_window-background)',
+    shade: 'var(--color_texture-shadow)',
+    line: 'var(--color_text-primary)',
+    shine: 'var(--color_texture-highlight)',
   };
   return (
     <svg
@@ -92,7 +92,7 @@ const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
       {...props}
     >
       <style>
-        {`.st3{fill:#fdfefe}.st4{fill:${colorMap.bowtie}}.st5{fill-rule:evenodd;clip-rule:evenodd;fill:${colorMap.accent}}.st7,.st9{fill-rule:evenodd;clip-rule:evenodd}.st10,.st9{fill:#fff}`}
+        {`.st3{fill:${colorMap.eyeHighlight}}.st4{fill:${colorMap.bowtie}}.st5{fill-rule:evenodd;clip-rule:evenodd;fill:${colorMap.accent}}.st7,.st9{fill-rule:evenodd;clip-rule:evenodd}.st7{fill:${colorMap.shade}}.st10,.st9{fill:${colorMap.shine}}`}
       </style>
       <g id="Layer_2_00000088814685506851870240000015950599998114990989_">
         <g id="Feet">
@@ -116,7 +116,7 @@ const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
           d="M229.4 262.8s33.5 19.4 66.3 19.4c33.5 0 66.3-19.4 66.3-19.4"
           style={{
             fill: 'none',
-            stroke: '#000',
+            stroke: colorMap.line,
             strokeWidth: 6.8265,
             strokeLinecap: 'round',
             strokeLinejoin: 'round',
@@ -179,7 +179,7 @@ const SvgComponent: React.FC<any & {theme: Theme}> = (props) => {
           style={{
             fillRule: 'evenodd',
             clipRule: 'evenodd',
-            fill: '#180000',
+            fill: colorMap.shade,
           }}
         />
         <path
@@ -243,13 +243,11 @@ export default function ChippyLoader(props: Props) {
     height + containerPadding * 2,
     width + containerPadding * 2,
   ];
-  const selectedTheme = useAppSelector(getSelectedTheme);
-
   return (
     <LoaderContainer>
       <CircleContainer
         $progress={props.progress}
-        $progressColor={getDarkenedColor(selectedTheme.accent.c, 0.9)}
+        $progressColor="var(--color_accent)"
         $containerHeight={containerHeight}
         $containerWidth={containerWidth}
       >

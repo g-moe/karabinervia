@@ -21,7 +21,9 @@ const Slider = styled.span<{$ischecked?: boolean}>`
   right: 0;
   bottom: 0;
   background-color: ${(props) =>
-    props.$ischecked ? 'var(--color_accent)' : 'var(--bg_control)'};
+    props.$ischecked
+      ? 'var(--color_control-selected-bg)'
+      : 'var(--color_control-background)'};
   -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 4px;
@@ -35,7 +37,7 @@ const Slider = styled.span<{$ischecked?: boolean}>`
     border-radius: 4px;
     background-color: ${(props) =>
       !props.$ischecked
-        ? 'var(--bg_icon)'
+        ? 'var(--color_control-background-hover)'
         : 'var(--color_control-selected-text)'};
     -webkit-transition: 0.4s;
     transition: 0.4s;

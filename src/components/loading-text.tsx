@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 
 const LoadingText = styled.div`
   font-size: 30px;
-  color: var(--color_label-highlighted);
+  color: var(--color_text-primary);
 `;
 
 enum LoadingLabel {

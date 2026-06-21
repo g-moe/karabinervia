@@ -4,25 +4,14 @@ import {
   advancedStringToKeycode,
   anyKeycodeToString,
 } from '../../utils/advanced-keys';
+import {inputSurface} from './control-styles';
 
 const NormalInput = styled.input`
-  border: none;
-  border-bottom: 1px solid var(--color_control-border-disabled);
-  color: var(--color_control-text);
-  background: var(--bg_menu);
-  transition: all 0.4s ease-out;
+  ${inputSurface}
   font-size: 18px;
   margin-bottom: 25px;
   height: 30px;
   padding: 0 5px;
-  &:focus {
-    outline: none;
-    color: var(--color_control-text);
-    border-color: var(--color_control-border);
-  }
-  &::placeholder {
-    color: var(--color_control-text-muted);
-  }
 `;
 
 const ErrorInput = styled(NormalInput)`

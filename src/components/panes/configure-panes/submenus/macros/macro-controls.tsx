@@ -15,28 +15,24 @@ import {
   IconToggleContainer,
 } from 'src/components/inputs/icon-button';
 import {IconButtonTooltip} from 'src/components/inputs/tooltip';
+import {
+  iconButtonGroupDividerSurface,
+  iconButtonGroupSurface,
+} from 'src/components/inputs/control-styles';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
 
 const MacroEditControlsContainer = styled.div`
-  background: var(--bg_menu);
+  background: var(--color_surface-menu);
   display: inline-flex;
   align-items: center;
   padding: 0 10px;
 `;
 const MacroControlGroupContainer = styled.div`
-  border-radius: 2px;
-  border: 1px solid var(--border_color_icon);
-  display: inline-flex;
-  > button:last-child {
-    border: none;
-  }
+  ${iconButtonGroupSurface}
 `;
 const MacroControlGroupDivider = styled.div`
-  background: var(--border_color_icon);
-  width: 1px;
-  height: 80%;
-  margin: 0 10px;
+  ${iconButtonGroupDividerSurface}
 `;
 
 export const MacroEditControls: React.FC<{
@@ -81,7 +77,7 @@ export const MacroEditControls: React.FC<{
     >
       <FontAwesomeIcon
         size={'sm'}
-        color={'var(--color_label)'}
+        color={'var(--color_text-secondary)'}
         icon={isRecording ? faSquare : faCircle}
       />
       <IconButtonTooltip>
@@ -106,7 +102,7 @@ export const MacroEditControls: React.FC<{
                 >
                   <FontAwesomeIcon
                     size={'sm'}
-                    color="var(--color_label)"
+                    color="var(--color_text-secondary)"
                     icon={faUndo}
                   />
                   <IconButtonTooltip>Undo Changes</IconButtonTooltip>
@@ -117,7 +113,7 @@ export const MacroEditControls: React.FC<{
                 >
                   <FontAwesomeIcon
                     size={'sm'}
-                    color="var(--color_label)"
+                    color="var(--color_text-secondary)"
                     icon={faSave}
                   />
                   <IconButtonTooltip>Save Changes</IconButtonTooltip>
@@ -136,7 +132,7 @@ export const MacroEditControls: React.FC<{
             >
               <FontAwesomeIcon
                 size={'sm'}
-                color="var(--color_label)"
+                color="var(--color_text-secondary)"
                 icon={faTrash}
               />
               <IconButtonTooltip>Delete Macro</IconButtonTooltip>
@@ -153,7 +149,7 @@ export const MacroEditControls: React.FC<{
           <IconButtonContainer onClick={toggleFullscreen}>
             <FontAwesomeIcon
               size={'sm'}
-              color="var(--color_label)"
+              color="var(--color_text-secondary)"
               icon={isFullscreen ? faCompress : faExpand}
             />
             <IconButtonTooltip>

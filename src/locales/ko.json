@@ -71,14 +71,9 @@
   "Draft Definitions": "임시 정의",
   "Definitions": "정의",
   "General": "일반",
-  "Show Design tab": "'디자인' 탭 보기",
   "Fast Key Mapping": "빠른 키 매핑",
   "Light Mode": "라이트 모드",
-  "Keycap Theme": "키캡 테마",
-  "Render Mode": "렌더 모드",
-  "Show Diagnostic Information": "진단 정보 표시",
   "Requires connected device": "연결된 기기가 필요합니다",
-  "VIA Firmware Protocol": "VIA 펌웨어 프로토콜",
   "VIA Firmware Version": "VIA 펌웨어 버전",
   "Authorize New": "새 키보드 인증",
   "Check Key": "키 확인",
@@ -259,7 +254,6 @@
   "Layer 5": "레이어 5",
   "Layer 6": "레이어 6",
   "Layer 7": "레이어 7",
-  "Slider Mode": "슬라이더 모드",
   "Slider Only": "슬라이더만",
   "Slider & Show Value": "슬라이더 및 값 표시",
   "Slider & Input Field": "슬라이더 및 입력 필드",
@@ -359,6 +353,5 @@
   "Recheck": "재확인",
   "Please DO NOT disconnect or switch mode during the upgrade, until the keyboard auto-reboot finishes.": "업그레이드가 끝나 키보드가 자동으로 재부팅될 때까지 연결을 끊거나 모드를 전환하지 마세요.",
   "Please enter your desired QMK keycode or hex code:": "원하는 QMK 키코드 또는 16진 코드를 입력하세요:",
-  "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.": "이 기능은 개발용입니다. VIA가 키보드를 자동으로 인식하지 못하면 키보드 제조사 또는 판매처에 문의하세요.",
-  "You didn't click \"Confirm\". To enable the Design tab, you must confirm first.": "\"확인\"을 클릭하지 않았습니다. 디자인 탭을 활성화하려면 먼저 확인해야 합니다."
+  "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.": "이 기능은 개발용입니다. VIA가 키보드를 자동으로 인식하지 못하면 키보드 제조사 또는 판매처에 문의하세요."
 }

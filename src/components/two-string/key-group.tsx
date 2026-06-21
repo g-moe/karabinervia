@@ -24,10 +24,15 @@ import {Keycap} from './unit-key/keycap';
 import {KARABINER_VIA_VENDOR_PRODUCT_ID} from 'src/karabiner/virtual-device';
 import {getKarabinerLabels} from 'src/karabiner/labels';
 
-const KeyGroupContainer = styled.div<{height: number; width: number}>`
+const KeyGroupContainer = styled.div<{
+  height: number;
+  width: number;
+  $selectable: boolean;
+}>`
   position: absolute;
   top: ${(p) => CaseInsideBorder * 1.5}px;
   left: ${(p) => CaseInsideBorder * 1.5}px;
+  pointer-events: ${(p) => (p.$selectable ? 'all' : 'none')};
 `;
 
 const getPosition = (x: number, y: number): [number, number, number] => [
@@ -132,18 +137,20 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
   const {width, height} = calculateKeyboardFrameDimensions(keys);
   const elems = useMemo(() => {
     return props.keys.map((k, i) => {
+      const {key, ...sharedProps} = getKeycapSharedProps(
+        k,
+        i,
+        props,
+        previewKeysKeys,
+        selectedKeyIndex,
+        labels,
+        skipFontCheck,
+      );
       return k.d ? null : (
         <Keycap
+          key={key}
           {...getComboKeyProps(k)}
-          {...getKeycapSharedProps(
-            k,
-            i,
-            props,
-            previewKeysKeys,
-            selectedKeyIndex,
-            labels,
-            skipFontCheck,
-          )}
+          {...sharedProps}
         />
       );
     });
@@ -162,7 +169,7 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
     <KeyGroupContainer
       height={height}
       width={width}
-      style={{pointerEvents: props.selectable ? 'all' : 'none'}}
+      $selectable={Boolean(props.selectable)}
     >
       {elems}
     </KeyGroupContainer>

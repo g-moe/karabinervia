@@ -129,15 +129,15 @@ const EncoderKeyContent2 = styled.div<{$innerPadding: number; $size: number}>`
       transparent var(--half-size-p1)
     ),
     radial-gradient(
-      rgba(255, 255, 255, 0.6) var(--half-size),
+      var(--color_texture-highlight) var(--half-size),
       transparent var(--half-size-p1)
     ),
     radial-gradient(
-      rgba(0, 0, 0, 0.2) var(--half-size),
+      var(--color_texture-shadow) var(--half-size),
       transparent var(--half-size-p05p)
     ),
     radial-gradient(
-      rgba(0, 0, 0, 0.2) var(--half-size),
+      var(--color_texture-shadow) var(--half-size),
       transparent var(--half-size-p05p)
     );
   background-size: var(--size) var(--size);

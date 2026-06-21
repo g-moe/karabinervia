@@ -4,9 +4,8 @@ import macrosReducer from './macrosSlice';
 import devicesReducer from './devicesSlice';
 import keymapReducer from './keymapSlice';
 import definitionsReducer from './definitionsSlice';
-import lightingReducer from './lightingSlice';
 import menusReducer from './menusSlice';
-import designReducer from './designSlice';
+import layoutOptionsReducer from './layoutOptionsSlice';
 import errorsReducer from './errorsSlice';
 import {errorsListenerMiddleware} from './errorsListener';
 import firmwareReducer from './firmwareSlice';
@@ -18,9 +17,8 @@ export const store = configureStore({
     devices: devicesReducer,
     keymap: keymapReducer,
     definitions: definitionsReducer,
-    lighting: lightingReducer,
     menus: menusReducer,
-    design: designReducer,
+    layoutOptions: layoutOptionsReducer,
     errors: errorsReducer,
     firmware: firmwareReducer,
   },

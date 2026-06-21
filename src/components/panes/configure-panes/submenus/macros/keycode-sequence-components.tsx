@@ -8,9 +8,10 @@ import {
   RawKeycodeSequenceAction,
 } from 'src/utils/macro-api/types';
 import styled from 'styled-components';
+import {inlineInputSurface} from 'src/components/inputs/control-styles';
 
 const CharacterStreamContainer = styled.div`
-  border: 2px solid var(--bg_control);
+  border: 2px solid var(--color_control-background);
   transition: border-color 0.2s ease-in-out;
   margin: 15px 0px;
   display: inline-block;
@@ -34,8 +35,8 @@ const KeycodeSequenceLabel = styled.div`
   align-items: center;
   white-space: pre-wrap;
   font-size: 16px;
-  border: 2px solid var(--border_color_icon);
-  background: var(--bg_control);
+  border: 1px solid var(--color_separator-opaque);
+  background: var(--color_control-background);
   color: var(--color_control-text);
   margin: 0;
   box-shadow: none;
@@ -52,7 +53,7 @@ export const KeycodeDownLabel = styled(KeycodeSequenceLabel)`
     content: '';
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 6px solid var(--color_detail-text);
+    border-top: 6px solid var(--color_text-secondary);
     position: absolute;
     margin-top: 55px;
     width: 0;
@@ -63,19 +64,19 @@ export const SequenceLabelSeparator = styled.div`
   width: 20px;
   display: inline-flex;
   vertical-align: middle;
-  border: 1px solid var(--color_detail-text);
+  border: 1px solid var(--color_text-secondary);
 `;
 
 export const CharacterStreamLabel = styled(KeycodeSequenceLabel)`
-  border-color: var(--border_color_cell);
-  background: var(--bg_menu);
+  border-color: var(--color_separator);
+  background: var(--color_surface-menu);
   white-space: pre-wrap;
   min-height: 1.25em;
   letter-spacing: 2px;
 `;
 
 export const KeycodePressLabel = styled(KeycodeSequenceLabel)`
-  border-color: var(--color_detail-text);
+  border-color: var(--color_text-secondary);
 `;
 
 export const KeycodeUpLabel = styled(KeycodeSequenceLabel)`
@@ -86,7 +87,7 @@ export const KeycodeUpLabel = styled(KeycodeSequenceLabel)`
     border-color: transparent;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-bottom: 6px solid var(--color_detail-text);
+    border-bottom: 6px solid var(--color_text-secondary);
     position: absolute;
     width: 0;
   }
@@ -112,36 +113,20 @@ export const KeycodeSequenceWait = styled.div`
   box-sizing: border-box;
   border: 2px solid;
   padding: 4px 4px;
-  border-color: var(--color_detail-text);
+  border-color: var(--color_text-secondary);
   border-radius: var(--radius_button);
 `;
 export const NumberInput = styled.input.attrs({
   type: 'number',
   placeholder: 'XXXXX',
 })`
-  appearance: none;
-  background: none;
-  border: none;
-  border-bottom: 1px solid;
-  color: var(--color_control-text-muted);
+  ${inlineInputSurface}
   width: 45px;
-  text-align: center;
-  font-family: inherit;
-  font-size: inherit;
-  color: var(--color_control-text);
   margin: 0 5px 0 0;
-  &:focus {
-    color: var(--color_control-text);
-  }
+
   &::-webkit-inner-spin-button {
     appearance: none;
     display: none;
-  }
-  &:invalid {
-    color: var(--color_error);
-  }
-  &:placeholder-shown {
-    color: var(--color_error);
   }
 `;
 
@@ -182,10 +167,10 @@ export const getSequenceItemComponent = (
   action === RawKeycodeSequenceAction.Down
     ? KeycodeDownLabel
     : action === RawKeycodeSequenceAction.Up
-    ? KeycodeUpLabel
-    : action === RawKeycodeSequenceAction.CharacterStream
-    ? CharacterStreamLabel
-    : KeycodePressLabel;
+      ? KeycodeUpLabel
+      : action === RawKeycodeSequenceAction.CharacterStream
+        ? CharacterStreamLabel
+        : KeycodePressLabel;
 
 function capitalize(string: string) {
   return string[0].toUpperCase() + string.slice(1);

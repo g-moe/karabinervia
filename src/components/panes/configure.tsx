@@ -7,15 +7,20 @@ import {CenterPane, ConfigureBasePane} from './pane';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {
   CustomFeaturesV2,
-  getLightingDefinition,
   isVIADefinitionV2,
   isVIADefinitionV3,
   VIADefinitionV2,
   VIADefinitionV3,
 } from '@the-via/reader';
-import {Grid, Row, IconContainer, MenuCell, ConfigureFlexCell} from './grid';
+import {ConfigureFlexCell} from './grid';
+import {
+  BottomSection,
+  BottomSectionContent,
+  BottomSectionNav,
+  BottomSectionNavItem,
+  BottomSectionTopBar,
+} from './bottom-section';
 import * as Keycode from './configure-panes/keycode';
-import * as Lighting from './configure-panes/lighting';
 import * as Macros from './configure-panes/macros';
 import * as SaveLoad from './configure-panes/save-load';
 import * as Layouts from './configure-panes/layouts';
@@ -39,20 +44,14 @@ import {getIsMacroFeatureSupported} from 'src/store/macrosSlice';
 import {getConnectedDevices, getSupportedIds} from 'src/store/devicesSlice';
 import {isElectron} from 'src/utils/running-context';
 import {useAppDispatch} from 'src/store/hooks';
-import {MenuTooltip} from '../inputs/tooltip';
 import {getRenderMode, getSelectedTheme} from 'src/store/settingsSlice';
 import {useTranslation} from 'react-i18next';
 import {KARABINER_VIA_VENDOR_PRODUCT_ID} from 'src/karabiner/virtual-device';
-
-const MenuContainer = styled.div`
-  padding: 15px 10px 20px 10px;
-`;
 
 const Rows = [
   Keycode,
   Macros,
   Layouts,
-  Lighting,
   SaveLoad,
   RotaryEncoder,
   ...makeCustomMenus([]),
@@ -74,7 +73,9 @@ const getRowsForKeyboard = (): typeof Rows => {
 
   if (!selectedDefinition) {
     return [];
-  } else if (selectedDefinition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID) {
+  } else if (
+    selectedDefinition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID
+  ) {
     return [Keycode, SaveLoad];
   } else if (isVIADefinitionV2(selectedDefinition)) {
     return getRowsForKeyboardV2(selectedDefinition, showMacros, numberOfLayers);
@@ -128,11 +129,7 @@ const getRowsForKeyboardV2 = (
 ): typeof Rows => {
   let rows: typeof Rows = [Keycode, Layouts, Macros, SaveLoad];
   if (isVIADefinitionV2(selectedDefinition)) {
-    const {lighting, customFeatures} = selectedDefinition;
-    const {supportedLightingValues} = getLightingDefinition(lighting);
-    if (supportedLightingValues.length !== 0) {
-      rows = [...rows, Lighting];
-    }
+    const {customFeatures} = selectedDefinition;
     if (customFeatures) {
       rows = [...rows, ...getCustomPanes(customFeatures)];
     }
@@ -175,7 +172,7 @@ const Loader: React.FC<{
       {(showButton || noConnectedDevices) && !noSupportedIds && !isElectron ? (
         <AccentButtonLarge onClick={() => dispatch(reloadConnectedDevices())}>
           {t('Authorize device')}
-          <FontAwesomeIcon style={{marginLeft: '10px'}} icon={faPlus} />
+          <TrailingIcon icon={faPlus} />
         </AccentButtonLarge>
       ) : (
         <LoadingText isSearching={!selectedDefinition} />
@@ -195,6 +192,22 @@ const LoaderPane = styled(CenterPane)`
   left: 0;
   right: 0;
   z-index: 4;
+`;
+
+const TrailingIcon = styled(FontAwesomeIcon)`
+  margin-left: 10px;
+`;
+
+const ConfigureOverlay = styled(ConfigureFlexCell)`
+  pointer-events: none;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+`;
+
+const ConfigureControls = styled.div`
+  pointer-events: all;
 `;
 
 export const ConfigurePane = () => {
@@ -236,46 +249,39 @@ const ConfigureGrid = () => {
 
   return (
     <>
-      <ConfigureFlexCell
+      <ConfigureOverlay
         onClick={(evt) => {
           if ((evt.target as any).nodeName !== 'CANVAS')
             dispatch(clearSelectedKey());
         }}
-        style={{
-          pointerEvents: 'none',
-          position: 'absolute',
-          top: 50,
-          left: 0,
-          right: 0,
-        }}
       >
-        <div style={{pointerEvents: 'all'}}>
+        <ConfigureControls>
           <LayerControl />
           <Badge />
-        </div>
-      </ConfigureFlexCell>
-      <Grid style={{pointerEvents: 'none'}}>
-        <MenuCell style={{pointerEvents: 'all'}}>
-          <MenuContainer>
+        </ConfigureControls>
+      </ConfigureOverlay>
+      <BottomSection>
+        <BottomSectionTopBar>
+          <BottomSectionNav>
             {(KeyboardRows || []).map(
               ({Icon, Title}: {Icon: any; Title: string}, idx: number) => (
-                <Row
+                <BottomSectionNavItem
                   key={idx}
-                  onClick={(_) => setRow(idx)}
-                  $selected={selectedRow === idx}
+                  onClick={() => setRow(idx)}
+                  selected={selectedRow === idx}
+                  tooltip={t(Title)}
                 >
-                  <IconContainer>
-                    <Icon />
-                    <MenuTooltip>{t(Title)}</MenuTooltip>
-                  </IconContainer>
-                </Row>
+                  <Icon />
+                </BottomSectionNavItem>
               ),
             )}
-          </MenuContainer>
-        </MenuCell>
+          </BottomSectionNav>
+        </BottomSectionTopBar>
 
-        {SelectedPane && <SelectedPane />}
-      </Grid>
+        <BottomSectionContent>
+          {SelectedPane && <SelectedPane />}
+        </BottomSectionContent>
+      </BottomSection>
     </>
   );
 };

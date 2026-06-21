@@ -4,74 +4,31 @@ import {CategoryIconContainer} from '../panes/grid';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
+import {
+  dropdownMenuVisibility,
+  menuItemSurface,
+  menuListSurface,
+  scrimSurface,
+} from '../inputs/control-styles';
 
 const Container = styled.div`
-  position: absolute;
-  right: 200px;
+  position: relative;
   font-size: 18px;
 `;
 
 const LanguageList = styled.ul<{$show: boolean}>`
-  padding: 0;
-  border: 1px solid var(--bg_control);
-  width: 160px;
-  border-radius: var(--radius_menu);
-  background-color: var(--bg_menu);
-  margin: 0;
-  margin-top: 5px;
+  ${menuListSurface}
+  ${dropdownMenuVisibility}
   top: 30px;
   right: 0px;
-  position: absolute;
-  pointer-events: ${(props) => (props.$show ? 'all' : 'none')};
-  transition: all 0.2s ease-out;
-  z-index: 11;
-  opacity: ${(props) => (props.$show ? 1 : 0)};
-  overflow: hidden;
-  transform: ${(props) => (props.$show ? 0 : `translateY(-5px)`)};
 `;
 
 const LanugaeButton = styled.button<{$selected?: boolean}>`
-  display: block;
-  text-align: center;
-  outline: none;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  border: none;
-  background: ${(props) =>
-    props.$selected ? 'var(--bg_icon-highlighted)' : 'transparent'};
-  color: ${(props) =>
-    props.$selected
-      ? 'var(--color_icon-highlighted)'
-      : 'var(--color_label-highlighted)'};
-  cursor: pointer;
-  text-align: left;
-  font-size: 14px;
-  text-transform: uppercase;
-  padding: 5px 10px;
-  &:hover {
-    border: none;
-    background: ${(props) =>
-      props.$selected ? 'var(--bg_icon-highlighted)' : 'var(--bg_control)'};
-    color: ${(props) =>
-      props.$selected
-        ? 'var(--color_icon-highlighted)'
-        : 'var(--color_label-highlighted)'};
-  }
+  ${menuItemSurface}
 `;
 
 const ClickCover = styled.div`
-  position: fixed;
-  z-index: 10;
-  pointer-events: all;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0.4;
-  background: rgba(0, 0, 0, 0.75);
+  ${scrimSurface}
 `;
 
 const LanguageSelectors: React.FC<{

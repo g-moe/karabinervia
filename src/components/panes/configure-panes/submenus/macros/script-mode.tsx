@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {CSSProperties, useEffect} from 'react';
 import {AccentButton} from '../../../../inputs/accent-button';
 import {getMacroValidator} from 'src/utils/macro-api';
 import {ControlRow, Label, Detail} from '../../../grid';
@@ -12,13 +12,45 @@ import {
 import {ErrorMessage} from '../../../../styled';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
+import {textareaSurface} from 'src/components/inputs/control-styles';
+
+const getAutocompleteTextAreaStyle = (hasError: boolean): CSSProperties => ({
+  fontSize: '16px',
+  lineHeight: '18px',
+  width: '100%',
+  height: '140px',
+  fontFamily: 'monospace',
+  resize: 'none',
+  borderColor: hasError
+    ? 'var(--color_error)'
+    : 'var(--color_separator-opaque)',
+});
+
+const autocompleteContainerStyle: CSSProperties = {
+  border: 'none',
+  lineHeight: '20px',
+};
+
+const autocompleteItemStyle: CSSProperties = {
+  borderColor: 'var(--color_separator)',
+  backgroundColor: 'var(--color_surface-menu)',
+};
+
+const autocompleteDropdownStyle: CSSProperties = {
+  zIndex: 999,
+  backgroundColor: 'var(--color_surface-menu)',
+};
+
+const autocompleteListStyle: CSSProperties = {
+  position: 'fixed',
+  backgroundColor: 'var(--color_surface-menu)',
+  maxHeight: '210px',
+  overflow: 'auto',
+  border: '1px solid var(--color_separator)',
+};
 
 const TextArea = styled.textarea`
-  box-sizing: border-box;
-  background: var(--bg_control);
-  padding: 5px 10px;
-  border-color: var(--border_color_icon);
-  color: var(--color_label);
+  ${textareaSurface}
   width: 100%;
   height: 200px;
   font-size: 16px;
@@ -26,13 +58,6 @@ const TextArea = styled.textarea`
   resize: none;
   font-family: 'Source Code Pro';
   font-weight: 500;
-  &::placeholder {
-    color: var(--color_control-text-muted);
-  }
-  &:focus {
-    color: var(--color_control-text);
-    outline-color: var(--color_control-border);
-  }
 `;
 
 const ToastErrorMessage = styled(ErrorMessage)`
@@ -46,12 +71,12 @@ const ToastErrorMessage = styled(ErrorMessage)`
 `;
 
 const Message = styled.div`
-  color: var(--color_detail-text);
+  color: var(--color_text-secondary);
 `;
 
 const Link = styled.a`
   font-size: 18x !important;
-  color: var(--color_detail-text);
+  color: var(--color_text-secondary);
   text-decoration: underline;
 `;
 
@@ -111,36 +136,11 @@ export const ScriptMode: React.FC<{
           value={currentValue}
           onChange={(e) => setCurrentValue(e.target.value)}
           loadingComponent={AutocompleteLoading}
-          style={{
-            fontSize: '16px',
-            lineHeight: '18px',
-            width: '100%',
-            height: '140px',
-            fontFamily: 'monospace',
-            resize: 'none',
-            borderColor: hasError
-              ? 'var(--color_error)'
-              : 'var(--border_color_icon)',
-          }}
-          containerStyle={{
-            border: 'none',
-            lineHeight: '20px',
-          }}
-          itemStyle={{
-            borderColor: 'var(--border_color_cell)',
-            backgroundColor: 'var(--bg_menu)',
-          }}
-          dropdownStyle={{
-            zIndex: 999,
-            backgroundColor: 'var(--bg_menu)',
-          }}
-          listStyle={{
-            position: 'fixed',
-            backgroundColor: 'var(--bg_menu)',
-            maxHeight: '210px',
-            overflow: 'auto',
-            border: '1px solid var(--border_color_cell)',
-          }}
+          style={getAutocompleteTextAreaStyle(hasError)}
+          containerStyle={autocompleteContainerStyle}
+          itemStyle={autocompleteItemStyle}
+          dropdownStyle={autocompleteDropdownStyle}
+          listStyle={autocompleteListStyle}
           minChar={0}
           textAreaComponent={TextArea as any}
           movePopupAsYouType={true}

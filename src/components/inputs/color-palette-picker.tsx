@@ -1,10 +1,8 @@
 import {Color} from '@the-via/reader';
-import {useCallback, useEffect, useMemo, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {setSelectedPaletteColor} from 'src/store/keymapSlice';
-import {updateShowKeyPainter} from 'src/store/menusSlice';
+import {useMemo, useState} from 'react';
 import {getRGB} from 'src/utils/color-math';
 import styled from 'styled-components';
+import {roundSwatchSurface} from './control-styles';
 import {ColorPicker} from './color-picker';
 
 type Props = {
@@ -20,40 +18,17 @@ const ColorPalettePickerContainer = styled.div`
 
 const PreviousColorContainer = styled.div`
   display: flex;
-  background: var(--bg_control);
-  border-radius: 15px;
+  background: var(--color_control-background);
+  border-radius: var(--radius_menu);
+  padding: 2px;
 `;
 
-const PreviousColorOption = styled.div<{$selected: boolean}>`
-  display: inline-block;
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  border: 4px solid var(--border_color_cell);
-  cursor: pointer;
-  transition: transform 0.2s ease-out;
-  &:hover {
-    opacity: 0.8;
-  }
+const PreviousColorOption = styled.div<{$selected: boolean; $color: string}>`
+  ${roundSwatchSurface}
+  background: ${(props) => props.$color};
   transform: ${(props) => (props.$selected ? 'scale(0.8)' : 'scale(0.6)')};
-  border-color: ${(props) =>
-    props.$selected ? 'var(--color_accent)' : 'var(--border_color_cell)'};
 `;
 
-export const ConnectedColorPalettePicker: React.FC = () => {
-  const dispatch = useDispatch();
-  const setColor = useCallback(
-    (hue: number, sat: number) => dispatch(setSelectedPaletteColor([hue, sat])),
-    [dispatch],
-  );
-  useEffect(() => {
-    dispatch(updateShowKeyPainter(true));
-    return () => {
-      dispatch(updateShowKeyPainter(false));
-    };
-  });
-  return <ColorPalettePicker color={[0, 0]} setColor={setColor} />;
-};
 export const ColorPalettePicker: React.FC<{
   color: [number, number];
   setColor: Props['setColor'];
@@ -79,12 +54,10 @@ export const ColorPalettePicker: React.FC<{
             <PreviousColorOption
               key={idx}
               $selected={isSelected}
-              style={{
-                background: getRGB({
-                  hue: savedColor[0] ?? 0,
-                  sat: savedColor[1] ?? 0,
-                }),
-              }}
+              $color={getRGB({
+                hue: savedColor[0] ?? 0,
+                sat: savedColor[1] ?? 0,
+              })}
               onClick={() => {
                 setSelectedColor(savedColor as [number, number]);
                 setColor(savedColor[0], savedColor[1]);

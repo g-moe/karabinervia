@@ -1,321 +1,192 @@
-import {PropsWithChildren, useMemo} from 'react';
+import {PropsWithChildren} from 'react';
+import styled, {css} from 'styled-components';
 
-export const Keycap2DTooltip: React.FC<PropsWithChildren> = (props) => {
-  const styles = useMemo(
-    () => ({
-      containerStyles: {
-        position: 'absolute',
-        left: '50%',
-        transformOrigin: 'left',
-        transition: 'all 0.1s ease-in-out',
-        top: 0,
-        marginTop: -40,
-        zIndex: 4,
-        pointerEvents: 'none',
-        filter: 'drop-shadow(0px 0px 1px white)',
-      },
-      contentStyles: {
-        padding: '5px 8px',
-        borderRadius: 10,
-        background: 'var(--color_tooltip-bg)',
-        color: 'var(--color_tooltip-text)',
-        fontFamily:
-          "'Fira Sans Condensed', Helvetica, Helvetica Neue, Arial, serif",
-        fontSize: 16,
-        fontWeight: 500,
-        whiteSpace: 'nowrap',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textTransform: 'uppercase',
-        zIndex: 5,
-        transform: 'translateX(-50%)',
-      },
-      pointerStyles: {
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderLeft: '6px solid transparent',
-        borderRight: '6px solid transparent',
-        borderTop: `6px solid var(--color_tooltip-bg)`,
-        position: 'absolute',
-        marginLeft: -6,
-        width: 0,
-      },
-    }),
-    [],
-  );
-  return (
-    <Tooltip
-      {...props}
-      containerStyles={styles.containerStyles}
-      contentStyles={styles.contentStyles}
-      pointerStyles={styles.pointerStyles}
-    />
-  );
-};
+type Direction = 'top' | 'bottom' | 'left';
 
-export const KeycapTooltip: React.FC<any> = (props) => {
-  const styles = useMemo(
-    () => ({
-      containerStyles: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        marginTop: -800,
-      },
-      contentStyles: {
-        padding: '70px 70px',
-        background: 'var(--color_tooltip-bg)',
-        color: 'var(--color_tooltip-text)',
-        borderRadius: 100,
-        fontSize: 200,
-        fontFamily: "'Fira Sans', Helvetica, Helvetica Neue, Arial, serif",
-        whiteSpace: 'nowrap',
-        letterSpacing: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontWeight: 'bold',
-      },
-      pointerStyles: {
-        height: 150,
-        width: 150,
-        marginTop: -100,
-        transform: 'rotate(45deg)',
-        background: 'var(--color_tooltip-bg)',
-      },
-    }),
-    [],
-  );
-  return (
-    <Tooltip
-      {...props}
-      containerStyles={styles.containerStyles}
-      contentStyles={styles.contentStyles}
-      pointerStyles={styles.pointerStyles}
-    />
-  );
-};
+const tooltipTransition = css`
+  transition:
+    opacity var(--duration_control) var(--ease_control),
+    transform var(--duration_control) var(--ease_control);
+`;
 
-export const CategoryMenuTooltip: React.FC<any> = (props) => {
-  const styles = useMemo(
-    () => ({
-      containerStyles: {
-        position: 'absolute',
-        top: 45,
-        left: 0,
-        transformOrigin: 'left',
-        transition: 'all 0.1s ease-in-out',
-        marginTop: 0,
-        zIndex: 4,
-        pointerEvents: 'none',
-      },
-      contentStyles: {
-        padding: '5px 10px',
-        borderRadius: 10,
-        background: 'var(--color_tooltip-bg)',
-        color: 'var(--color_tooltip-text)',
-        fontFamily:
-          "'Fira Sans Condensed', Helvetica, Helvetica Neue, Arial, serif",
-        fontSize: 18,
-        fontWeight: 500,
-        whiteSpace: 'nowrap',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textTransform: 'uppercase',
-        zIndex: 5,
-        transform: 'translateX(-50%)',
-        marginLeft: 18,
-      },
-      pointerStyles: {
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderLeft: '6px solid transparent',
-        borderRight: '6px solid transparent',
-        borderBottom: `6px solid var(--color_tooltip-bg)`,
-        position: 'absolute',
-        marginLeft: 15,
-        marginTop: -41,
-        width: 0,
-      },
-    }),
-    [],
-  );
-  return (
-    <Tooltip
-      {...props}
-      containerStyles={styles.containerStyles}
-      contentStyles={styles.contentStyles}
-      pointerStyles={styles.pointerStyles}
-    />
-  );
-};
-export const ProgressBarTooltip: React.FC<any> = (props) => {
-  const styles = useMemo(
-    () => ({
-      containerStyles: {
-        position: 'absolute',
-        left: '50%',
-        transformOrigin: 'left',
-        transition: 'all 0.1s ease-in-out',
-        top: 0,
-        marginTop: -40,
-        zIndex: 4,
-        pointerEvents: 'none',
-      },
-      contentStyles: {
-        padding: '5px 10px',
-        borderRadius: 10,
-        background: 'var(--color_tooltip-bg)',
-        color: 'var(--color_tooltip-text)',
-        fontFamily:
-          "'Fira Sans Condensed', Helvetica, Helvetica Neue, Arial, serif",
-        fontSize: 18,
-        fontWeight: 500,
-        whiteSpace: 'nowrap',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textTransform: 'uppercase',
-        zIndex: 5,
-        transform: 'translateX(-50%)',
-      },
-      pointerStyles: {
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderLeft: '6px solid transparent',
-        borderRight: '6px solid transparent',
-        borderTop: `6px solid var(--color_tooltip-bg)`,
-        position: 'absolute',
-        marginLeft: -6,
-        width: 0,
-      },
-    }),
-    [],
-  );
-  return (
-    <Tooltip
-      {...props}
-      containerStyles={styles.containerStyles}
-      contentStyles={styles.contentStyles}
-      pointerStyles={styles.pointerStyles}
-    />
-  );
-};
-export const IconButtonTooltip: React.FC<any> = (props) => {
-  const styles = useMemo(
-    () => ({
-      containerStyles: {
-        position: 'absolute',
-        top: 50,
-        left: 0,
-        transformOrigin: 'left',
-        transition: 'all 0.1s ease-in-out',
-        marginTop: 0,
-        zIndex: 4,
-        pointerEvents: 'none',
-      },
-      contentStyles: {
-        padding: '5px 10px',
-        borderRadius: 10,
-        background: 'var(--color_tooltip-bg)',
-        color: 'var(--color_tooltip-text)',
-        fontFamily:
-          "'Fira Sans Condensed', Helvetica, Helvetica Neue, Arial, serif",
-        fontSize: 18,
-        fontWeight: 500,
-        whiteSpace: 'nowrap',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textTransform: 'uppercase',
-        zIndex: 5,
-        transform: 'translateX(-50%)',
-        marginLeft: 18,
-      },
-      pointerStyles: {
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderLeft: '6px solid transparent',
-        borderRight: '6px solid transparent',
-        borderBottom: `6px solid var(--color_tooltip-bg)`,
-        position: 'absolute',
-        marginLeft: 15,
-        marginTop: -41,
-        width: 0,
-      },
-    }),
-    [],
-  );
-  return (
-    <Tooltip
-      {...props}
-      containerStyles={styles.containerStyles}
-      contentStyles={styles.contentStyles}
-      pointerStyles={styles.pointerStyles}
-    />
-  );
-};
+const TooltipContainer = styled.div`
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  filter: var(--box-shadow-tooltip);
+  ${tooltipTransition}
+`;
 
-export const MenuTooltip: React.FC<any> = (props) => {
-  const styles = useMemo(
-    () => ({
-      containerStyles: {
-        position: 'absolute',
-        top: 0,
-        left: 45,
-        transformOrigin: 'left',
-        transition: 'all 0.1s ease-in-out',
-        marginTop: -5,
-        zIndex: 4,
-        pointerEvents: 'none',
-      },
-      contentStyles: {
-        padding: '5px 5px',
-        background: 'var(--color_tooltip-bg)',
-        color: 'var(--color_tooltip-text)',
-        borderRadius: 10,
-        fontFamily:
-          "'Fira Sans Condensed', Helvetica, Helvetica Neue, Arial, serif",
-        fontWeight: 400,
-        whiteSpace: 'nowrap',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 5,
-      },
-      pointerStyles: {
-        borderStyle: 'solid',
-        borderColor: 'transparent',
-        borderTop: '6px solid transparent',
-        borderBottom: '6px solid transparent',
-        borderRight: `6px solid var(--color_tooltip-bg)`,
-        position: 'absolute',
-        marginLeft: -9,
-        marginTop: -21,
-        width: 0,
-      },
-    }),
-    [],
-  );
-  return (
-    <Tooltip
-      {...props}
-      containerStyles={styles.containerStyles}
-      contentStyles={styles.contentStyles}
-      pointerStyles={styles.pointerStyles}
-    />
-  );
-};
+const TooltipContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  padding: 5px 10px;
+  border-radius: var(--radius_menu);
+  background: var(--color_tooltip-bg);
+  color: var(--color_tooltip-text);
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+`;
 
-export const Tooltip: React.FC<any> = (props) => {
-  const {containerStyles, contentStyles, pointerStyles} = props;
-  return (
-    <div style={containerStyles} className={'tooltip'}>
-      <div style={contentStyles}>{props.children}</div>
-      <div style={pointerStyles}></div>
-    </div>
-  );
-};
+const TooltipPointer = styled.div<{$direction: Direction}>`
+  position: absolute;
+  width: 0;
+  border-style: solid;
+  border-color: transparent;
+
+  ${(props) =>
+    props.$direction === 'top' &&
+    css`
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid var(--color_tooltip-bg);
+      margin-left: -6px;
+    `}
+
+  ${(props) =>
+    props.$direction === 'bottom' &&
+    css`
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid var(--color_tooltip-bg);
+      margin-left: 15px;
+      margin-top: -41px;
+    `}
+
+  ${(props) =>
+    props.$direction === 'left' &&
+    css`
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 6px solid var(--color_tooltip-bg);
+      margin-left: -9px;
+      margin-top: -21px;
+    `}
+`;
+
+const Keycap2DTooltipContainer = styled(TooltipContainer)`
+  left: 50%;
+  top: 0;
+  margin-top: -40px;
+  transform-origin: left;
+`;
+
+const Keycap2DTooltipContent = styled(TooltipContent)`
+  padding: 5px 8px;
+  font-size: 16px;
+  transform: translateX(-50%);
+`;
+
+export const Keycap2DTooltip: React.FC<PropsWithChildren> = ({children}) => (
+  <Keycap2DTooltipContainer className="tooltip">
+    <Keycap2DTooltipContent>{children}</Keycap2DTooltipContent>
+    <TooltipPointer $direction="top" />
+  </Keycap2DTooltipContainer>
+);
+
+const KeycapTooltipContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: -800px;
+`;
+
+const KeycapTooltipContent = styled(TooltipContent)`
+  padding: 70px;
+  border-radius: 100px;
+  font-size: 200px;
+  font-weight: 700;
+  letter-spacing: 0;
+`;
+
+const KeycapTooltipPointer = styled.div`
+  height: 150px;
+  width: 150px;
+  margin-top: -100px;
+  transform: rotate(45deg);
+  background: var(--color_tooltip-bg);
+`;
+
+export const KeycapTooltip: React.FC<PropsWithChildren> = ({children}) => (
+  <KeycapTooltipContainer className="tooltip">
+    <KeycapTooltipContent>{children}</KeycapTooltipContent>
+    <KeycapTooltipPointer />
+  </KeycapTooltipContainer>
+);
+
+const FloatingTopTooltipContainer = styled(TooltipContainer)`
+  top: 45px;
+  left: 0;
+  transform-origin: left;
+`;
+
+const FloatingTopTooltipContent = styled(TooltipContent)`
+  transform: translateX(-50%);
+  margin-left: 18px;
+`;
+
+export const CategoryMenuTooltip: React.FC<PropsWithChildren> = ({
+  children,
+}) => (
+  <FloatingTopTooltipContainer className="tooltip">
+    <FloatingTopTooltipContent>{children}</FloatingTopTooltipContent>
+    <TooltipPointer $direction="bottom" />
+  </FloatingTopTooltipContainer>
+);
+
+const ProgressBarTooltipContainer = styled(TooltipContainer)`
+  left: 50%;
+  top: 0;
+  margin-top: -40px;
+  transform-origin: left;
+`;
+
+const ProgressBarTooltipContent = styled(TooltipContent)`
+  transform: translateX(-50%);
+`;
+
+export const ProgressBarTooltip: React.FC<PropsWithChildren> = ({
+  children,
+}) => (
+  <ProgressBarTooltipContainer className="tooltip">
+    <ProgressBarTooltipContent>{children}</ProgressBarTooltipContent>
+    <TooltipPointer $direction="top" />
+  </ProgressBarTooltipContainer>
+);
+
+const IconButtonTooltipContainer = styled(FloatingTopTooltipContainer)`
+  top: 50px;
+`;
+
+export const IconButtonTooltip: React.FC<PropsWithChildren> = ({children}) => (
+  <IconButtonTooltipContainer className="tooltip">
+    <FloatingTopTooltipContent>{children}</FloatingTopTooltipContent>
+    <TooltipPointer $direction="bottom" />
+  </IconButtonTooltipContainer>
+);
+
+const MenuTooltipContainer = styled(TooltipContainer)`
+  top: 0;
+  left: 45px;
+  margin-top: -5px;
+  transform-origin: left;
+`;
+
+const MenuTooltipContent = styled(TooltipContent)`
+  padding: 5px;
+  font-weight: 400;
+  text-transform: none;
+`;
+
+export const MenuTooltip: React.FC<PropsWithChildren> = ({children}) => (
+  <MenuTooltipContainer className="tooltip">
+    <MenuTooltipContent>{children}</MenuTooltipContent>
+    <TooltipPointer $direction="left" />
+  </MenuTooltipContainer>
+);

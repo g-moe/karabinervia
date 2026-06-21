@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import {AccentButton} from './accent-button';
 type Props = {
   onLoad: (files: File[]) => void;
@@ -16,14 +17,17 @@ export function AccentUploadButton(props: Props) {
   return (
     <AccentButton onClick={() => input.current && input.current.click()}>
       {props.children}
-      <input
+      <HiddenFileInput
         ref={input as any}
         type="file"
         multiple={props.multiple}
         accept="application/json"
-        style={{display: 'none'}}
         onChange={onChange}
       />
     </AccentButton>
   );
 }
+
+const HiddenFileInput = styled.input`
+  display: none;
+`;

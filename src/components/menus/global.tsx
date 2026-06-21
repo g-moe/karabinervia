@@ -2,45 +2,51 @@ import React, {useMemo} from 'react';
 import styled from 'styled-components';
 import {Link, useLocation} from 'wouter';
 import PANES from '../../utils/pane-config';
-import {useAppSelector} from 'src/store/hooks';
-import {getShowDesignTab} from 'src/store/settingsSlice';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {CategoryMenuTooltip} from '../inputs/tooltip';
 import {CategoryIconContainer} from '../panes/grid';
 import {ErrorLink, ErrorsPaneConfig} from '../panes/errors';
-import {ExternalLinks} from './external-links';
 import {useTranslation} from 'react-i18next';
 import {LanguageSelect} from './language-select';
+import {SettingsMenu} from './settings-menu';
 
 const Container = styled.div`
   width: 100vw;
   height: 25px;
   padding: 12px 0;
-  border-bottom: 1px solid var(--border_color_cell);
+  border-bottom: 1px solid var(--color_separator);
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 `;
 
-const {DEBUG_PROD, MODE, DEV} = import.meta.env;
-const showDebugPane = MODE === 'development' || DEBUG_PROD === 'true' || DEV;
-
 const GlobalContainer = styled(Container)`
-  background: var(--bg_outside-accent);
+  background: var(--color_panel-background);
+`;
+
+const CenterNav = styled.nav`
+  display: flex;
+  align-items: center;
   column-gap: 20px;
 `;
 
+const HeaderActions = styled.div`
+  position: absolute;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+`;
+
 export const UnconnectedGlobalMenu = () => {
-  const {t, i18n} = useTranslation();
-  const showDesignTab = useAppSelector(getShowDesignTab);
+  const {t} = useTranslation();
 
   const [location] = useLocation();
 
   const Panes = useMemo(() => {
     return PANES.filter((pane) => pane.key !== ErrorsPaneConfig.key).map(
       (pane) => {
-        if (pane.key === 'design' && !showDesignTab) return null;
-        if (pane.key === 'debug' && !showDebugPane) return null;
         return (
           <Link key={pane.key} to={pane.path}>
             <CategoryIconContainer $selected={pane.path === location}>
@@ -51,15 +57,19 @@ export const UnconnectedGlobalMenu = () => {
         );
       },
     );
-  }, [location, showDesignTab]);
+  }, [location]);
 
   return (
     <React.Fragment>
       <GlobalContainer>
-        <ErrorLink />
-        {Panes}
-        <LanguageSelect />
-        <ExternalLinks />
+        <CenterNav>
+          <ErrorLink />
+          {Panes}
+        </CenterNav>
+        <HeaderActions>
+          <LanguageSelect />
+          <SettingsMenu />
+        </HeaderActions>
       </GlobalContainer>
     </React.Fragment>
   );

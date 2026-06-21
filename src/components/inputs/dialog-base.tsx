@@ -1,12 +1,10 @@
 import styled from 'styled-components';
+import {modalSurface} from './control-styles';
 
 export const ModalBackground = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.75);
-  width: 100%;
-  height: 100%;
+  inset: 0;
+  background: var(--color_scrim);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,25 +12,13 @@ export const ModalBackground = styled.div`
 `;
 
 export const ModalContainer = styled.div`
-  border: 2px solid var(--color_control-border);
-  min-width: 460px;
-  max-width: 550px;
-  min-height: 170px;
-  gap: 20px;
-  background-color: var(--bg_menu);
-  border-radius: var(--radius_menu);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
+  ${modalSurface}
 `;
 
 export const PromptText = styled.div`
   font-weight: 500;
   user-select: none;
-  color: var(--color_label);
+  color: var(--color_text-secondary);
   font-size: 20px;
   text-align: center;
 `;

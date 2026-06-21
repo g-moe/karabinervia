@@ -1,6 +1,6 @@
 import {FC, useState, useEffect} from 'react';
 import {Detail, Label, ControlRow, SpanOverflowCell} from '../grid';
-import {CenterPane} from '../pane';
+import {PanelPane} from '../pane';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
 import {useAppDispatch, useAppSelector} from 'src/store/hooks';
@@ -19,11 +19,6 @@ import {
 } from 'src/store/devicesSlice';
 import {KeyboardAPI} from 'src/utils/keyboard-api';
 import {ErrorMessage} from 'src/components/styled';
-
-const Encoder = styled(CenterPane)`
-  height: 100%;
-  background: var(--color_dark_grey);
-`;
 
 const Container = styled.div`
   display: flex;
@@ -115,7 +110,7 @@ export const Pane: FC = () => {
   }
   return (
     <SpanOverflowCell>
-      <Encoder>
+      <PanelPane>
         <Container>
           <ControlRow>
             <Label>{t('Rotate Counterclockwise')}</Label>
@@ -150,7 +145,7 @@ export const Pane: FC = () => {
             </ControlRow>
           )}
         </Container>
-      </Encoder>
+      </PanelPane>
     </SpanOverflowCell>
   );
 };

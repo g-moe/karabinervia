@@ -1,16 +1,6 @@
-import {THEMES} from 'src/utils/themes';
-
-export const updateCSSVariables = (themeName: keyof typeof THEMES) => {
-  const selectedTheme = THEMES[themeName] || THEMES['OLIVIA_DARK'];
-
-  document.documentElement.style.setProperty(
-    '--color_accent',
-    selectedTheme.accent.c,
-  );
-  document.documentElement.style.setProperty(
-    '--color_inside-accent',
-    selectedTheme.accent.t,
-  );
+export const updateCSSVariables = () => {
+  document.documentElement.style.removeProperty('--color_accent');
+  document.documentElement.style.removeProperty('--color_inside-accent');
 };
 
 export const getRandomColor = () =>

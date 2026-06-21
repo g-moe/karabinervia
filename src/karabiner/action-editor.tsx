@@ -1,8 +1,17 @@
 import {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {AccentButton} from 'src/components/inputs/accent-button';
-import {ControlRow, Detail, Label, SpanOverflowCell} from 'src/components/panes/grid';
-import {CenterPane} from 'src/components/panes/pane';
+import {
+  inputSurface,
+  selectSurface,
+} from 'src/components/inputs/control-styles';
+import {
+  ControlRow,
+  Detail,
+  Label,
+  SpanOverflowCell,
+} from 'src/components/panes/grid';
+import {PanelPane} from 'src/components/panes/pane';
 import {useAppDispatch, useAppSelector} from 'src/store/hooks';
 import {
   getSelectedKey,
@@ -10,10 +19,7 @@ import {
   saveKeymapSuccess,
   setNumberOfLayers,
 } from 'src/store/keymapSlice';
-import {
-  KARABINER_VIA_DEVICE_PATH,
-  macbookLayoutKeys,
-} from './virtual-device';
+import {KARABINER_VIA_DEVICE_PATH, macbookLayoutKeys} from './virtual-device';
 import {
   KarabinerAction,
   KarabinerActionKind,
@@ -32,11 +38,6 @@ import {
   workspaceToViaLayers,
 } from './workspace';
 
-const Pane = styled(CenterPane)`
-  height: 100%;
-  background: var(--color_dark_grey);
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -44,46 +45,11 @@ const Container = styled.div`
 `;
 
 const Select = styled.select`
-  height: 36px;
-  min-width: 260px;
-  background: var(--bg_menu);
-  color: var(--color_control-text);
-  border: 2px solid var(--color_control-border-subtle);
-  border-radius: var(--radius_control);
-  box-sizing: border-box;
-  padding: 0 10px;
-
-  &:focus,
-  &:hover {
-    border-color: var(--color_control-border);
-    outline: none;
-  }
-
-  option {
-    color: var(--color_control-text);
-    background: var(--bg_menu);
-  }
+  ${selectSurface}
 `;
 
 const TextInput = styled.input`
-  height: 36px;
-  min-width: 260px;
-  background: var(--bg_menu);
-  color: var(--color_control-text);
-  border: 2px solid var(--color_control-border-subtle);
-  border-radius: var(--radius_control);
-  box-sizing: border-box;
-  padding: 0 10px;
-
-  &:focus,
-  &:hover {
-    border-color: var(--color_control-border);
-    outline: none;
-  }
-
-  &::placeholder {
-    color: var(--color_control-text-muted);
-  }
+  ${inputSurface}
 `;
 
 const CheckboxGroup = styled.div`
@@ -94,7 +60,7 @@ const CheckboxGroup = styled.div`
 `;
 
 const Checkbox = styled.label`
-  color: var(--color_label);
+  color: var(--color_text-secondary);
   font-size: 16px;
   line-height: 24px;
 `;
@@ -133,13 +99,7 @@ function ActionRows(props: {
   layerOptions: {value: string; label: string}[];
   onChange: (action: KarabinerAction) => void;
 }) {
-  const {
-    action,
-    allowLayer,
-    allowTransparent,
-    layerOptions,
-    onChange,
-  } = props;
+  const {action, allowLayer, allowTransparent, layerOptions, onChange} = props;
   const fallbackLayer = layerOptions[0]?.value ?? 'nav';
   const kindOptions: {value: KarabinerActionKind; label: string}[] = [
     ...(allowTransparent
@@ -161,7 +121,10 @@ function ActionRows(props: {
             value={action.kind}
             onChange={(event) =>
               onChange(
-                defaultAction(event.target.value as KarabinerActionKind, fallbackLayer),
+                defaultAction(
+                  event.target.value as KarabinerActionKind,
+                  fallbackLayer,
+                ),
               )
             }
           >
@@ -287,7 +250,9 @@ export function KarabinerActionEditor() {
     saveWorkspace(next);
     const layers = workspaceToViaLayers(next);
     dispatch(setNumberOfLayers(layers.length));
-    dispatch(saveKeymapSuccess({devicePath: KARABINER_VIA_DEVICE_PATH, layers}));
+    dispatch(
+      saveKeymapSuccess({devicePath: KARABINER_VIA_DEVICE_PATH, layers}),
+    );
   };
 
   useEffect(() => {
@@ -295,16 +260,20 @@ export function KarabinerActionEditor() {
     setWorkspaceState(next);
     const layers = workspaceToViaLayers(next);
     dispatch(setNumberOfLayers(layers.length));
-    dispatch(saveKeymapSuccess({devicePath: KARABINER_VIA_DEVICE_PATH, layers}));
+    dispatch(
+      saveKeymapSuccess({devicePath: KARABINER_VIA_DEVICE_PATH, layers}),
+    );
   }, [dispatch]);
 
   if (!macKey || macKey.displayOnly) {
     return (
       <SpanOverflowCell>
-        <Pane>
+        <PanelPane>
           <Container>
             <ControlRow>
-              <Label>{macKey?.displayOnly ? 'Display Only' : 'Select a key'}</Label>
+              <Label>
+                {macKey?.displayOnly ? 'Display Only' : 'Select a key'}
+              </Label>
               <Detail>
                 {macKey?.displayOnly
                   ? 'This key is shown for physical context and cannot be edited.'
@@ -312,7 +281,7 @@ export function KarabinerActionEditor() {
               </Detail>
             </ControlRow>
           </Container>
-        </Pane>
+        </PanelPane>
       </SpanOverflowCell>
     );
   }
@@ -325,12 +294,14 @@ export function KarabinerActionEditor() {
 
   return (
     <SpanOverflowCell>
-      <Pane>
-        <Container>
+        <PanelPane>
+          <Container>
           <ControlRow>
             <Label>
               Selected Key
-              <SelectedKeyValue>{macKey.code.replace(/^KC_/, '')}</SelectedKeyValue>
+              <SelectedKeyValue>
+                {macKey.code.replace(/^KC_/, '')}
+              </SelectedKeyValue>
             </Label>
           </ControlRow>
           <ControlRow>
@@ -423,7 +394,7 @@ export function KarabinerActionEditor() {
             </Detail>
           </ControlRow>
         </Container>
-      </Pane>
+        </PanelPane>
     </SpanOverflowCell>
   );
 }

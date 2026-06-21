@@ -6,18 +6,36 @@
 - [x] preview shifted legends while holding either Shift key
 - [x] proper layer setup for default mac os
 
+---
+
 - [ ] removal not-needed
-- all themes but default dark and default light
-- via+discord+github link items from header
-- design tab
-- slider mode
-- any of the rgb stuff or keyboard stuff that will not be relevant on mac os
--
+- [x] all themes but default dark and default light
+- [x] via+discord+github link items from header
+- [x] design tab
+- [x] slider mode
+- [x] any of the rgb stuff or keyboard stuff that will not be relevant on mac os
+  - [x] remove Lighting pane, lighting submenus, lighting Redux slice, V2 lighting data loading, and visible QMK/WT lighting keycode menu data
+  - [x] audit and remove remaining lower-level RGB/backlight byte maps, keyboard API helpers, per-key color painter hooks, and legacy custom-keyboard controls
+- [x] remove debug route, debug mode picker entry, diagnostics menu, renderer debug scaffolding, and unused debug helpers
 
-- ?debug mode (not sure its needed key tester should be good enough?)
+---
 
-- [ ] remove ALL themes and fallback to just 1 custom theme (1 dark mode and 1 light mode) we will create that follows apple design guide and is dark mode. (edit the entire page via design system and be sure we do not break anything afterwards ui wise for not being able to see stuff...literally every single color and css token needs to be evaluated and maped to proper apple, for example the pink highlight for key press should be blue, etc.)
+- [x] remove ALL themes and fallback to just 1 custom theme (1 dark mode and 1 light mode) we will create that follows apple design guide and is dark mode. (edit the entire page via design system and be sure we do not break anything afterwards ui wise for not being able to see stuff...literally every single color and css token needs to be evaluated and maped to proper apple, for example the pink highlight for key press should be blue, etc.)
 - [x] centralize readable control, select, input, action-editor, and tooltip colors behind shared tokens
+- [x] remove blue stage wash and neutralize default MacBook keycap accent keys
+- [x] reduce top navigation selected state from filled blue to subtle Apple-style selection chrome
+- [x] centralize canvas/WebGL renderer accent colors and keycap shadows
+- [x] map warning and generic detail text to Apple theme tokens
+- [x] in light mode the keyboard should be white, in dark mode it is already correctly black
+- [x] replace the subtle blue accent/focus border on selects with the stronger Apple blue used by toggles; current alternate blue border looks off
+- [x] tokenize loader artwork chrome and encoder texture highlight/shadow colors
+- [x] keep Configure bottom section centered and move its section switcher into a horizontal top bar inside the bottom section
+- [x] centralize bottom-section chrome and remove route-level sidebars from Configure, Settings, Key Tester, and Errors
+- [x] remove settings route, move all into header top right hamburger menu, when the hamburger menu opens, everything is a standard toggle...it should be hamburger top right, then next to it on the left should be the local/language option right next to it
+
+---
 
 - [ ] move to pnpm, with workspace rul for minimum release age to be 14 days
 - [ ] major upgrades for packages
+- [ ] remove package.json commands that are not relevant to this fork
+- [ ] replace readme with information that this is a WIP fork of via frontend so that we can map apple keyboards to karabiner...it will support editing all mac os keys except the function row, touch id, and the globe key.

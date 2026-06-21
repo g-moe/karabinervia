@@ -1,13 +1,13 @@
 import {current} from '@reduxjs/toolkit';
 import {
   DefinitionVersionMap,
-  getTheme,
   KeyboardDefinitionIndex,
   KeyboardDictionary,
   ThemeDefinition,
 } from '@the-via/reader';
 import {TestKeyboardSoundsMode} from 'src/components/void/test-keyboard-sounds';
-import {THEMES} from 'src/utils/themes';
+import {AppleInteractionColor} from 'src/utils/apple-colors';
+import {APPLE_KEYCAP_THEME_BY_MODE} from 'src/utils/themes';
 import {Store} from '../shims/via-app-store';
 import type {
   AuthorizedDevice,
@@ -22,19 +22,14 @@ const defaultStoreData = {
     generatedAt: -1,
     hash: '',
     version: '2.0.0',
-    theme: getTheme(),
-    accentColor: '#ad7070',
+    accentColor: AppleInteractionColor.systemBlue,
     supportedVendorProductIdMap: {},
   },
   definitions: {},
   settings: {
-    showDesignTab: false,
     disableFastRemap: false,
-    ShowSliderValuesMode: 'Slider Only' as const,
     renderMode: '2D' as const,
     themeMode: 'dark' as const,
-    designDefinitionVersion: 'v3' as const,
-    themeName: 'OLIVIA_DARK',
     macroEditor: {
       smartOptimizeEnabled: true,
       recordDelaysEnabled: false,
@@ -157,23 +152,14 @@ export const getDefinitionsFromStore = (): KeyboardDictionary =>
   deviceStore.get('definitions');
 
 export const getThemeFromStore = (): ThemeDefinition =>
-  THEMES[getThemeNameFromStore() as keyof typeof THEMES] ||
-  deviceStore.get('definitionIndex')?.theme;
+  APPLE_KEYCAP_THEME_BY_MODE[getThemeModeFromStore() || 'dark'];
 
 export const getThemeModeFromStore = (): 'dark' | 'light' => {
   return deviceStore.get('settings')?.themeMode;
 };
 
-export const getShowSliderValuesModeFromStore = (): 'Slider & Show Value' | 'Slider & Input Field' | 'Slider Only' => {
-  return deviceStore.get('settings')?.ShowSliderValuesMode;
-};
-
 export const getRenderModeFromStore = (): '3D' | '2D' => {
   return deviceStore.get('settings')?.renderMode;
-};
-
-export const getThemeNameFromStore = () => {
-  return deviceStore.get('settings')?.themeName;
 };
 
 export const getSettings = (): Settings => deviceStore.get('settings');

@@ -4,7 +4,7 @@ import {title, component} from '../../icons/layouts';
 import {ControlRow, SpanOverflowCell, Label, Detail} from '../grid';
 import {AccentSlider} from '../../inputs/accent-slider';
 import {AccentSelect} from '../../inputs/accent-select';
-import {CenterPane} from '../pane';
+import {PanelPane} from '../pane';
 import {
   getSelectedDefinition,
   getSelectedLayoutOptions,
@@ -60,11 +60,6 @@ const LayoutControl: React.FC<{
   }
 };
 
-const ContainerPane = styled(CenterPane)`
-  height: 100%;
-  background: var(--color_dark_grey);
-`;
-
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -87,7 +82,7 @@ export const Pane: FC = () => {
   const labels = layouts.labels || [];
   return (
     <SpanOverflowCell>
-      <ContainerPane>
+      <PanelPane>
         <Container>
           {labels.map((label: LayoutLabel, idx: number) => (
             <LayoutControl
@@ -100,7 +95,7 @@ export const Pane: FC = () => {
             />
           ))}
         </Container>
-      </ContainerPane>
+      </PanelPane>
     </SpanOverflowCell>
   );
 };

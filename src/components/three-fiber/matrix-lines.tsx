@@ -1,5 +1,6 @@
 import {Segment, Segments} from '@react-three/drei';
 import {VIAKey} from '@the-via/reader';
+import {AppleInteractionColor} from 'src/utils/apple-colors';
 import {KeycapMetric} from 'src/utils/keyboard-rendering';
 import {generateRowColArray} from '../n-links/matrix-lines';
 
@@ -10,7 +11,10 @@ export const MatrixLines: React.FC<{
   width: number;
   height: number;
 }> = ({keys, rows, cols, width, height}) => {
-  const [rowColor, colColor] = ['lightpink', 'lightgrey'];
+  const [rowColor, colColor] = [
+    AppleInteractionColor.systemBlue,
+    AppleInteractionColor.systemGray,
+  ];
   const {rowKeys, colKeys} = generateRowColArray(keys, rows, cols);
   return (
     <group

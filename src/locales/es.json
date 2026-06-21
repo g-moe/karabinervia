@@ -71,14 +71,9 @@
   "Draft Definitions": "Borradores de definiciones",
   "Definitions": "Definiciones",
   "General": "General",
-  "Show Design tab": "Mostrar pestaña de diseño",
   "Fast Key Mapping": "Mapeo rápido de teclas",
   "Light Mode": "Modo claro",
-  "Keycap Theme": "Tema de teclas",
-  "Render Mode": "Modo de renderizado",
-  "Show Diagnostic Information": "Mostrar información de diagnóstico",
   "Requires connected device": "Requiere dispositivo conectado",
-  "VIA Firmware Protocol": "Protocolo de firmware VIA",
   "VIA Firmware Version": "Versión de firmware VIA",
   "Authorize New": "Autorizar nuevo",
   "Check Key": "Comprobar tecla",
@@ -262,7 +257,6 @@
   "Layer 5": "Capa 5",
   "Layer 6": "Capa 6",
   "Layer 7": "Capa 7",
-  "Slider Mode": "Modo de control deslizante",
   "Slider Only": "Solo control deslizante",
   "Slider & Show Value": "Control deslizante y mostrar valor",
   "Slider & Input Field": "Control deslizante y campo de entrada",
@@ -359,6 +353,5 @@
   "Searching for devices...": "Buscando dispositivos…",
   "This feature is not available for this firmware version": "Esta función no está disponible para esta versión de firmware.",
   "Please enter your desired QMK keycode or hex code:": "Ingrese su código de tecla QMK o código hex deseado:",
-  "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.": "Esta función está pensada para fines de desarrollo. Si VIA no reconoce automáticamente su teclado, contacte al fabricante o vendedor de su teclado.",
-  "You didn't click \"Confirm\". To enable the Design tab, you must confirm first.": "No hiciste clic en \"Confirmar\". Para habilitar la pestaña Diseño, primero debes confirmar."
+  "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.": "Esta función está pensada para fines de desarrollo. Si VIA no reconoce automáticamente su teclado, contacte al fabricante o vendedor de su teclado."
 }

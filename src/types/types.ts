@@ -2,7 +2,6 @@ import type {
   DefinitionVersion,
   KeyboardDefinitionIndex,
   KeyboardDictionary,
-  LightingValue,
   VIAMenu,
 } from '@the-via/reader';
 import {TestKeyboardSoundsMode} from 'src/components/void/test-keyboard-sounds';
@@ -16,10 +15,6 @@ export enum TestKeyState {
 export type HIDColor = {
   hue: number;
   sat: number;
-};
-
-export type LightingData = Partial<{[key in LightingValue]: number[]}> & {
-  customColors?: HIDColor[];
 };
 
 export type DeviceInfo = {
@@ -82,15 +77,11 @@ export type TestKeyboardSoundsSettings = {
 };
 
 export type Settings = {
-  showDesignTab: boolean;
   disableFastRemap: boolean;
-  ShowSliderValuesMode: 'Slider Only' | 'Slider & Show Value' | 'Slider & Input Field';
   renderMode: '3D' | '2D';
   themeMode: 'light' | 'dark';
-  themeName: string;
   macroEditor: MacroEditorSettings;
   testKeyboardSoundsSettings: TestKeyboardSoundsSettings;
-  designDefinitionVersion: DefinitionVersion;
 };
 
 export type CommonMenusMap = {
@@ -107,7 +98,7 @@ export type VendorProductIdMap = Record<number, {v2: boolean; v3: boolean}>;
 
 export type DefinitionIndex = Pick<
   KeyboardDefinitionIndex,
-  'generatedAt' | 'version' | 'theme'
+  'generatedAt' | 'version'
 > & {
   supportedVendorProductIdMap: VendorProductIdMap;
   hash: string;

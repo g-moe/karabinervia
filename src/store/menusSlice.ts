@@ -30,22 +30,17 @@ type CustomMenuDataMap = {[devicePath: string]: CustomMenuData};
 type MenusState = {
   customMenuDataMap: CustomMenuDataMap;
   commonMenusMap: CommonMenusMap;
-  showKeyPainter: boolean;
 };
 
 const initialState: MenusState = {
   customMenuDataMap: {},
   commonMenusMap: {},
-  showKeyPainter: false,
 };
 
 const menusSlice = createSlice({
   name: 'menus',
   initialState,
   reducers: {
-    updateShowKeyPainter: (state, action: PayloadAction<boolean>) => {
-      state.showKeyPainter = action.payload;
-    },
     updateSelectedCustomMenuData: (
       state,
       action: PayloadAction<{menuData: CustomMenuData; devicePath: string}>,
@@ -67,7 +62,6 @@ const menusSlice = createSlice({
 });
 
 export const {
-  updateShowKeyPainter,
   updateSelectedCustomMenuData,
   updateCustomMenuData,
 } = menusSlice.actions;
@@ -147,22 +141,6 @@ export const updateV3MenuData =
         {res: props, ref: commandPromisesRes},
       ).res;
 
-      // Update to detect instance of color-palette control and an li on a key
-      const maxLedIndex = Math.max(
-        ...definition.layouts.keys.map((key) => key.li ?? -1),
-      );
-      console.debug(maxLedIndex, 'maxLedIndex');
-
-      if (maxLedIndex >= 0) {
-        // Ask for PerKeyRGBValues -- hardcoded to 62
-        const perKeyRGB = await api.getPerKeyRGBMatrix(
-          Array(maxLedIndex + 1)
-            .fill(0)
-            .map((_, i) => i),
-        );
-        props.__perKeyRGB = perKeyRGB;
-      }
-
       dispatch(
         updateSelectedCustomMenuData({
           devicePath: path,
@@ -219,9 +197,6 @@ const extractCommands = (
 
 export const getCommonMenusDataMap = (state: RootState) =>
   state.menus.commonMenusMap;
-
-export const getShowKeyPainter = (state: RootState) =>
-  state.menus.showKeyPainter;
 
 export const getCustomMenuDataMap = (state: RootState) =>
   state.menus.customMenuDataMap;

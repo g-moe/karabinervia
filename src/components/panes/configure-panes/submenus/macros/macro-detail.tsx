@@ -29,7 +29,7 @@ const ProgressBarContainer = styled.div`
   }
 `;
 const ProgressBar = styled.div`
-  background: var(--bg_control);
+  background: var(--color_control-background);
   position: relative;
   padding: 5px;
   border-radius: var(--radius_control);
@@ -37,19 +37,19 @@ const ProgressBar = styled.div`
   margin-bottom: 10px;
   cursor: pointer;
   width: 250px;
+`;
 
-  > span {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: var(--color_detail-text);
-    height: 10px;
-    width: 100%;
-    transform: scaleX(0.1);
-    transform-origin: left;
-    transition: transform 0.4s ease-in-out;
-  }
+const ProgressFill = styled.span<{$scale: number}>`
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: var(--color_text-secondary);
+  height: 10px;
+  width: 100%;
+  transform: scaleX(${(props) => props.$scale});
+  transform-origin: left;
+  transition: transform 0.4s ease-in-out;
 `;
 const MacroTab = styled.span<{$selected: boolean}>`
   display: inline-flex;
@@ -63,13 +63,15 @@ const MacroTab = styled.span<{$selected: boolean}>`
   justify-content: center;
   box-sizing: border-box;
   color: ${(props) =>
-    props.$selected ? 'var(--color_detail-text)' : 'var(--bg_icon)'};
+    props.$selected
+      ? 'var(--color_text-secondary)'
+      : 'var(--color_text-secondary)'};
   cursor: pointer;
   &:hover {
     color: ${(props) =>
       props.$selected
-        ? 'var(--color_detail-text)'
-        : 'var(--bg_icon-highlighted)'};
+        ? 'var(--color_text-secondary)'
+        : 'var(--color_text-primary)'};
   }
 `;
 
@@ -123,7 +125,7 @@ const BufferSizeUsage = () => {
   return (
     <ProgressBarContainer>
       <ProgressBar>
-        <span style={{transform: `scaleX(${bytesUsed / bufferSize})`}} />
+        <ProgressFill $scale={bytesUsed / bufferSize} />
       </ProgressBar>
       <ProgressBarTooltip>
         {printBytesUsed(bytesUsed, bufferSize)}

@@ -1,39 +1,34 @@
-/* This is a workaround to ← → missing in Google Fonts web font.
-Explicitly import the missing arrows.
-See https://stackoverflow.com/questions/40822458/styled-unicode-arrows-not-showing-up-with-google-fonts-web-font
- */
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans');
-@import url('https://fonts.googleapis.com/css?family=Fira+Sans&text=%E2%86%90|%E2%86%92');
-
 html,
 body {
   height: 100%;
 }
 .configure-tooltip {
   font-size: 20px !important;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: var(--color_tooltip-bg);
+  color: var(--color_tooltip-text);
 }
 body {
   position: relative;
-  color: white;
-  background-color: #232c39;
-  font-family: 'Fira Sans', Helvetica, Helvetica Neue, Arial, serif;
-  font-weight: 300;
+  color: var(--color_text-primary);
+  background-color: var(--color_app-background);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue',
+    Arial, sans-serif;
+  font-weight: 400;
   overflow: hidden;
   margin: 0;
   padding: 0;
   user-select: none;
 }
 button {
-  font-family: 'Fira Sans', Helvetica, Helvetica Neue, Arial, serif;
-  font-weight: 300;
+  font-family: inherit;
+  font-weight: 400;
 }
 h2 {
   margin: 0;
   font-size: 2.25rem;
-  font-weight: bold;
-  letter-spacing: -0.025em;
-  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color_text-primary);
 }
 p {
   font-size: 24px;
@@ -42,7 +37,7 @@ li {
   list-style: none;
 }
 a {
-  color: white;
+  color: var(--color_link);
   opacity: 0.75;
   text-decoration: none;
 }
@@ -52,94 +47,141 @@ a:hover {
   cursor: pointer;
 }
 :root {
-  --color_error: #d15e5e;
-  --color_light-grey: #d9d9d9;
-  --color_medium-grey: #707070;
-
-  --color_dark-grey: #414141;
-  --color_light-jet: #222;
-  --color_jet: #1d1b1b;
-  --color_warm-white: #fffbfb;
-  --color_tinge: #c7c3c3;
-  --color_tinge-light: #ebe4e4;
-  --color_tinge-dark: #796c6c;
-  --box-shadow-keycap: inset -1px -1px 0 rgb(0 0 0 / 20%),
-    inset 1px 1px 0 rgb(255 255 255 / 20%);
-  --box-shadow-keyboard: var(--box-shadow-keycap);
-  --box-shadow-control-raised: #8c8c8c 0 1px 0 0;
-  --filter_control-hover: brightness(0.7);
-  --radius_button: 4px;
-  --radius_control: 5px;
-  --radius_key-tile: 10px;
-  --radius_menu: 6px;
+  color-scheme: dark light;
+  --radius_button: 6px;
+  --radius_control: 8px;
+  --radius_key-tile: 7px;
+  --radius_menu: 10px;
+  --duration_control: 160ms;
+  --ease_control: cubic-bezier(0.2, 0, 0, 1);
 }
 
+:root,
 html[data-theme-mode='dark'] {
-  --color_label: #a8a8a8;
-  --color_label-highlighted: var(--color_light-grey);
-  --color_error: var(--color_error);
-  --color_success: #9ab46a;
-  --border_color_icon: var(--color_medium-grey);
-  --border_color_cell: var(--color_dark-grey);
-  --bg_icon: var(--color_medium-grey);
-  --bg_icon-highlighted: var(--color_light-grey);
-  --color_icon-highlighted: var(--color_jet);
-  --bg_menu: var(--color_light-jet);
-  --color_control: var(--color_dark-grey);
-  --bg_control: var(--color_dark-grey);
-  --bg_outside-accent: var(--color_dark-grey);
-  --bg_control_disabled: var(--color_dark-grey);
-  --bg_control-highlighted: var(--color_light-grey);
-  --bg_gradient: linear-gradient(var(--color_jet), var(--color_light-jet));
-  --bg_control-disabled: transparent;
-  --color_control-text: var(--color_label-highlighted);
-  --color_control-text-muted: var(--color_label);
-  --color_control-text-disabled: var(--color_label);
-  --color_control-border: var(--color_accent);
-  --color_control-border-disabled: var(--bg_control);
-  --color_control-border-subtle: #8a7773;
-  --color_control-selected-bg: var(--color_accent);
-  --color_control-selected-text: var(--color_inside-accent);
-  --color_detail-text: var(--color_accent);
-  --color_tooltip-bg: var(--color_accent);
-  --color_tooltip-text: var(--color_inside-accent);
+  color-scheme: dark;
+  --color_system-blue: #0a84ff;
+  --color_system-blue-accessible: #64a8ff;
+  --color_system-red: #ff453a;
+  --color_system-green: #30d158;
+  --color_system-yellow: #ffd60a;
+  --color_system-gray: #8e8e93;
+  --color_app-background: #161617;
+  --color_window-background: #1c1c1e;
+  --color_panel-background: #242426;
+  --color_control-background: #2c2c2e;
+  --color_control-background-hover: #3a3a3c;
+  --color_control-background-active: #48484a;
+  --color_control-background-disabled: #202022;
+  --color_separator: rgba(84, 84, 88, 0.72);
+  --color_separator-opaque: #38383a;
+  --color_text-primary: #f5f5f7;
+  --color_text-secondary: rgba(235, 235, 245, 0.72);
+  --color_text-tertiary: rgba(235, 235, 245, 0.48);
+  --color_text-disabled: rgba(235, 235, 245, 0.34);
+  --color_keyboard-case: #0b0b0c;
+  --color_keyboard-key: #202021;
+  --color_keyboard-key-mod: #242426;
+  --color_keyboard-key-legend: #f5f5f7;
+  --background_keyboard-stage: radial-gradient(
+    ellipse at center,
+    rgba(72, 72, 74, 0.36) 0%,
+    rgba(44, 44, 46, 0.92) 42%,
+    #161617 100%
+  );
+  --color_focus-ring: var(--color_system-blue);
+  --color_control-selected-subtle-bg: rgba(100, 168, 255, 0.13);
+  --color_control-selected-subtle-border: var(--color_system-blue);
+  --color_control-selected-subtle-text: var(--color_system-blue);
+  --color_accent: var(--color_system-blue);
+  --color_inside-accent: #ffffff;
+  --box-shadow-keycap: inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.65);
+  --box-shadow-keyboard: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 24px 70px rgba(0, 0, 0, 0.42);
+  --box-shadow-control-raised: 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.38);
+  --box-shadow-tooltip: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.32));
+  --color_scrim: rgba(0, 0, 0, 0.58);
+  --color_texture-highlight: rgba(255, 255, 255, 0.42);
+  --color_texture-shadow: rgba(0, 0, 0, 0.28);
+  --filter_control-hover: brightness(1.12);
 }
 html[data-theme-mode='light'] {
-  --color_label: #545454;
-  --color_label-highlighted: var(--color_light-jet);
-  --color_error: var(--color_error);
-  --color_success: #57701e;
-  --border_color_icon: var(--color_medium-grey);
-  --border_color_cell: var(--color_tinge-dark);
-  --bg_icon: var(--color_medium-grey);
-  --bg_icon-highlighted: var(--color_light-jet);
-  --color_icon-highlighted: var(--color_tinge-light);
-  --bg_menu: var(--color_tinge-light);
-  --color_control: var(--color_tinge-light);
-  --color_control-disabled: var(--color_tinge-light);
-  --bg_control: var(--color_tinge);
-  --bg_outside-accent: var(--color_tinge-light);
-  --bg_control-highlighted: var(--color_warm-white);
-  --bg_control-disabled: transparent;
-  --bg_gradient: linear-gradient(
-    var(--color_tinge-light),
-    var(--color_warm-white)
+  color-scheme: light;
+  --color_system-blue: #007aff;
+  --color_system-blue-accessible: #006edb;
+  --color_system-red: #ff3b30;
+  --color_system-green: #34c759;
+  --color_system-yellow: #ffcc00;
+  --color_system-gray: #8e8e93;
+  --color_app-background: #f5f5f7;
+  --color_window-background: #ffffff;
+  --color_panel-background: #f2f2f7;
+  --color_control-background: #ffffff;
+  --color_control-background-hover: #f2f2f7;
+  --color_control-background-active: #e5e5ea;
+  --color_control-background-disabled: #f2f2f7;
+  --color_separator: rgba(60, 60, 67, 0.29);
+  --color_separator-opaque: #d1d1d6;
+  --color_text-primary: #1d1d1f;
+  --color_text-secondary: rgba(60, 60, 67, 0.78);
+  --color_text-tertiary: rgba(60, 60, 67, 0.58);
+  --color_text-disabled: rgba(60, 60, 67, 0.32);
+  --color_keyboard-case: #d1d1d6;
+  --color_keyboard-key: #f8f8fa;
+  --color_keyboard-key-mod: #eeeeef;
+  --color_keyboard-key-legend: #1d1d1f;
+  --background_keyboard-stage: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.98) 0%,
+    #f5f5f7 46%,
+    #e5e5ea 100%
   );
-  --color_control-text: var(--color_label-highlighted);
-  --color_control-text-muted: var(--color_label);
-  --color_control-text-disabled: var(--color_label);
-  --color_control-border: var(--color_accent);
-  --color_control-border-disabled: var(--bg_control);
-  --color_control-border-subtle: #7c7070;
-  --color_control-selected-bg: var(--color_accent);
+  --color_focus-ring: var(--color_system-blue);
+  --color_control-selected-subtle-bg: rgba(0, 122, 255, 0.09);
+  --color_control-selected-subtle-border: var(--color_system-blue);
+  --color_control-selected-subtle-text: var(--color_system-blue);
+  --color_accent: var(--color_system-blue);
+  --color_inside-accent: #ffffff;
+  --box-shadow-keycap: inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.16);
+  --box-shadow-keyboard: inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    0 24px 70px rgba(0, 0, 0, 0.16);
+  --box-shadow-control-raised: 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 1px 2px rgba(0, 0, 0, 0.12);
+  --box-shadow-tooltip: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.18));
+  --color_scrim: rgba(0, 0, 0, 0.32);
+  --color_texture-highlight: rgba(255, 255, 255, 0.8);
+  --color_texture-shadow: rgba(0, 0, 0, 0.14);
+  --filter_control-hover: brightness(0.98);
+}
+
+html[data-theme-mode='dark'],
+html[data-theme-mode='light'] {
+  --color_error: var(--color_system-red);
+  --color_success: var(--color_system-green);
+  --color_warning: var(--color_system-yellow);
+  --color_link: var(--color_system-blue);
+  --color_surface-menu: var(--color_window-background);
+  --background_app: linear-gradient(
+    180deg,
+    var(--color_app-background),
+    var(--color_window-background)
+  );
+  --color_control-text: var(--color_text-primary);
+  --color_control-text-muted: var(--color_text-secondary);
+  --color_control-text-disabled: var(--color_text-disabled);
+  --color_control-border: var(--color_focus-ring);
+  --color_control-border-disabled: var(--color_separator);
+  --color_control-border-subtle: var(--color_separator-opaque);
+  --color_control-selected-bg: var(--color_system-blue);
   --color_control-selected-text: var(--color_inside-accent);
-  --color_detail-text: var(--color_accent);
-  --color_tooltip-bg: var(--color_accent);
-  --color_tooltip-text: var(--color_inside-accent);
+  --color_tooltip-bg: var(--color_panel-background);
+  --color_tooltip-text: var(--color_text-primary);
 }
 
 #root {
-  background: var(--bg_gradient);
+  background: var(--background_app);
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -162,7 +204,7 @@ html[data-theme-mode='light'] {
     border: 2px dashed var(--color_accent);
   }
   50% {
-    border: 2px dashed var(--border_color_icon);
+    border: 2px dashed var(--color_separator-opaque);
   }
   100% {
     border: 2px dashed var(--color_accent);
@@ -181,7 +223,7 @@ html[data-theme-mode='light'] {
     stroke: var(--color_accent);
   }
   50% {
-    stroke: var(--color_label);
+    stroke: var(--color_text-secondary);
   }
   100% {
     stroke: var(--color_accent);

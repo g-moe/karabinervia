@@ -1,18 +1,22 @@
 import styled from 'styled-components';
 
 export const Pane = styled.div`
-  background: var(--gradient);
+  background: var(--background_app);
   display: flex;
   flex: 1;
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: var(--gradient);
 `;
 
 export const CenterPane = styled(Pane)`
   overflow: auto;
   display: block;
+`;
+
+export const PanelPane = styled(CenterPane)`
+  height: 100%;
+  background: var(--color_panel-background);
 `;
 
 export const ConfigureBasePane = styled(Pane)`

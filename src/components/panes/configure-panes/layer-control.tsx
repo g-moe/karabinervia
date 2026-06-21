@@ -8,6 +8,7 @@ import {
 } from 'src/store/keymapSlice';
 import styled from 'styled-components';
 import {useTranslation} from 'react-i18next';
+import {pillButtonSurface} from 'src/components/inputs/control-styles';
 
 const Container = styled.div`
   position: absolute;
@@ -18,31 +19,15 @@ const Container = styled.div`
 const Label = styled.label`
   font-size: 20px;
   text-transform: uppercase;
-  color: var(--color_label-highlighted);
+  color: var(--color_text-primary);
   margin-right: 6px;
 `;
 const LayerButton = styled.button<{$selected?: boolean}>`
-  outline: none;
+  ${pillButtonSurface}
   font-variant-numeric: tabular-nums;
-  border: none;
-  background: ${(props) =>
-    props.$selected ? 'var(--color_control-selected-bg)' : 'transparent'};
-  color: ${(props) =>
-    props.$selected
-      ? 'var(--color_control-selected-text)'
-      : 'var(--color_label-highlighted)'};
-  cursor: pointer;
   font-size: 20px;
   font-weight: 400;
-  &:hover {
-    border: none;
-    background: ${(props) =>
-      props.$selected ? 'var(--color_control-selected-bg)' : 'var(--bg_menu)'};
-    color: ${(props) =>
-      props.$selected
-        ? 'var(--color_control-selected-text)'
-        : 'var(--color_label-highlighted)'};
-  }
+  padding: 0 5px;
 `;
 
 export const LayerControl = () => {

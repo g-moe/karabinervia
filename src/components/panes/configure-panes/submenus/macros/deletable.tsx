@@ -2,19 +2,21 @@ import {faXmarkCircle} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {PropsWithChildren} from 'react';
 import styled from 'styled-components';
-const DeletableContainer = styled.div`
+const DeletableContainer = styled.div<{$disabled: boolean}>`
   display: inline-flex;
   vertical-align: middle;
   position: relative;
+  pointer-events: ${(props) => (props.$disabled ? 'none' : 'all')};
+
   svg {
-    color: var(--bg_icon-highlighted);
+    color: var(--color_text-primary);
     position: absolute;
     right: -5px;
     top: 6px;
     opacity: 0;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
-    background: var(--bg_icon);
+    background: var(--color_control-background);
     border-radius: 50%;
     transform: scale(0.8);
   }
@@ -32,9 +34,7 @@ export const Deletable: React.FC<
   }>
 > = (props) => {
   return (
-    <DeletableContainer
-      style={{pointerEvents: !props.disabled ? 'all' : 'none'}}
-    >
+    <DeletableContainer $disabled={props.disabled}>
       {props.children}
       <FontAwesomeIcon
         icon={faXmarkCircle}

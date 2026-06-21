@@ -13,7 +13,7 @@ import {
   SubmenuCell,
   SubmenuRow,
 } from '../../grid';
-import {CenterPane} from '../../pane';
+import {PanelPane} from '../../pane';
 import {title, component} from '../../../icons/lightbulb';
 import {VIACustomItem} from './custom-control';
 import {evalExpr} from '@the-via/pelpi';
@@ -38,16 +38,22 @@ type Category = {
   isHidden?: boolean;
 };
 
-const CustomPane = styled(CenterPane)`
-  height: 100%;
-  background: var(--color_dark_grey);
-`;
-
 const Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
   padding: 0 12px;
+`;
+
+const EmptyState = styled.div`
+  padding: 20px;
+  text-align: center;
+  color: var(--color_text-secondary);
+`;
+
+const CustomMenuRow = styled(SubmenuRow)<{$disabled?: boolean}>`
+  opacity: ${(props) => (props.$disabled ? 0.5 : 1)};
+  cursor: ${(props) => (props.$disabled ? 'not-allowed' : 'pointer')};
 `;
 
 type Props = {
@@ -145,15 +151,9 @@ function submenuGenerator(
       label: elem.label,
       Menu: isHidden
         ? () => (
-            <div
-              style={{
-                padding: '20px',
-                textAlign: 'center',
-                color: 'var(--color_label)',
-              }}
-            >
+            <EmptyState>
               {t('This feature is not available for this firmware version.')}
-            </div>
+            </EmptyState>
           )
         : MenuBuilder(elem),
       isHidden,
@@ -202,19 +202,13 @@ export const Pane: React.FC<Props> = (props: any) => {
   if (menus.length === 0) {
     return (
       <OverflowCell>
-        <CustomPane>
+        <PanelPane>
           <Container>
-            <div
-              style={{
-                padding: '20px',
-                textAlign: 'center',
-                color: 'var(--color_label)',
-              }}
-            >
+            <EmptyState>
               {t('No features available for this firmware version.')}
-            </div>
+            </EmptyState>
           </Container>
-        </CustomPane>
+        </PanelPane>
       </OverflowCell>
     );
   }
@@ -224,24 +218,21 @@ export const Pane: React.FC<Props> = (props: any) => {
       <SubmenuOverflowCell>
         <MenuContainer>
           {menus.map((menu) => (
-            <SubmenuRow
+            <CustomMenuRow
               $selected={selectedCategory.label === menu.label}
+              $disabled={menu.isHidden}
               onClick={() => !menu.isHidden && setSelectedCategory(menu)}
               key={menu.label}
-              style={{
-                opacity: menu.isHidden ? 0.5 : 1,
-                cursor: menu.isHidden ? 'not-allowed' : 'pointer',
-              }}
             >
               {t(menu.label)}
-            </SubmenuRow>
+            </CustomMenuRow>
           ))}
         </MenuContainer>
       </SubmenuOverflowCell>
       <OverflowCell>
-        <CustomPane>
+        <PanelPane>
           <Container>{SelectedMenu(childProps)}</Container>
-        </CustomPane>
+        </PanelPane>
       </OverflowCell>
     </>
   );

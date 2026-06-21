@@ -7,7 +7,7 @@ import {AccentButton} from '../../inputs/accent-button';
 import {getByteForCode, getCodeForByte} from '../../../utils/key';
 import deprecatedKeycodes from '../../../utils/key-to-byte/deprecated-keycodes';
 import {title, component} from '../../icons/save';
-import {CenterPane} from '../pane';
+import {PanelPane} from '../pane';
 import {Detail, Label, ControlRow, SpanOverflowCell} from '../grid';
 import {
   getBasicKeyToByte,
@@ -45,11 +45,6 @@ type ViaSaveFile = {
 
 const isViaSaveFile = (obj: any): obj is ViaSaveFile =>
   obj && obj.name && obj.layers && obj.vendorProductId;
-
-const SaveLoadPane = styled(CenterPane)`
-  height: 100%;
-  background: var(--color_dark_grey);
-`;
 
 const Container = styled.div`
   display: flex;
@@ -156,7 +151,7 @@ export const Pane: FC = () => {
 
     return (
       <SpanOverflowCell>
-        <SaveLoadPane>
+        <PanelPane>
           <Container>
             <ControlRow>
               <Label>{t('Export Project')}</Label>
@@ -190,7 +185,7 @@ export const Pane: FC = () => {
             </ControlRow>
             {errorMessage ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
           </Container>
-        </SaveLoadPane>
+        </PanelPane>
       </SpanOverflowCell>
     );
   }
@@ -337,7 +332,7 @@ export const Pane: FC = () => {
 
   return (
     <SpanOverflowCell>
-      <SaveLoadPane>
+      <PanelPane>
         <Container>
           <ControlRow>
             <Label>{t('Save Current Layout')}</Label>
@@ -358,7 +353,7 @@ export const Pane: FC = () => {
             <SuccessMessage>{successMessage}</SuccessMessage>
           ) : null}
         </Container>
-      </SaveLoadPane>
+      </PanelPane>
     </SpanOverflowCell>
   );
 };

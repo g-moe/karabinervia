@@ -3,11 +3,7 @@ import {createRoot} from 'react-dom/client';
 import './app.global.css';
 import Root from './containers/Root';
 import {updateCSSVariables} from './utils/color-math';
-import {
-  getThemeModeFromStore,
-  getThemeNameFromStore,
-} from './utils/device-store';
-import {THEMES} from './utils/themes';
+import {getThemeModeFromStore} from './utils/device-store';
 
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
@@ -33,5 +29,5 @@ if (elem) {
   const root = createRoot(elem);
   root.render(<Root />);
   document.documentElement.dataset['themeMode'] = getThemeModeFromStore();
-  updateCSSVariables(getThemeNameFromStore() as keyof typeof THEMES);
+  updateCSSVariables();
 }

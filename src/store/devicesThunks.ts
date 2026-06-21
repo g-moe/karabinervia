@@ -16,7 +16,6 @@ import {
   loadStoredCustomDefinitions,
 } from './definitionsSlice';
 import {loadKeymapFromDevice} from './keymapSlice';
-import {updateLightingData} from './lightingSlice';
 import {loadMacros} from './macrosSlice';
 import {updateV3MenuData} from './menusSlice';
 import {
@@ -69,10 +68,7 @@ const selectConnectedDevice =
 
       const {protocol} = connectedDevice;
       try {
-        if (protocol < 11) {
-          // John you drongo, don't trust the compiler, dispatches are totes awaitable for async thunks
-          await dispatch(updateLightingData(connectedDevice));
-        } else if (protocol >= 11) {
+        if (protocol >= 11) {
           await dispatch(loadFirmwareVersion(connectedDevice));
           // John you drongo, don't trust the compiler, dispatches are totes awaitable for async thunks
           await dispatch(updateV3MenuData(connectedDevice));
@@ -80,7 +76,7 @@ const selectConnectedDevice =
       } catch (e) {
         dispatch(
           logAppError({
-            message: 'Loading lighting/menu data failed',
+            message: 'Loading menu data failed',
             deviceInfo,
           }),
         );

@@ -1,7 +1,7 @@
 import {useState, useMemo, FC, useCallback} from 'react';
 import styled from 'styled-components';
 import {OverflowCell, SubmenuOverflowCell, SubmenuRow} from '../grid';
-import {CenterPane} from '../pane';
+import {PanelPane} from '../pane';
 import {title, component} from '../../icons/adjust';
 import {MacroDetailPane} from './submenus/macros/macro-detail';
 import {useAppDispatch, useAppSelector} from '../../../store/hooks';
@@ -11,11 +11,6 @@ import {
   getMacroCount,
   saveMacros,
 } from '../../../store/macrosSlice';
-
-const MacroPane = styled(CenterPane)`
-  height: 100%;
-  background: var(--color_dark_grey);
-`;
 
 const Container = styled.div`
   display: flex;
@@ -27,6 +22,11 @@ const Container = styled.div`
 
 const MenuContainer = styled.div`
   padding: 15px 10px 20px 10px;
+`;
+
+const MacroMenuRow = styled(SubmenuRow)`
+  border-width: 0;
+  text-align: center;
 `;
 
 export const Pane: FC = () => {
@@ -58,14 +58,13 @@ export const Pane: FC = () => {
         .fill(0)
         .map((_, idx) => idx)
         .map((idx) => (
-          <SubmenuRow
+          <MacroMenuRow
             $selected={selectedMacro === idx}
             onClick={() => setSelectedMacro(idx)}
             key={idx}
-            style={{borderWidth: 0, textAlign: 'center'}}
           >
             {`M${idx}`}
-          </SubmenuRow>
+          </MacroMenuRow>
         )),
     [selectedMacro, macroCount],
   );
@@ -79,7 +78,7 @@ export const Pane: FC = () => {
         <MenuContainer>{macroMenus}</MenuContainer>
       </SubmenuOverflowCell>
       <OverflowCell>
-        <MacroPane>
+        <PanelPane>
           <Container>
             <MacroDetailPane
               macroExpressions={macroExpressions}
@@ -88,7 +87,7 @@ export const Pane: FC = () => {
               protocol={selectedDevice ? selectedDevice.protocol : -1}
             />
           </Container>
-        </MacroPane>
+        </PanelPane>
       </OverflowCell>
     </>
   );

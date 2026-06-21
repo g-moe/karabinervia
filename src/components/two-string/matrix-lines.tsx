@@ -9,13 +9,7 @@ type MatrixProps = {
 };
 
 const Matrix: React.FC<MatrixProps> = ({rowKeys, colKeys}) => (
-  <SVG
-    style={{
-      position: 'absolute',
-      top: CSSVarObject.insideBorder,
-      left: CSSVarObject.insideBorder,
-    }}
-  >
+  <SVG $offset={CSSVarObject.insideBorder}>
     {rowKeys.map((arr, index) => (
       <RowLine
         points={arr.map((point) => (point || []).join(',')).join(' ')}
@@ -31,7 +25,10 @@ const Matrix: React.FC<MatrixProps> = ({rowKeys, colKeys}) => (
   </SVG>
 );
 
-const SVG = styled.svg`
+const SVG = styled.svg<{$offset: number}>`
+  position: absolute;
+  top: ${(props) => props.$offset}px;
+  left: ${(props) => props.$offset}px;
   transform: rotateZ(0);
   width: 100%;
   height: 100%;
@@ -44,7 +41,7 @@ const RowLine = styled.polyline`
   stroke-linecap: round;
 `;
 const ColLine = styled.polyline`
-  stroke: var(--color_light-grey);
+  stroke: var(--color_text-primary);
   stroke-width: 3;
   fill-opacity: 0;
   stroke-opacity: 0.4;

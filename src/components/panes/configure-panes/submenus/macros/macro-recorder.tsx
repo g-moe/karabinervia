@@ -44,20 +44,32 @@ declare global {
 
 const NoMacroRecorded = styled.div`
   font-style: italic;
-  color: var(--color_label-highlighted);
+  color: var(--color_text-primary);
 `;
 
 const MacroSequenceContainer = styled.div<{$isModified: boolean}>`
   max-width: 960px;
   width: 100%;
   display: block;
-  border: 1px solid var(--border_color_cell);
+  border: 1px solid var(--color_separator);
   border-style: ${(props) => (props.$isModified ? 'dashed' : 'solid')};
   padding: 30px 20px;
   border-radius: 15px;
   margin-top: 10px;
   box-sizing: border-box;
-}
+`;
+
+const CharacterStreamSpace = styled.span`
+  font-family: fantasy, cursive, monospace;
+`;
+
+const MacroControlsContainer = styled.div`
+  border: none;
+  max-width: 960px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transform: translate(0, -21px);
 `;
 
 type SmartTransformAcc = [
@@ -276,13 +288,7 @@ export const MacroRecorder: React.FC<{
                       String(actionArg)
                         .split(' ')
                         .map((a, i) => <span key={i}>{a}</span>),
-                      <span
-                        style={{
-                          fontFamily: 'fantasy, cursive, monospace',
-                        }}
-                      >
-                        ␣
-                      </span>,
+                      <CharacterStreamSpace>␣</CharacterStreamSpace>,
                     )
                   : Array.isArray(actionArg)
                   ? actionArg
@@ -342,16 +348,7 @@ export const MacroRecorder: React.FC<{
           <NoMacroRecorded>{t('No macro recorded yet...')}</NoMacroRecorded>
         )}
       </MacroSequenceContainer>
-      <div
-        style={{
-          border: 'none',
-          maxWidth: 960,
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          transform: 'translate(-0px, -21px)',
-        }}
-      >
+      <MacroControlsContainer>
         <MacroEditControls
           isFullscreen={isFullscreen}
           isEmpty={!selectedMacro || !selectedMacro.length}
@@ -381,7 +378,7 @@ export const MacroRecorder: React.FC<{
           recordingToggleChange={recordingToggleChange}
           isDelaySupported={isDelaySupported}
         />
-      </div>
+      </MacroControlsContainer>
     </>
   );
 };

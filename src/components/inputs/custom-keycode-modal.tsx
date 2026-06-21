@@ -22,22 +22,23 @@ import {
 } from './dialog-base';
 import {useTranslation} from 'react-i18next';
 
-const AutocompleteContainer = styled.ul`
+const AutocompleteContainer = styled.ul<{$open: boolean}>`
   position: fixed;
-  background-color: var(--bg_menu);
+  background-color: var(--color_surface-menu);
   max-height: 210px;
   overflow: auto;
-  border: 1px solid var(--bg_control);
+  border: 1px solid var(--color_separator);
   margin: 0;
   padding: 0;
   width: auto;
   margin-top: -24px;
   line-height: normal;
+  display: ${(props) => (props.$open ? 'block' : 'none')};
 `;
 
 const AutocompleteItemRow = styled.li`
   &:not(:last-child) {
-    border-bottom: 1px solid var(--bg_control);
+    border-bottom: 1px solid var(--color_separator);
   }
 `;
 
@@ -54,7 +55,6 @@ function isHex(input: string): boolean {
   return `0x${parsed.toString(16).toLowerCase()}` === lowercased;
 }
 
-// This is hella basic 💁‍♀️💁‍♂️
 function inputIsBasicByte(
   input: string,
   basicKeyToByte: Record<string, number>,
@@ -191,9 +191,7 @@ export const KeycodeModal: React.FC<KeycodeModalProps> = (props) => {
           </div>
           <AutocompleteContainer
             {...getMenuProps()}
-            style={{
-              display: isOpen && inputItems.length ? 'block' : 'none',
-            }}
+            $open={isOpen && !!inputItems.length}
           >
             {isOpen &&
               inputItems.map((item, index) => (

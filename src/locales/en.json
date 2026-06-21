@@ -115,14 +115,9 @@
   "Draft Definitions": "Draft Definitions",
   "Definitions": "Definitions",
   "General": "General",
-  "Show Design tab": "Show Design tab",
   "Fast Key Mapping": "Fast Key Mapping",
   "Light Mode": "Light Mode",
-  "Keycap Theme": "Keycap Theme",
-  "Render Mode": "Render Mode",
-  "Show Diagnostic Information": "Show Diagnostic Information",
   "Requires connected device": "Requires connected device",
-  "VIA Firmware Protocol": "VIA Firmware Protocol",
   "VIA Firmware Version": "VIA Firmware Version",
   "Authorize New": "Authorize New",
   "Check Key": "Check Key",
@@ -305,7 +300,6 @@
   "Layer 5": "Layer 5",
   "Layer 6": "Layer 6",
   "Layer 7": "Layer 7",
-  "Slider Mode": "Slider Mode",
   "Slider Only": "Slider Only",
   "Slider & Show Value": "Slider & Show Value",
   "Slider & Input Field": "Slider & Input Field",
@@ -359,6 +353,5 @@
   "Searching for devices...": "Searching for devices...",
   "This feature is not available for this firmware version": "This feature is not available for this firmware version",
   "Please enter your desired QMK keycode or hex code:": "Please enter your desired QMK keycode or hex code:",
-  "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.": "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.",
-  "You didn't click \"Confirm\". To enable the Design tab, you must confirm first.": "You didn't click \"Confirm\". To enable the Design tab, you must confirm first."
+  "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.": "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor."
 }

@@ -1,10 +1,10 @@
-import {KeyColorType} from '@the-via/reader';
 import React from 'react';
 import {useMemo} from 'react';
 import {shallowEqual} from 'react-redux';
 import {getSelectedDefinition} from 'src/store/definitionsSlice';
 import {useAppSelector} from 'src/store/hooks';
-import {getSelectedTheme} from 'src/store/settingsSlice';
+import {getThemeMode} from 'src/store/settingsSlice';
+import {AppleRendererColorByMode} from 'src/utils/apple-colors';
 import {getDarkenedColor} from 'src/utils/color-math';
 import {KeycapMetric} from 'src/utils/keyboard-rendering';
 import {Shape, Path} from 'three';
@@ -159,14 +159,16 @@ const SimplePlate: React.FC<{width: number; height: number}> = ({
   const depthOffset = 0.5;
   const heightOffset = 0.5;
   const definition = useAppSelector(getSelectedDefinition);
+  const themeMode = useAppSelector(getThemeMode);
   if (!definition) {
     return null;
   }
+  const rendererColor = AppleRendererColorByMode[themeMode];
   const plateShape = makePlateShape(
     {width: width + depthOffset / 4, height: height + heightOffset / 4},
     [],
   );
-  const innerColor = '#212020';
+  const innerColor = rendererColor.keyboardInnerCase;
 
   return (
     <group
@@ -191,7 +193,7 @@ const SimplePlate: React.FC<{width: number; height: number}> = ({
           color={innerColor}
           shininess={100}
           reflectivity={1}
-          specular={'#161212'}
+          specular={rendererColor.keyboardInnerCaseSpecular}
         />
       </mesh>
     </group>
@@ -343,10 +345,11 @@ const makeShape2 = (layoutHeight: number) => {
 };
 
 export const Case = React.memo((props: {width: number; height: number}) => {
-  const theme = useAppSelector(getSelectedTheme);
-  const outsideColor = useMemo(() => theme[KeyColorType.Accent].c, [theme]);
-  const innerColor = '#212020';
-  const heartColor = useMemo(() => theme[KeyColorType.Accent].t, [theme]);
+  const themeMode = useAppSelector(getThemeMode);
+  const rendererColor = AppleRendererColorByMode[themeMode];
+  const outsideColor = rendererColor.keyboardCase;
+  const innerColor = rendererColor.keyboardInnerCase;
+  const heartColor = rendererColor.keyboardMark;
   const properWidth =
     props.width * KeycapMetric.keyXPos - KeycapMetric.keyXSpacing;
   const properHeight =

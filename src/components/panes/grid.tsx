@@ -1,5 +1,6 @@
 import getIconColor from '../icons/get-icon-color';
 import styled from 'styled-components';
+import {iconNavButtonSurface} from '../inputs/control-styles';
 
 export const Grid = styled.div`
   height: 100%;
@@ -12,28 +13,30 @@ export const Grid = styled.div`
 `;
 
 export const Cell = styled.div`
-  border-right: 1px solid var(--border_color_cell);
+  border-right: 1px solid var(--color_separator);
 `;
 
 export const MenuCell = styled(Cell)`
-  background: var(--bg_menu);
-  border-top: 1px solid var(--border_color_cell);
+  background: var(--color_surface-menu);
+  border-top: 1px solid var(--color_separator);
+  width: 125px;
+  box-sizing: border-box;
 `;
 
 export const OverflowCell = styled(Cell)`
-  border-top: 1px solid var(--border_color_cell);
+  border-top: 1px solid var(--color_separator);
   overflow: auto;
 `;
 
 export const SpanOverflowCell = styled(Cell)`
-  border-top: 1px solid var(--border_color_cell);
+  border-top: 1px solid var(--color_separator);
   overflow: auto;
   grid-column: span 2;
 `;
 
 export const SubmenuCell = styled(Cell)`
-  border-top: 1px solid var(--border_color_cell);
-  background: var(--bg_control);
+  border-top: 1px solid var(--color_separator);
+  background: var(--color_control-background);
 `;
 
 export const SubmenuOverflowCell = styled(SubmenuCell)`
@@ -57,31 +60,7 @@ export const ConfigureFlexCell = styled(SinglePaneFlexCell)`
 `;
 
 export const CategoryIconContainer = styled.span<{$selected?: boolean}>`
-  position: relative;
-  color: var(--color_control-selected-text);
-  height: 35px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${(props) =>
-    props.$selected ? 'var(--color_control-selected-bg)' : 'transparent'};
-  border-radius: var(--radius_key-tile);
-  width: 40px;
-  &:hover {
-    color: ${(props) =>
-      props.$selected
-        ? 'var(--color_control-selected-text)'
-        : 'var(--color_control-border)'};
-    & .tooltip {
-      transform: scale(1) translateX(0px);
-      opacity: 1;
-    }
-  }
-  .tooltip {
-    transform: translateX(-5px) scale(0.6);
-    opacity: 0;
-  }
+  ${iconNavButtonSurface}
 `;
 
 export const IconContainer = styled.span`
@@ -90,15 +69,14 @@ export const IconContainer = styled.span`
   width: 35px;
   position: relative;
   &:hover > span > div {
-    background-color: red;
+    background-color: var(--color_control-background-hover);
   }
 `;
 
 export const ControlRow = styled.div`
   position: relative;
   width: 100%;
-  max-width: 960px;
-  border-bottom: 1px solid var(--border_color_cell);
+  border-bottom: 1px solid var(--color_separator);
   font-size: 20px;
   justify-content: space-between;
   display: flex;
@@ -114,7 +92,7 @@ export const IndentedControlRow = styled(ControlRow)`
 `;
 
 export const Label = styled.label`
-  color: var(--color_label);
+  color: var(--color_text-secondary);
   font-weight: 400;
 `;
 
@@ -125,7 +103,7 @@ export const SubLabel = styled(Label)`
 `;
 
 export const Detail = styled.span`
-  color: var(--color_detail-text);
+  color: var(--color_text-secondary);
   display: flex;
   align-items: center;
 `;
@@ -146,7 +124,7 @@ export const Row = styled.div<{$selected: boolean}>`
   }
 
   &:hover {
-    color: var(--color_label-highlighted);
+    color: var(--color_text-primary);
     & .tooltip {
       transform: scale(1) translateX(0px);
       opacity: 1;
@@ -159,13 +137,14 @@ export const Row = styled.div<{$selected: boolean}>`
 `;
 
 export const SubmenuRow = styled(Row)`
-  background: ${(props) => (props.$selected ? 'var(--bg_icon)' : 'inherit')};
+  background: ${(props) =>
+    props.$selected ? 'var(--color_control-background)' : 'inherit'};
   padding: 4px 8px;
   font-weight: 400;
   min-width: min-content;
   border-color: transparent;
   margin-bottom: 11px;
   color: ${(props) =>
-    props.$selected ? 'var(--color_label-highlighted)' : 'var(--color_label)'};
+    props.$selected ? 'var(--color_text-primary)' : 'var(--color_text-secondary)'};
   border-radius: 12px;
 `;

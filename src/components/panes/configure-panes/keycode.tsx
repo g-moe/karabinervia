@@ -15,10 +15,8 @@ import {
 } from '../../../utils/key';
 import {ErrorMessage} from '../../styled';
 import {
-  KeycodeType,
-  getLightingDefinition,
-  isVIADefinitionV3,
   isVIADefinitionV2,
+  isVIADefinitionV3,
   VIADefinitionV3,
 } from '@the-via/reader';
 import {OverflowCell, SubmenuOverflowCell, SubmenuRow} from '../grid';
@@ -61,10 +59,9 @@ const Keycode = styled(Button)<{disabled: boolean}>`
   width: 50px;
   height: 50px;
   line-height: 18px;
-  border-radius: 64px;
   font-size: 14px;
-  border: 4px solid var(--border_color_icon);
-  background: var(--bg_control);
+  border: 1px solid var(--color_separator-opaque);
+  background: var(--color_control-background);
   color: var(--color_control-text);
   margin: 0;
   box-shadow: none;
@@ -86,12 +83,10 @@ const CustomKeycode = styled(Button)`
   width: 50px;
   height: 50px;
   line-height: 18px;
-  border-radius: var(--radius_key-tile);
   font-size: 14px;
-  border: 4px solid var(--border_color_icon);
-  background: var(--color_control-selected-bg);
-  border-color: var(--color_control-selected-text);
-  color: var(--color_control-selected-text);
+  border: 1px solid var(--color_control-selected-subtle-border);
+  background: var(--color_control-selected-subtle-bg);
+  color: var(--color_control-selected-subtle-text);
   margin: 0;
 `;
 
@@ -103,8 +98,8 @@ const KeycodeContainer = styled.div`
 const KeycodeDesc = styled.div`
   position: fixed;
   bottom: 0;
-  background: var(--bg_control);
-  color: var(--color_label-highlighted);
+  background: var(--color_control-background);
+  color: var(--color_text-primary);
   box-sizing: border-box;
   transition: opacity 0.4s ease-out;
   height: 25px;
@@ -123,9 +118,6 @@ const generateKeycodeCategories = (
   basicKeyToByte: Record<string, number>,
   numMacros: number = 16,
 ) => getKeycodes(numMacros).concat(getOtherMenu(basicKeyToByte));
-
-const maybeFilter = <M extends Function>(maybe: boolean, filter: M) =>
-  maybe ? () => true : filter;
 
 export const Pane: FC = () => {
   const selectedKey = useAppSelector(getSelectedKey);
@@ -183,23 +175,11 @@ export const KeycodePane: FC = () => {
     if (isVIADefinitionV3(selectedDefinition)) {
       return getEnabledMenusV3(selectedDefinition);
     }
-    const {lighting, customKeycodes} = selectedDefinition;
-    const {keycodes} = getLightingDefinition(lighting);
+    const {customKeycodes} = selectedDefinition;
     return KeycodeCategories.filter(
-      maybeFilter(
-        keycodes === KeycodeType.QMK,
-        ({id}) => id !== 'qmk_lighting',
-      ),
-    )
-      .filter(
-        maybeFilter(keycodes === KeycodeType.WT, ({id}) => id !== 'lighting'),
-      )
-      .filter(
-        maybeFilter(
-          typeof customKeycodes !== 'undefined',
-          ({id}) => id !== 'custom',
-        ),
-      );
+      ({id}) =>
+        (typeof customKeycodes !== 'undefined' || id !== 'custom'),
+    );
   };
   const getEnabledMenusV3 = (definition: VIADefinitionV3): IKeycodeMenu[] => {
     const keycodes = ['default' as const, ...(definition.keycodes || [])];

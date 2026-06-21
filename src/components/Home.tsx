@@ -1,39 +1,18 @@
 import React, {createRef, useEffect} from 'react';
 import styled from 'styled-components';
-import {getByteForCode} from '../utils/key';
 import {startMonitoring, usbDetect} from '../utils/usb-hid';
-import {
-  getLightingDefinition,
-  isVIADefinitionV2,
-  isVIADefinitionV3,
-  LightingValue,
-} from '@the-via/reader';
-import {
-  getConnectedDevices,
-  getSelectedKeyboardAPI,
-} from 'src/store/devicesSlice';
+import {getSelectedKeyboardAPI} from 'src/store/devicesSlice';
 import {
   loadSupportedIds,
   reloadConnectedDevices,
 } from 'src/store/devicesThunks';
-import {getDisableFastRemap} from '../store/settingsSlice';
 import {useAppDispatch, useAppSelector} from 'src/store/hooks';
-import {
-  getSelectedKey,
-  getSelectedLayerIndex,
-  updateSelectedKey as updateSelectedKeyAction,
-} from 'src/store/keymapSlice';
-import {
-  getBasicKeyToByte,
-  getSelectedDefinition,
-  getSelectedKeyDefinitions,
-} from 'src/store/definitionsSlice';
+import {updateSelectedKey as updateSelectedKeyAction} from 'src/store/keymapSlice';
 import {OVERRIDE_HID_CHECK} from 'src/utils/override';
-import {KeyboardValue} from 'src/utils/keyboard-api';
 import {useTranslation} from 'react-i18next';
 
 const ErrorHome = styled.div`
-  background: var(--bg_gradient);
+  background: var(--background_app);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -45,13 +24,13 @@ const ErrorHome = styled.div`
   bottom: 0;
   padding-top: 24px;
   position: absolute;
-  border-top: 1px solid var(--border_color_cell);
+  border-top: 1px solid var(--color_separator);
 `;
 
 const UsbError = styled.div`
   align-items: center;
   display: flex;
-  color: var(--color_label);
+  color: var(--color_text-secondary);
   flex-direction: column;
   height: 100%;
   justify-content: center;
@@ -70,7 +49,7 @@ const UsbErrorHeading = styled.h1`
 
 const UsbErrorWebHIDLink = styled.a`
   text-decoration: underline;
-  color: var(--color_label-highlighted);
+  color: var(--color_text-primary);
 `;
 
 const timeoutRepeater =
@@ -93,13 +72,6 @@ export const Home: React.FC<HomeProps> = (props) => {
   const {hasHIDSupport} = props;
 
   const dispatch = useAppDispatch();
-  const selectedKey = useAppSelector(getSelectedKey);
-  const selectedDefinition = useAppSelector(getSelectedDefinition);
-  const connectedDevices = useAppSelector(getConnectedDevices);
-  const selectedLayerIndex = useAppSelector(getSelectedLayerIndex);
-  const selectedKeyDefinitions = useAppSelector(getSelectedKeyDefinitions);
-  const disableFastRemap = useAppSelector(getDisableFastRemap);
-  const {basicKeyToByte} = useAppSelector(getBasicKeyToByte);
   const api = useAppSelector(getSelectedKeyboardAPI);
 
   const updateDevicesRepeat: () => void = timeoutRepeater(
@@ -109,37 +81,6 @@ export const Home: React.FC<HomeProps> = (props) => {
     500,
     1,
   );
-
-  const toggleLights = async () => {
-    if (!api || !selectedDefinition) {
-      return;
-    }
-
-    const delay = 200;
-
-    if (
-      isVIADefinitionV2(selectedDefinition) &&
-      getLightingDefinition(
-        selectedDefinition.lighting,
-      ).supportedLightingValues.includes(LightingValue.BACKLIGHT_EFFECT)
-    ) {
-      const val = await api.getRGBMode();
-      const newVal = val !== 0 ? 0 : 1;
-      for (let i = 0; i < 3; i++) {
-        api.timeout(i === 0 ? 0 : delay);
-        api.setRGBMode(newVal);
-        api.timeout(delay);
-        await api.setRGBMode(val);
-      }
-    }
-
-    if (isVIADefinitionV3(selectedDefinition)) {
-      for (let i = 0; i < 6; i++) {
-        api.timeout(i === 0 ? 0 : delay);
-        await api.setKeyboardValue(KeyboardValue.DEVICE_INDICATION, i);
-      }
-    }
-  };
 
   const homeElem = createRef<HTMLDivElement>();
 
@@ -164,11 +105,6 @@ export const Home: React.FC<HomeProps> = (props) => {
 
   useEffect(() => {
     dispatch(updateSelectedKeyAction(null));
-
-    // Only trigger flashing lights when multiple devices are connected
-    // if (Object.values(connectedDevices).length > 1) {
-    //   toggleLights();
-    // }
   }, [api]);
 
   return !hasHIDSupport && !OVERRIDE_HID_CHECK ? (

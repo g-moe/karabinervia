@@ -6,14 +6,12 @@ import {AccentSelect} from '../../../inputs/accent-select';
 import {AccentRange} from '../../../inputs/accent-range';
 import {ControlRow, Label, Detail} from '../../grid';
 import type {VIADefinitionV2, VIADefinitionV3, VIAItem} from '@the-via/reader';
-import type {LightingData} from '../../../../types/types';
 import {ArrayColorPicker} from '../../../inputs/color-picker';
-import {ConnectedColorPalettePicker} from 'src/components/inputs/color-palette-picker';
 import {shiftFrom16Bit, shiftTo16Bit} from 'src/utils/keyboard-api';
 import {useTranslation} from 'react-i18next';
 
 type Props = {
-  lightingData: LightingData;
+  lightingData: Record<string, unknown>;
   definition: VIADefinitionV2 | VIADefinitionV3;
 };
 
@@ -165,9 +163,6 @@ const VIACustomControl = (props: VIACustomControlProps) => {
           setColor={(hue, sat) => props.updateValue(name, ...command, hue, sat)}
         />
       );
-    }
-    case 'color-palette': {
-      return <ConnectedColorPalettePicker />;
     }
   }
   return null;

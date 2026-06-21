@@ -9,15 +9,12 @@ import {
   useProgress,
 } from '@react-three/drei';
 import {Canvas} from '@react-three/fiber';
-import {DefinitionVersionMap, KeyColorType} from '@the-via/reader';
+import {KeyColorType} from '@the-via/reader';
 import cubeySrc from 'assets/models/cubey.glb';
 import glbSrc from 'assets/models/keyboard_components.glb';
 import React, {Suspense, useCallback, useEffect, useMemo, useRef} from 'react';
 import {shallowEqual} from 'react-redux';
-import {
-  getCustomDefinitions,
-  getSelectedDefinition,
-} from 'src/store/definitionsSlice';
+import {getSelectedDefinition} from 'src/store/definitionsSlice';
 import {reloadConnectedDevices} from 'src/store/devicesThunks';
 import {useAppDispatch, useAppSelector} from 'src/store/hooks';
 import {
@@ -25,21 +22,18 @@ import {
   getLoadProgress,
   updateSelectedKey,
 } from 'src/store/keymapSlice';
-import {
-  getDesignDefinitionVersion,
-  getSelectedTheme,
-} from 'src/store/settingsSlice';
+import {getSelectedTheme} from 'src/store/settingsSlice';
 import {OVERRIDE_HID_CHECK} from 'src/utils/override';
 import {useSize} from 'src/utils/use-size';
 import {Object3D, SpotLight as ThreeSpotLight} from 'three';
 import {useLocation} from 'wouter';
 import {AccentButtonLarge} from '../inputs/accent-button';
 import {ConfigureKeyboard} from '../n-links/keyboard/configure';
-import {Design} from '../n-links/keyboard/design';
 import {Test} from '../n-links/keyboard/test';
 import {Camera} from './camera';
 import {LoaderCubey} from './loader-cubey';
 import {UpdateUVMaps} from './update-uv-maps';
+import styled from 'styled-components';
 
 useGLTF.preload(cubeySrc, true, true);
 useGLTF.preload(glbSrc, true, true);
@@ -64,6 +58,52 @@ const KeyboardBG: React.FC<{
   );
 }, shallowEqual);
 
+const ThreeSceneFrame = styled.div<{
+  $hidden: boolean;
+  $hideTerrain: boolean;
+  $viewportHeight?: number;
+}>`
+  height: 500px;
+  width: 100%;
+  top: 0;
+  transform: ${(props) => {
+    if (!props.$hidden) {
+      return '';
+    }
+    if (!props.$hideTerrain) {
+      return 'translateY(-500px)';
+    }
+    if (!props.$viewportHeight) {
+      return '';
+    }
+    return `translateY(${-300 + props.$viewportHeight / 2}px)`;
+  }};
+  position: ${(props) =>
+    props.$hidden && !props.$hideTerrain ? 'absolute' : 'relative'};
+  overflow: visible;
+  z-index: 0;
+  visibility: ${(props) =>
+    props.$hidden && !props.$hideTerrain ? 'hidden' : 'visible'};
+`;
+
+const VisibleCanvas = styled(Canvas)`
+  overflow: visible;
+`;
+
+const AuthorizeButton = styled(AccentButtonLarge)`
+  width: max-content;
+`;
+
+const AuthorizeIcon = styled(FontAwesomeIcon)`
+  margin-left: 10px;
+`;
+
+const LoadingIcon = styled.div`
+  text-align: center;
+  color: var(--color_accent);
+  font-size: 60px;
+`;
+
 export const CanvasRouter = () => {
   return (
     <Suspense fallback={null}>
@@ -85,22 +125,12 @@ export const NonSuspenseCanvasRouter = () => {
   const {progress} = useProgress();
   const dispatch = useAppDispatch();
   const dimensions = useSize(body);
-  const localDefinitions = Object.values(useAppSelector(getCustomDefinitions));
   const selectedDefinition = useAppSelector(getSelectedDefinition);
-  const definitionVersion = useAppSelector(getDesignDefinitionVersion);
   const theme = useAppSelector(getSelectedTheme);
   const accentColor = useMemo(() => theme[KeyColorType.Accent].c, [theme]);
   const showLoader =
     path === '/' && (!selectedDefinition || loadProgress !== 1);
   useGLTF(glbSrc, true, true);
-  const versionDefinitions: DefinitionVersionMap[] = useMemo(
-    () =>
-      localDefinitions.filter(
-        (definitionMap) => definitionMap[definitionVersion],
-      ),
-    [localDefinitions, definitionVersion],
-  );
-  const hideDesignScene = '/design' === path && !versionDefinitions.length;
   const hideConfigureScene =
     '/' === path &&
     (!selectedDefinition || (loadProgress + progress / 100) / 2 !== 1);
@@ -111,10 +141,7 @@ export const NonSuspenseCanvasRouter = () => {
   }, [dispatch]);
   const showAuthorizeButton = true;
   const hideCanvasScene =
-    !showAuthorizeButton ||
-    ['/settings', '/errors'].includes(path) ||
-    hideDesignScene ||
-    hideConfigureScene;
+    !showAuthorizeButton || ['/errors'].includes(path) || hideConfigureScene;
   const configureKeyboardIsSelectable = useAppSelector(
     getConfigureKeyboardIsSelectable,
   );
@@ -122,26 +149,13 @@ export const NonSuspenseCanvasRouter = () => {
   const hideTerrainBG = showLoader;
   return (
     <>
-      <div
-        style={{
-          height: 500,
-          width: '100%',
-          top: 0,
-          transform: hideCanvasScene
-            ? !hideTerrainBG
-              ? 'translateY(-500px)'
-              : !dimensions
-              ? ''
-              : `translateY(${-300 + dimensions!.height / 2}px)`
-            : '',
-          position: hideCanvasScene && !hideTerrainBG ? 'absolute' : 'relative',
-          overflow: 'visible',
-          zIndex: 0,
-          visibility: hideCanvasScene && !hideTerrainBG ? 'hidden' : 'visible',
-        }}
+      <ThreeSceneFrame
+        $hidden={hideCanvasScene}
+        $hideTerrain={hideTerrainBG}
+        $viewportHeight={dimensions?.height}
         ref={containerRef}
       >
-        <Canvas flat={true} shadows style={{overflow: 'visible'}}>
+        <VisibleCanvas flat={true} shadows>
           <UpdateUVMaps />
           <Lights />
           <KeyboardBG
@@ -165,27 +179,17 @@ export const NonSuspenseCanvasRouter = () => {
           >
             {showAuthorizeButton ? (
               !selectedDefinition ? (
-                <AccentButtonLarge
+                <AuthorizeButton
                   onClick={() => dispatch(reloadConnectedDevices())}
-                  style={{width: 'max-content'}}
                 >
                   Authorize device
-                  <FontAwesomeIcon
-                    style={{marginLeft: '10px'}}
-                    icon={faUnlock}
-                  />
-                </AccentButtonLarge>
+                  <AuthorizeIcon icon={faUnlock} />
+                </AuthorizeButton>
               ) : (
                 <>
-                  <div
-                    style={{
-                      textAlign: 'center',
-                      color: 'var(--color_accent)',
-                      fontSize: 60,
-                    }}
-                  >
+                  <LoadingIcon>
                     <FontAwesomeIcon spinPulse icon={faSpinner} />
-                  </div>
+                  </LoadingIcon>
                 </>
               )
             ) : null}
@@ -195,8 +199,8 @@ export const NonSuspenseCanvasRouter = () => {
             configureKeyboardIsSelectable={configureKeyboardIsSelectable}
             loadProgress={loadProgress}
           />
-        </Canvas>
-      </div>
+        </VisibleCanvas>
+      </ThreeSceneFrame>
     </>
   );
 };
@@ -245,16 +249,8 @@ const getRouteX = (route: string) => {
   const configurePosition = 0;
   const spaceMultiplier = 20;
   const testPosition = -spaceMultiplier * 1;
-  const designPosition = -spaceMultiplier * 2;
-  const debugPosition = -spaceMultiplier * 3;
-  const otherPosition = -spaceMultiplier * 3;
+  const otherPosition = -spaceMultiplier * 2;
   switch (route) {
-    case '/debug': {
-      return debugPosition;
-    }
-    case '/design': {
-      return designPosition;
-    }
     case '/test': {
       return testPosition;
     }
@@ -290,8 +286,6 @@ const KeyboardGroup = React.memo((props: any) => {
 const Keyboards = React.memo((props: any) => {
   const {loadProgress, dimensions, configureKeyboardIsSelectable} = props;
   const testPosition = -getRouteX('/test');
-  const designPosition = -getRouteX('/design');
-  const debugPosition = -getRouteX('/debug');
 
   return (
     <>
@@ -305,10 +299,6 @@ const Keyboards = React.memo((props: any) => {
       <group position-x={testPosition}>
         <Test dimensions={dimensions} nDimension={'3D'} />
       </group>
-      <group position-x={designPosition}>
-        <Design dimensions={dimensions} nDimension={'3D'} />
-      </group>
-      <group position-x={debugPosition}></group>
     </>
   );
 }, shallowEqual);

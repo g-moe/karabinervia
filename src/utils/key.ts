@@ -6,8 +6,6 @@ import {
   BuiltInKeycodeModule,
   VIADefinitionV3,
   VIADefinitionV2,
-  getLightingDefinition,
-  KeycodeType,
 } from '@the-via/reader';
 
 export interface IKeycode {
@@ -643,97 +641,6 @@ export function getKeycodes(numMacros = 16): IKeycodeMenu[] {
       ],
     },
     {
-      id: 'wt_lighting',
-      label: 'Lighting',
-      width: 'label',
-      keycodes: [
-        {
-          name: 'Bright -',
-          code: 'BR_DEC',
-          title: 'Brightness -',
-          shortName: 'BR -',
-        },
-        {
-          name: 'Bright +',
-          code: 'BR_INC',
-          title: 'Brightness +',
-          shortName: 'BR +',
-        },
-        {
-          name: 'Effect -',
-          code: 'EF_DEC',
-          title: 'Effect -',
-          shortName: 'EF -',
-        },
-        {
-          name: 'Effect +',
-          code: 'EF_INC',
-          title: 'Effect +',
-          shortName: 'EF +',
-        },
-        {
-          name: 'Effect Speed -',
-          code: 'ES_DEC',
-          title: 'Effect Speed -',
-          shortName: 'ES -',
-        },
-        {
-          name: 'Effect Speed +',
-          code: 'ES_INC',
-          title: 'Effect Speed +',
-          shortName: 'ES +',
-        },
-        {
-          name: 'Color1 Hue -',
-          code: 'H1_DEC',
-          title: 'Color1 Hue -',
-          shortName: 'H1 -',
-        },
-        {
-          name: 'Color1 Hue +',
-          code: 'H1_INC',
-          title: 'Color1 Hue +',
-          shortName: 'H1 +',
-        },
-        {
-          name: 'Color2 Hue -',
-          code: 'H2_DEC',
-          title: 'Color2 Hue -',
-          shortName: 'H2 -',
-        },
-        {
-          name: 'Color2 Hue +',
-          code: 'H2_INC',
-          title: 'Color2 Hue +',
-          shortName: 'H2 +',
-        },
-        {
-          name: 'Color1 Sat -',
-          code: 'S1_DEC',
-          title: 'Color1 Sat -',
-          shortName: 'S1 -',
-        },
-        {
-          name: 'Color1 Sat +',
-          code: 'S1_INC',
-          title: 'Color1 Sat +',
-          shortName: 'S1 +',
-        },
-        {
-          name: 'Color2 Sat -',
-          code: 'S2_DEC',
-          title: 'Color2 Sat -',
-          shortName: 'S2 -',
-        },
-        {
-          name: 'Color2 Sat +',
-          code: 'S2_INC',
-          title: 'Color2 Sat +',
-          shortName: 'S2 +',
-        },
-      ],
-    },
-    {
       id: 'media',
       label: 'Media',
       width: 'label',
@@ -834,7 +741,6 @@ export function getKeycodes(numMacros = 16): IKeycodeMenu[] {
           title: 'Right Shift when held, Enter when tapped',
         },
         {name: 'Reset', code: 'RESET', title: 'Reset the keyboard'},
-        {name: 'Debug', code: 'DEBUG', title: 'Toggle debug mode'},
         {
           name: 'Toggle NKRO',
           code: 'MAGIC_TOGGLE_NKRO',
@@ -1000,40 +906,6 @@ export function getKeycodes(numMacros = 16): IKeycodeMenu[] {
         {name: 'Music Mode', code: 'MU_MOD'},
       ],
     },
-    /* These are for controlling the original backlighting and bottom RGB. */
-    {
-      id: 'qmk_lighting',
-      label: 'Lighting',
-      width: 'label',
-      keycodes: [
-        {name: 'BL Toggle', code: 'BL_TOGG'},
-        {name: 'BL On', code: 'BL_ON'},
-        {name: 'BL Off', code: 'BL_OFF', shortName: 'BL Off'},
-        {name: 'BL -', code: 'BL_DEC'},
-        {name: 'BL +', code: 'BL_INC'},
-        {name: 'BL Cycle', code: 'BL_STEP'},
-        {name: 'BR Toggle', code: 'BL_BRTG'},
-        {name: 'RGB Toggle', code: 'RGB_TOG'},
-        {name: 'RGB Mode -', code: 'RGB_RMOD'},
-        {name: 'RGB Mode +', code: 'RGB_MOD'},
-        {name: 'Hue -', code: 'RGB_HUD'},
-        {name: 'Hue +', code: 'RGB_HUI'},
-        {name: 'Sat -', code: 'RGB_SAD'},
-        {name: 'Sat +', code: 'RGB_SAI'},
-        {name: 'Bright -', code: 'RGB_VAD'},
-        {name: 'Bright +', code: 'RGB_VAI'},
-        {name: 'Effect Speed-', code: 'RGB_SPD'},
-        {name: 'Effect Speed+', code: 'RGB_SPI'},
-        {name: 'RGB Mode P', code: 'RGB_M_P', title: 'Plain'},
-        {name: 'RGB Mode B', code: 'RGB_M_B', title: 'Breathe'},
-        {name: 'RGB Mode R', code: 'RGB_M_R', title: 'Rainbow'},
-        {name: 'RGB Mode SW', code: 'RGB_M_SW', title: 'Swirl'},
-        {name: 'RGB Mode SN', code: 'RGB_M_SN', title: 'Snake'},
-        {name: 'RGB Mode K', code: 'RGB_M_K', title: 'Knight'},
-        {name: 'RGB Mode X', code: 'RGB_M_X', title: 'Xmas'},
-        {name: 'RGB Mode G', code: 'RGB_M_G', title: 'Gradient'},
-      ],
-    },
     /*
      These custom keycodes always exist and should be filtered out if necessary
      Name and Title should be replaced with the correct ones from the keyboard json
@@ -1069,8 +941,8 @@ export const categoriesForKeycodeModule = (
 ) =>
   ({
     default: ['basic', 'media', 'macro', 'layers', 'special'],
-    [BuiltInKeycodeModule.WTLighting]: ['wt_lighting'],
-    [BuiltInKeycodeModule.QMKLighting]: ['qmk_lighting'],
+    [BuiltInKeycodeModule.WTLighting]: [],
+    [BuiltInKeycodeModule.QMKLighting]: [],
   }[keycodeModule]);
 
 export const getKeycodesForKeyboard = (
@@ -1079,14 +951,7 @@ export const getKeycodesForKeyboard = (
   // v2
   let includeList: string[] = [];
   if ('lighting' in definition) {
-    const {keycodes} = getLightingDefinition(definition.lighting);
-    includeList = categoriesForKeycodeModule('default').concat(
-      keycodes === KeycodeType.None
-        ? []
-        : keycodes === KeycodeType.QMK
-        ? categoriesForKeycodeModule(BuiltInKeycodeModule.QMKLighting)
-        : categoriesForKeycodeModule(BuiltInKeycodeModule.WTLighting),
-    );
+    includeList = categoriesForKeycodeModule('default');
   } else {
     const {keycodes} = definition;
     includeList = keycodes.flatMap(categoriesForKeycodeModule);

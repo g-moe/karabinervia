@@ -39,18 +39,17 @@ export const KeyboardCanvas: React.FC<KeyboardCanvasProps<React.MouseEvent>> = (
     ) || 1;
 
   return (
-    <div
-      style={{
-        transform: `scale(${ratio}, ${ratio})`,
-        opacity: shouldHide ? 0 : 1,
-        position: 'absolute',
-        pointerEvents: shouldHide ? 'none' : 'all',
-      }}
-    >
+    <KeyboardCanvasFrame $ratio={ratio} $hidden={shouldHide}>
       <KeyboardCanvasContent {...otherProps} width={width} height={height} />
-    </div>
+    </KeyboardCanvasFrame>
   );
 };
+const KeyboardCanvasFrame = styled.div<{$ratio: number; $hidden?: boolean}>`
+  transform: scale(${(props) => props.$ratio}, ${(props) => props.$ratio});
+  opacity: ${(props) => (props.$hidden ? 0 : 1)};
+  position: absolute;
+  pointer-events: ${(props) => (props.$hidden ? 'none' : 'all')};
+`;
 const KeyboardGroup = styled.div`
   position: relative;
 `;

@@ -71,14 +71,9 @@
   "Draft Definitions": "既存のレイアウト",
   "Definitions": "定義",
   "General": "一般",
-  "Show Design tab": "デザインタブを表示",
   "Fast Key Mapping": "高速キー設定",
   "Light Mode": "ライトモード",
-  "Keycap Theme": "テーマ",
-  "Render Mode": "レンダーモード",
-  "Show Diagnostic Information": "診断情報を表示",
   "Requires connected device": "接続デバイスが必要",
-  "VIA Firmware Protocol": "VIAファームウェアプロトコル",
   "VIA Firmware Version": "VIAファームウェアバージョン",
   "Authorize New": "新しいキーボードを読み込む",
   "Check Key": "キーをテスト",
@@ -262,7 +257,6 @@
   "Layer 5": "レイヤー 5",
   "Layer 6": "レイヤー 6",
   "Layer 7": "レイヤー 7",
-  "Slider Mode": "スライダーモード",
   "Slider Only": "スライダーのみ",
   "Slider & Show Value": "スライダーと値の表示",
   "Slider & Input Field": "スライダーと入力フィールド",
@@ -359,6 +353,5 @@
   "Searching for devices…": "デバイスを検索中...",
   "This feature is not available for this firmware version": "この機能はこのファームウェアバージョンでは利用できません。",
   "Please enter your desired QMK keycode or hex code:": "希望するQMKキーコードまたは16進コードを入力してください:",
-  "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.": "この機能は開発目的向けです。VIAでキーボードが自動認識されない場合は、キーボードのメーカーまたは販売元にお問い合わせください。",
-  "You didn't click \"Confirm\". To enable the Design tab, you must confirm first.": "\"確認\"をクリックしていません。デザインタブを有効にするには、先に確認が必要です。"
+  "This feature is intended for development purposes. If your keyboard is not recognized automatically by VIA, please contact your keyboard's manufacturer or vendor.": "この機能は開発目的向けです。VIAでキーボードが自動認識されない場合は、キーボードのメーカーまたは販売元にお問い合わせください。"
 }

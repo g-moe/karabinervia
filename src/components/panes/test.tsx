@@ -3,16 +3,14 @@ import fullKeyboardDefinition from '../../utils/test-keyboard-definition.json';
 import {Pane} from './pane';
 import styled from 'styled-components';
 import {PROTOCOL_GAMMA} from '../../utils/keyboard-api';
+import {ControlRow, Label, Detail} from './grid';
 import {
-  ControlRow,
-  Label,
-  Detail,
-  MenuCell,
-  Row,
-  IconContainer,
-  Grid,
-  SpanOverflowCell,
-} from './grid';
+  BottomSection,
+  BottomSectionContent,
+  BottomSectionNav,
+  BottomSectionNavItem,
+  BottomSectionTopBar,
+} from './bottom-section';
 import {AccentSlider} from '../inputs/accent-slider';
 import {AccentButton} from '../inputs/accent-button';
 import {useDispatch} from 'react-redux';
@@ -28,8 +26,6 @@ import {
   getTestKeyboardSoundsSettings,
   setTestKeyboardSoundsSettings,
 } from 'src/store/settingsSlice';
-import {MenuContainer} from './configure-panes/custom/menu-generator';
-import {MenuTooltip} from '../inputs/tooltip';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCircleQuestion} from '@fortawesome/free-solid-svg-icons';
 import {useProgress} from '@react-three/drei';
@@ -126,18 +122,15 @@ export const Test: FC = () => {
 
   return progress !== 100 ? null : (
     <TestPane>
-      <Grid>
-        <MenuCell style={{pointerEvents: 'all'}}>
-          <MenuContainer>
-            <Row $selected={true}>
-              <IconContainer>
-                <FontAwesomeIcon icon={faCircleQuestion} />
-                <MenuTooltip>{t('Check Key')}</MenuTooltip>
-              </IconContainer>
-            </Row>
-          </MenuContainer>
-        </MenuCell>
-        <SpanOverflowCell>
+      <BottomSection>
+        <BottomSectionTopBar>
+          <BottomSectionNav>
+            <BottomSectionNavItem selected={true} tooltip={t('Check Key')}>
+              <FontAwesomeIcon icon={faCircleQuestion} />
+            </BottomSectionNavItem>
+          </BottomSectionNav>
+        </BottomSectionTopBar>
+        <BottomSectionContent>
           <Container>
             <ControlRow>
               <Label>{t('Reset Keyboard')}</Label>
@@ -247,8 +240,8 @@ export const Test: FC = () => {
               </Detail>
             </ControlRow>
           </Container>
-        </SpanOverflowCell>
-      </Grid>
+        </BottomSectionContent>
+      </BottomSection>
     </TestPane>
   );
 };

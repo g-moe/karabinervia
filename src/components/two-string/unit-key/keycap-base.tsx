@@ -28,7 +28,9 @@ export const TooltipContainer = styled.div<{$rotate: number}>`
 `;
 
 export const TestOverlay = styled.div`
-  transition: all 0.2s ease-out;
+  transition:
+    opacity var(--duration_control) var(--ease_control),
+    transform var(--duration_control) var(--ease_control);
   position: absolute;
   left: 0;
   top: 0;
@@ -38,6 +40,5 @@ export const TestOverlay = styled.div`
 
 export const CanvasContainerBG = styled.div<{}>``;
 export const CanvasContainer = styled.div<{}>`
-  box-shadow: inset -1px -1px 0 rgb(0 0 0 / 20%),
-    inset 1px 1px 0 rgb(255 255 255 / 10%);
+  box-shadow: var(--box-shadow-keycap);
 `;

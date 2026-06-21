@@ -10,7 +10,7 @@ const MessageDialogContainer = styled.dialog`
 
   background: transparent;
   &::backdrop {
-    background: rgba(0, 0, 0, 0.75);
+    background: var(--color_scrim);
   }
 
   & > div {

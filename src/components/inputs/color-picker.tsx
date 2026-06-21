@@ -9,6 +9,7 @@ import {
   getRGB,
   getHex,
 } from '../../utils/color-math';
+import {controlSurface, roundSwatchSurface} from './control-styles';
 
 type Color = {
   hue: number;
@@ -36,17 +37,17 @@ const ColorPickerContainer = styled.div`
   align-items: center;
 `;
 
-const ColorLens = styled.div`
+const ColorLens = styled.div<{$transform: string}>`
   position: absolute;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  border: 2px solid black;
+  border: 2px solid var(--color_text-primary);
   opacity: 0.7;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color_control-selected-subtle-bg);
   pointer-events: none;
   box-sizing: border-box;
-  transform: translate3d(195px, 195px, 0);
+  transform: ${(props) => props.$transform};
 `;
 const ColorInner = styled.div`
   width: 100%;
@@ -69,20 +70,13 @@ const ColorOuter = styled.div`
   );
 `;
 
-const ColorThumbnail = styled.div`
-  display: inline-block;
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  border: 4px solid var(--border_color_cell);
-  cursor: pointer;
-  &:hover {
-    opacity: 0.8;
-  }
+const ColorThumbnail = styled.div<{$selected: boolean; $color: string}>`
+  ${roundSwatchSurface}
+  background: ${(props) => props.$color};
 `;
 
 const Container = styled.div`
-  border: 4px solid var(--border_color_cell);
+  border: 1px solid var(--color_separator);
   width: 180px;
   height: 180px;
   position: relative;
@@ -95,7 +89,7 @@ const PickerContainer = styled.div`
   align-items: center;
   flex-direction: column;
   z-index: 1;
-  box-shadow: rgba(0, 0, 0, 0.11) 0 1px 1px 1px;
+  box-shadow: var(--box-shadow-control-raised);
   position: absolute;
   transform: translate3d(-205px, 50px, 0);
 
@@ -104,7 +98,7 @@ const PickerContainer = styled.div`
     position: absolute;
     width: 0px;
     height: 0px;
-    border: 11px solid var(--border_color_cell);
+    border: 11px solid var(--color_separator);
     border-top-color: transparent;
     border-bottom-color: transparent;
     border-right-color: transparent;
@@ -113,37 +107,31 @@ const PickerContainer = styled.div`
   }
 `;
 
-const ColorPreview = styled.div`
+const ColorPreview = styled.div<{$color: string}>`
   width: 180px;
   height: 24px;
-  border: 4px solid var(--border_color_cell);
+  border: 1px solid var(--color_separator);
   border-bottom: none;
+  background: ${(props) => props.$color};
 `;
 
 const ColorHexContainer = styled.div`
-  border: 4px solid var(--border_color_cell);
+  border: 1px solid var(--color_separator);
   border-bottom: none;
   width: 180px;
   height: 32px;
   line-height: 32px;
   text-align: center;
-  background: var(--bg_menu);
+  background: var(--color_surface-menu);
 `;
 
 const ColorHexInput = styled.input`
+  ${controlSurface}
   text-align: center;
-  border: none;
-  color: var(--color_control-text);
-  background: var(--bg_menu);
   font-size: 20px;
   font-weight: 300;
   padding: 0;
   width: 100%;
-  &:focus {
-    outline: none;
-    color: var(--color_control-text);
-    border-color: var(--color_control-border);
-  }
 `;
 
 export class ColorPicker extends Component<Props, State> {
@@ -330,14 +318,10 @@ export class ColorPicker extends Component<Props, State> {
       <>
         <ColorPickerContainer>
           <ColorThumbnail
+            $selected={isSelected}
+            $color={color}
             ref={this.colorThumbnail}
             onClick={this.onThumbnailClick}
-            style={{
-              background: color,
-              borderColor: !isSelected
-                ? 'var(--border_color_cell)'
-                : 'var(--color_accent)',
-            }}
           />
           {this.state.showPicker && (
             <PickerContainer
@@ -353,7 +337,7 @@ export class ColorPicker extends Component<Props, State> {
                   onKeyDown={this.handleHexSubmit}
                 />
               </ColorHexContainer>
-              <ColorPreview style={{background: getRGB(this.props.color)}} />
+              <ColorPreview $color={getRGB(this.props.color)} />
               <Container>
                 <ColorOuter
                   onMouseDown={this.onMouseDown}
@@ -361,7 +345,7 @@ export class ColorPicker extends Component<Props, State> {
                   ref={(ref) => (this.ref = ref)}
                 >
                   <ColorInner>
-                    <ColorLens style={{transform: lensTransform}} />
+                    <ColorLens $transform={lensTransform} />
                   </ColorInner>
                 </ColorOuter>
               </Container>

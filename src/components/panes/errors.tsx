@@ -16,22 +16,18 @@ import {formatNumberAsHex} from 'src/utils/format';
 import styled from 'styled-components';
 import {Link, useLocation} from 'wouter';
 import {IconButtonContainer} from '../inputs/icon-button';
+import {iconButtonGroupSurface} from '../inputs/control-styles';
+import {CategoryMenuTooltip, IconButtonTooltip} from '../inputs/tooltip';
+import {CategoryIconContainer} from './grid';
 import {
-  CategoryMenuTooltip,
-  IconButtonTooltip,
-  MenuTooltip,
-} from '../inputs/tooltip';
-import {MenuContainer} from './configure-panes/custom/menu-generator';
-import {
-  Grid,
-  MenuCell,
-  Row,
-  IconContainer,
-  SpanOverflowCell,
-  CategoryIconContainer,
-} from './grid';
+  BottomSection,
+  BottomSectionContent,
+  BottomSectionNav,
+  BottomSectionNavItem,
+  BottomSectionTopBar,
+} from './bottom-section';
 import {Pane} from './pane';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const Container = styled.div`
   display: flex;
@@ -57,11 +53,11 @@ const ErrorListContainer: React.FC<
   const {clear, save, hasErrors} = props;
   return (
     <>
-      <IconButtonGroupContainer style={{margin: '10px 15px'}}>
+      <ErrorToolbar>
         <IconButtonContainer onClick={clear} disabled={!hasErrors}>
           <FontAwesomeIcon
             size={'sm'}
-            color="var(--color_label)"
+            color="var(--color_text-secondary)"
             icon={faCancel}
           />
           <IconButtonTooltip>{t('Clear')}</IconButtonTooltip>
@@ -69,12 +65,12 @@ const ErrorListContainer: React.FC<
         <IconButtonContainer onClick={save} disabled={!hasErrors}>
           <FontAwesomeIcon
             size={'sm'}
-            color="var(--color_label)"
+            color="var(--color_text-secondary)"
             icon={faDownload}
           />
           <IconButtonTooltip>{t('Download')}</IconButtonTooltip>
         </IconButtonContainer>
-      </IconButtonGroupContainer>
+      </ErrorToolbar>
       {props.children}
     </>
   );
@@ -148,12 +144,11 @@ const saveAppErrors = async (errors: AppError[]) =>
   );
 
 const IconButtonGroupContainer = styled.div`
-  border-radius: 2px;
-  border: 1px solid var(--border_color_icon);
-  display: inline-flex;
-  > button:last-child {
-    border: none;
-  }
+  ${iconButtonGroupSurface}
+`;
+
+const ErrorToolbar = styled(IconButtonGroupContainer)`
+  margin: 10px 15px;
 `;
 
 enum ErrorPaneMenu {
@@ -166,34 +161,32 @@ const ErrorPanes: [ErrorPaneMenu, React.FC, IconProp, string][] = [
 ];
 
 export const Errors = () => {
-  const [selectedPane, setSelectedPane] = useState(ErrorPaneMenu.KeyboardAPI);
+  const [selectedPane, setSelectedPane] = useState(ErrorPaneMenu.App);
   const PaneComponent = (ErrorPanes.find(([id]) => selectedPane === id) ||
     ErrorPanes[0])[1];
   return (
     <Pane>
-      <Grid style={{overflow: 'hidden'}}>
-        <MenuCell style={{pointerEvents: 'all', borderTop: 'none'}}>
-          <MenuContainer>
+      <BottomSection>
+        <BottomSectionTopBar>
+          <BottomSectionNav>
             {ErrorPanes.map(([id, _, Icon, menuName]) => (
-              <Row
-                $selected={selectedPane === id}
+              <BottomSectionNavItem
+                selected={selectedPane === id}
                 onClick={() => {
                   setSelectedPane(id);
                 }}
+                tooltip={menuName}
                 key={id}
               >
-                <IconContainer>
-                  <FontAwesomeIcon icon={Icon} />
-                  <MenuTooltip>{menuName}</MenuTooltip>
-                </IconContainer>
-              </Row>
+                <FontAwesomeIcon icon={Icon} />
+              </BottomSectionNavItem>
             ))}
-          </MenuContainer>
-        </MenuCell>
-        <SpanOverflowCell style={{flex: 1, borderWidth: 0}}>
+          </BottomSectionNav>
+        </BottomSectionTopBar>
+        <BottomSectionContent>
           <PaneComponent />
-        </SpanOverflowCell>
-      </Grid>
+        </BottomSectionContent>
+      </BottomSection>
     </Pane>
   );
 };
@@ -209,7 +202,7 @@ export const ErrorLink = () => {
           <FontAwesomeIcon
             size={'xl'}
             icon={ErrorsPaneConfig.icon}
-            color={isSelectedRoute ? 'inherit' : 'gold'}
+            color={isSelectedRoute ? 'inherit' : 'var(--color_warning)'}
           />
           <CategoryMenuTooltip>
             {appErrors.length} error
