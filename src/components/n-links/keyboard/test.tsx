@@ -112,16 +112,23 @@ export const Test = (props: {dimensions?: DOMRect; nDimension: NDimension}) => {
 
   const virtualGlobalPressedKeys =
     isVirtualMacBook && !isTestMatrixEnabled
-      ? macbookKeys.map((key) => {
+      ? macbookKeys.reduce((pressedKeys, key) => {
           const byte = basicKeyToByte[key.code as keyof typeof basicKeyToByte];
-          return globalPressedKeys[matrixKeycodes.indexOf(byte)];
-        })
+          pressedKeys[key.row * testDefinition.matrix.cols + key.col] =
+            globalPressedKeys[matrixKeycodes.indexOf(byte)];
+          return pressedKeys;
+        }, [] as TestKeyState[])
       : [];
 
   const testPressedKeys = isTestMatrixEnabled
     ? (matrixPressedKeysMapped as TestKeyState[])
     : isVirtualMacBook
-    ? (virtualGlobalPressedKeys as TestKeyState[])
+    ? (macbookKeys.map(
+        (key) =>
+          virtualGlobalPressedKeys[
+            key.row * testDefinition.matrix.cols + key.col
+          ],
+      ) as TestKeyState[])
     : (globalPressedKeys as TestKeyState[]);
 
   const {partitionedKeys} = useMemo(
