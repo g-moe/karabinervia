@@ -17,6 +17,7 @@
 - ?debug mode (not sure its needed key tester should be good enough?)
 
 - [ ] remove ALL themes and fallback to just 1 custom theme (1 dark mode and 1 light mode) we will create that follows apple design guide and is dark mode. (edit the entire page via design system and be sure we do not break anything afterwards ui wise for not being able to see stuff...literally every single color and css token needs to be evaluated and maped to proper apple, for example the pink highlight for key press should be blue, etc.)
+- [x] centralize readable control, select, input, action-editor, and tooltip colors behind shared tokens
 
 - [ ] move to pnpm, with workspace rul for minimum release age to be 14 days
 - [ ] major upgrades for packages
