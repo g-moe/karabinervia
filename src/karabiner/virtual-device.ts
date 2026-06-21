@@ -99,7 +99,7 @@ export const macbookLayoutKeys: MacKey[] = [
   key(1, 10, 10, 1, 1, 'KC_0'),
   key(1, 11, 11, 1, 1, 'KC_MINS'),
   key(1, 12, 12, 1, 1, 'KC_EQL'),
-  key(1, 13, 13, 1, 1.85, 'KC_BSPC', KeyColorType.Mod),
+  key(1, 13, 13, 1, 3.05, 'KC_BSPC', KeyColorType.Mod),
 
   key(2, 0, 0, 2, 1.45, 'KC_TAB', KeyColorType.Mod),
   key(2, 1, 1.45, 2, 1, 'KC_Q'),
@@ -114,7 +114,7 @@ export const macbookLayoutKeys: MacKey[] = [
   key(2, 10, 10.45, 2, 1, 'KC_P'),
   key(2, 11, 11.45, 2, 1, 'KC_LBRC'),
   key(2, 12, 12.45, 2, 1, 'KC_RBRC'),
-  key(2, 13, 13.45, 2, 1.4, 'KC_BSLS'),
+  key(2, 13, 13.45, 2, 2.6, 'KC_BSLS'),
 
   key(3, 0, 0, 3, 1.7, 'KC_CAPS', KeyColorType.Mod),
   key(3, 1, 1.7, 3, 1, 'KC_A'),
@@ -128,7 +128,7 @@ export const macbookLayoutKeys: MacKey[] = [
   key(3, 9, 9.7, 3, 1, 'KC_L'),
   key(3, 10, 10.7, 3, 1, 'KC_SCLN'),
   key(3, 11, 11.7, 3, 1, 'KC_QUOT'),
-  key(3, 12, 12.7, 3, 2.15, 'KC_ENT', KeyColorType.Accent),
+  key(3, 12, 12.7, 3, 3.35, 'KC_ENT', KeyColorType.Accent),
 
   key(4, 0, 0, 4, 2.2, 'KC_LSFT', KeyColorType.Mod),
   key(4, 1, 2.2, 4, 1, 'KC_Z'),
@@ -141,7 +141,7 @@ export const macbookLayoutKeys: MacKey[] = [
   key(4, 8, 9.2, 4, 1, 'KC_COMM'),
   key(4, 9, 10.2, 4, 1, 'KC_DOT'),
   key(4, 10, 11.2, 4, 1, 'KC_SLSH'),
-  key(4, 11, 12.2, 4, 2.65, 'KC_RSFT', KeyColorType.Mod),
+  key(4, 11, 12.2, 4, 3.85, 'KC_RSFT', KeyColorType.Mod),
 
   key(5, 0, 0, 5, 1, 'KC_FN', KeyColorType.Mod, 1, 'fn'),
   key(5, 1, 1, 5, 1.2, 'KC_LCTL', KeyColorType.Mod, 1, '⌃'),
