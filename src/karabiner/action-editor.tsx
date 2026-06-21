@@ -48,20 +48,29 @@ const Select = styled.select`
   height: 36px;
   min-width: 260px;
   background: var(--bg_menu);
-  color: var(--color_accent);
+  color: var(--color_label-highlighted);
   border: 1px solid var(--color_accent);
   border-radius: 5px;
   padding: 0 10px;
+
+  option {
+    color: var(--color_label-highlighted);
+    background: var(--bg_menu);
+  }
 `;
 
 const TextInput = styled.input`
   height: 36px;
   min-width: 260px;
   background: var(--bg_menu);
-  color: var(--color_accent);
+  color: var(--color_label-highlighted);
   border: 1px solid var(--color_accent);
   border-radius: 5px;
   padding: 0 10px;
+
+  &::placeholder {
+    color: var(--color_label);
+  }
 `;
 
 const CheckboxGroup = styled.div`

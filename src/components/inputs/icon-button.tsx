@@ -12,7 +12,7 @@ export const IconButton = styled.button`
   line-height: initial;
   font-size: initial;
   color: ${(props) =>
-    props.disabled ? 'var(--bg_control)' : 'var(--color_accent)'};
+    props.disabled ? 'var(--color_label)' : 'var(--color_accent)'};
   border-color: ${(props) =>
     props.disabled ? 'var(--bg_control)' : 'var(--color_accent)'};
   &:disabled {
@@ -23,7 +23,7 @@ export const IconButton = styled.button`
   }
   &:hover {
     color: ${(props) =>
-      props.disabled ? 'var(--bg_control)' : 'var(--color_inside-accent)'};
+      props.disabled ? 'var(--color_label)' : 'var(--color_inside-accent)'};
     border-color: ${(props) =>
       props.disabled ? 'var(--bg_control)' : 'var(--color_accent)'};
     border-right: 1px solid var(--border_color_icon);
@@ -33,12 +33,12 @@ export const IconButton = styled.button`
 
   svg {
     color: ${(props) =>
-      props.disabled ? 'var(--bg_control)' : 'var(--color_accent)'};
+      props.disabled ? 'var(--color_label)' : 'var(--color_accent)'};
   }
   &:hover {
     svg {
       color: ${(props) =>
-        props.disabled ? 'var(--bg_control)' : 'var(--color_inside-accent)'};
+        props.disabled ? 'var(--color_label)' : 'var(--color_inside-accent)'};
     }
 
     color: var(--color_label-highlighted);

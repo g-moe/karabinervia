@@ -29,7 +29,7 @@ export const AccentButton = styled(AccentButtonBase)`
   background-color: ${(props) =>
     props.disabled ? 'var(--bg_control-disabled)' : 'var(--bg_outside-accent)'};
   color: ${(props) =>
-    props.disabled ? 'var(--bg_control)' : 'var(--color_accent)'};
+    props.disabled ? 'var(--color_label)' : 'var(--color_label-highlighted)'};
   border-color: ${(props) =>
     props.disabled ? 'var(--bg_control)' : 'var(--color_accent)'};
 
