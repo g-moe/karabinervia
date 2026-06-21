@@ -1,5 +1,7 @@
-- [ ] add mac command, option, control, AND fn ui to keys
-- [ ] add function row + touch id as DISPLAY_ONLY but they are not allowed to be edited
+- [x] add mac command, option, control, AND fn ui to keys
+- [x] add function row + touch id as DISPLAY_ONLY but they are not allowed to be edited
+- [x] refine MacBook Pro Touch ID geometry so all rows share the keyboard body width
+- [x] replace QMK/VIA special-key legends with Mac-style labels
 
 - [ ] removal not-needed
 - all themes but default dark and default light

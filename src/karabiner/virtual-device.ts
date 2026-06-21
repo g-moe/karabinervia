@@ -71,20 +71,20 @@ const displayKey = (
   );
 
 export const macbookLayoutKeys: MacKey[] = [
-  key(0, 0, 0, 0, 1.25, 'KC_ESC', KeyColorType.Accent),
+  key(0, 0, 0, 0, 1.25, 'KC_ESC', KeyColorType.Accent, 1, 'esc'),
   displayKey(1, 1.25, 1, 'KC_F1', '☀︎−', 'F1'),
   displayKey(2, 2.25, 1, 'KC_F2', '☀︎+', 'F2'),
   displayKey(3, 3.25, 1, 'KC_F3', '▣', 'F3'),
   displayKey(4, 4.25, 1, 'KC_F4', '⌕', 'F4'),
-  displayKey(5, 5.25, 1, 'KC_F5', '🎙', 'F5'),
+  displayKey(5, 5.25, 1, 'KC_F5', '◉', 'F5'),
   displayKey(6, 6.25, 1, 'KC_F6', '☾', 'F6'),
   displayKey(7, 7.25, 1, 'KC_F7', '⏮', 'F7'),
   displayKey(8, 8.25, 1, 'KC_F8', '⏯', 'F8'),
   displayKey(9, 9.25, 1, 'KC_F9', '⏭', 'F9'),
-  displayKey(10, 10.25, 1, 'KC_F10', '🔇', 'F10'),
-  displayKey(11, 11.25, 1, 'KC_F11', '🔉', 'F11'),
-  displayKey(12, 12.25, 1, 'KC_F12', '🔊', 'F12'),
-  displayKey(13, 13.25, 2.8, 'KC_NO', 'Touch', 'ID'),
+  displayKey(10, 10.25, 1, 'KC_F10', '◁×', 'F10'),
+  displayKey(11, 11.25, 1, 'KC_F11', '◁−', 'F11'),
+  displayKey(12, 12.25, 1, 'KC_F12', '◁+', 'F12'),
+  displayKey(13, 13.25, 1.6, 'KC_NO', 'Touch', 'ID'),
 
   key(1, 0, 0, 1, 1, 'KC_GRV'),
   key(1, 1, 1, 1, 1, 'KC_1'),
@@ -99,7 +99,7 @@ export const macbookLayoutKeys: MacKey[] = [
   key(1, 10, 10, 1, 1, 'KC_0'),
   key(1, 11, 11, 1, 1, 'KC_MINS'),
   key(1, 12, 12, 1, 1, 'KC_EQL'),
-  key(1, 13, 13, 1, 3.05, 'KC_BSPC', KeyColorType.Mod),
+  key(1, 13, 13, 1, 1.85, 'KC_BSPC', KeyColorType.Mod, 1, 'delete'),
 
   key(2, 0, 0, 2, 1.45, 'KC_TAB', KeyColorType.Mod),
   key(2, 1, 1.45, 2, 1, 'KC_Q'),
@@ -114,9 +114,9 @@ export const macbookLayoutKeys: MacKey[] = [
   key(2, 10, 10.45, 2, 1, 'KC_P'),
   key(2, 11, 11.45, 2, 1, 'KC_LBRC'),
   key(2, 12, 12.45, 2, 1, 'KC_RBRC'),
-  key(2, 13, 13.45, 2, 2.6, 'KC_BSLS'),
+  key(2, 13, 13.45, 2, 1.4, 'KC_BSLS'),
 
-  key(3, 0, 0, 3, 1.7, 'KC_CAPS', KeyColorType.Mod),
+  key(3, 0, 0, 3, 1.7, 'KC_CAPS', KeyColorType.Mod, 1, 'caps lock'),
   key(3, 1, 1.7, 3, 1, 'KC_A'),
   key(3, 2, 2.7, 3, 1, 'KC_S'),
   key(3, 3, 3.7, 3, 1, 'KC_D'),
@@ -128,9 +128,9 @@ export const macbookLayoutKeys: MacKey[] = [
   key(3, 9, 9.7, 3, 1, 'KC_L'),
   key(3, 10, 10.7, 3, 1, 'KC_SCLN'),
   key(3, 11, 11.7, 3, 1, 'KC_QUOT'),
-  key(3, 12, 12.7, 3, 3.35, 'KC_ENT', KeyColorType.Accent),
+  key(3, 12, 12.7, 3, 2.15, 'KC_ENT', KeyColorType.Accent, 1, 'return'),
 
-  key(4, 0, 0, 4, 2.2, 'KC_LSFT', KeyColorType.Mod),
+  key(4, 0, 0, 4, 2.2, 'KC_LSFT', KeyColorType.Mod, 1, 'shift'),
   key(4, 1, 2.2, 4, 1, 'KC_Z'),
   key(4, 2, 3.2, 4, 1, 'KC_X'),
   key(4, 3, 4.2, 4, 1, 'KC_C'),
@@ -141,19 +141,19 @@ export const macbookLayoutKeys: MacKey[] = [
   key(4, 8, 9.2, 4, 1, 'KC_COMM'),
   key(4, 9, 10.2, 4, 1, 'KC_DOT'),
   key(4, 10, 11.2, 4, 1, 'KC_SLSH'),
-  key(4, 11, 12.2, 4, 3.85, 'KC_RSFT', KeyColorType.Mod),
+  key(4, 11, 12.2, 4, 2.65, 'KC_RSFT', KeyColorType.Mod, 1, 'shift'),
 
   key(5, 0, 0, 5, 1, 'KC_FN', KeyColorType.Mod, 1, 'fn'),
   key(5, 1, 1, 5, 1.2, 'KC_LCTL', KeyColorType.Mod, 1, '⌃'),
   key(5, 2, 2.2, 5, 1.2, 'KC_LALT', KeyColorType.Mod, 1, '⌥'),
   key(5, 3, 3.4, 5, 1.45, 'KC_LGUI', KeyColorType.Mod, 1, '⌘'),
-  key(5, 4, 4.85, 5, 5.45, 'KC_SPC'),
-  key(5, 5, 10.3, 5, 1.45, 'KC_RGUI', KeyColorType.Mod, 1, '⌘'),
-  key(5, 6, 11.75, 5, 1.2, 'KC_RALT', KeyColorType.Mod, 1, '⌥'),
-  key(5, 7, 13.05, 5.5, 1, 'KC_LEFT', KeyColorType.Mod, 0.5),
-  key(5, 8, 14.05, 5, 1, 'KC_UP', KeyColorType.Mod, 0.5),
-  key(5, 9, 14.05, 5.5, 1, 'KC_DOWN', KeyColorType.Mod, 0.5),
-  key(5, 10, 15.05, 5.5, 1, 'KC_RGHT', KeyColorType.Mod, 0.5),
+  key(5, 4, 4.85, 5, 4.8, 'KC_SPC'),
+  key(5, 5, 9.65, 5, 1.1, 'KC_RGUI', KeyColorType.Mod, 1, '⌘'),
+  key(5, 6, 10.75, 5, 1.1, 'KC_RALT', KeyColorType.Mod, 1, '⌥'),
+  key(5, 7, 11.85, 5.5, 1, 'KC_LEFT', KeyColorType.Mod, 0.5, '←'),
+  key(5, 8, 12.85, 5, 1, 'KC_UP', KeyColorType.Mod, 0.5, '↑'),
+  key(5, 9, 12.85, 5.5, 1, 'KC_DOWN', KeyColorType.Mod, 0.5, '↓'),
+  key(5, 10, 13.85, 5.5, 1, 'KC_RGHT', KeyColorType.Mod, 0.5, '→'),
 ];
 
 export const macbookEditableKeys = macbookLayoutKeys.filter(
@@ -175,7 +175,7 @@ export const macbookDefinition: VIADefinitionV3 = {
     cols: 14,
   },
   layouts: {
-    width: 16.05,
+    width: 14.85,
     height: 6.45,
     optionKeys: {},
     keys: macbookLayoutKeys.map(
