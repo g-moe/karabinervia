@@ -1,5 +1,5 @@
 import type {Device, Keymap} from '../types/types';
-import type {LightingValue, MatrixInfo} from '@the-via/reader';
+import type {MatrixInfo} from '@the-via/reader';
 import {logCommand} from './command-logger';
 import {initAndConnectDevice} from './usb-hid';
 import {store} from 'src/store/index';
@@ -14,7 +14,6 @@ import {
 // VIA Command IDs
 
 const COMMAND_START = 0x00; // This is really a HID Report ID
-const PER_KEY_RGB_CHANNEL_COMMAND = [0, 1];
 
 enum APICommand {
   GET_PROTOCOL_VERSION = 0x01,
@@ -39,11 +38,6 @@ enum APICommand {
   DYNAMIC_KEYMAP_SET_BUFFER = 0x13,
   DYNAMIC_KEYMAP_GET_ENCODER = 0x14,
   DYNAMIC_KEYMAP_SET_ENCODER = 0x15,
-
-  // DEPRECATED:
-  BACKLIGHT_CONFIG_SET_VALUE = 0x07,
-  BACKLIGHT_CONFIG_GET_VALUE = 0x08,
-  BACKLIGHT_CONFIG_SAVE = 0x09,
 }
 
 const APICommandValueToName = Object.entries(APICommand).reduce(
@@ -58,31 +52,6 @@ export enum KeyboardValue {
   FIRMWARE_VERSION = 0x04,
   DEVICE_INDICATION = 0x05,
 }
-
-// RGB Backlight Value IDs
-// const BACKLIGHT_USE_SPLIT_BACKSPACE = 0x01;
-// const BACKLIGHT_USE_SPLIT_LEFT_SHIFT = 0x02;
-// const BACKLIGHT_USE_SPLIT_RIGHT_SHIFT = 0x03;
-// const BACKLIGHT_USE_7U_SPACEBAR = 0x04;
-// const BACKLIGHT_USE_ISO_ENTER = 0x05;
-// const BACKLIGHT_DISABLE_HHKB_BLOCKER_LEDS = 0x06;
-// const BACKLIGHT_DISABLE_WHEN_USB_SUSPENDEd = 0x07;
-// const BACKLIGHT_DISABLE_AFTER_TIMEOUT = 0x08;
-const BACKLIGHT_BRIGHTNESS = 0x09;
-const BACKLIGHT_EFFECT = 0x0a;
-// const BACKLIGHT_EFFECT_SPEED = 0x0b;
-const BACKLIGHT_COLOR_1 = 0x0c;
-const BACKLIGHT_COLOR_2 = 0x0d;
-// const BACKLIGHT_CAPS_LOCK_INDICATOR_COLOR = 0x0e;
-// const BACKLIGHT_CAPS_LOCK_INDICATOR_ROW_Col = 0x0f;
-// const BACKLIGHT_LAYER_1_INDICATOR_COLOR = 0x10;
-// const BACKLIGHT_LAYER_1_INDICATOR_ROW_COL = 0x11;
-// const BACKLIGHT_LAYER_2_INDICATOR_COLOR = 0x12;
-// const BACKLIGHT_LAYER_2_INDICATOR_ROW_COL = 0x13;
-// const BACKLIGHT_LAYER_3_INDICATOR_COLOR = 0x14;
-// const BACKLIGHT_LAYER_3_INDICATOR_ROW_COL = 0x15;
-// const BACKLIGHT_ALPHAS_MODS = 0x16;
-const BACKLIGHT_CUSTOM_COLOR = 0x17;
 
 export const PROTOCOL_ALPHA = 7;
 export const PROTOCOL_BETA = 8;
@@ -356,111 +325,8 @@ export class KeyboardAPI {
     await this.hidCommand(APICommand.CUSTOM_MENU_SET_VALUE, args);
   }
 
-  async getPerKeyRGBMatrix(ledIndexMapping: number[]): Promise<number[][]> {
-    const res = await Promise.all(
-      ledIndexMapping.map((ledIndex) =>
-        this.hidCommand(APICommand.CUSTOM_MENU_GET_VALUE, [
-          ...PER_KEY_RGB_CHANNEL_COMMAND,
-          ledIndex,
-          1, // count
-        ]),
-      ),
-    );
-    return res.map((r) => [...r.slice(5, 7)]);
-  }
-
-  async setPerKeyRGBMatrix(
-    index: number,
-    hue: number,
-    sat: number,
-  ): Promise<void> {
-    await this.hidCommand(APICommand.CUSTOM_MENU_SET_VALUE, [
-      ...PER_KEY_RGB_CHANNEL_COMMAND,
-      index,
-      1, // count
-      hue,
-      sat,
-    ]);
-  }
-
-  async getBacklightValue(
-    command: LightingValue,
-    resultLength = 1,
-  ): Promise<number[]> {
-    const bytes = [command];
-    const res = await this.hidCommand(
-      APICommand.BACKLIGHT_CONFIG_GET_VALUE,
-      bytes,
-    );
-    return res.slice(2, 2 + resultLength);
-  }
-
-  async setBacklightValue(command: LightingValue, ...rest: number[]) {
-    const bytes = [command, ...rest];
-    await this.hidCommand(APICommand.BACKLIGHT_CONFIG_SET_VALUE, bytes);
-  }
-
-  async getRGBMode() {
-    const bytes = [BACKLIGHT_EFFECT];
-    const [, , val] = await this.hidCommand(
-      APICommand.BACKLIGHT_CONFIG_GET_VALUE,
-      bytes,
-    );
-    return val;
-  }
-
-  async getBrightness() {
-    const bytes = [BACKLIGHT_BRIGHTNESS];
-    const [, , brightness] = await this.hidCommand(
-      APICommand.BACKLIGHT_CONFIG_GET_VALUE,
-      bytes,
-    );
-    return brightness;
-  }
-
-  async getColor(colorNumber: number) {
-    const bytes = [colorNumber === 1 ? BACKLIGHT_COLOR_1 : BACKLIGHT_COLOR_2];
-    const [, , hue, sat] = await this.hidCommand(
-      APICommand.BACKLIGHT_CONFIG_GET_VALUE,
-      bytes,
-    );
-    return {hue, sat};
-  }
-
-  async setColor(colorNumber: number, hue: number, sat: number) {
-    const bytes = [
-      colorNumber === 1 ? BACKLIGHT_COLOR_1 : BACKLIGHT_COLOR_2,
-      hue,
-      sat,
-    ];
-    await this.hidCommand(APICommand.BACKLIGHT_CONFIG_SET_VALUE, bytes);
-  }
-
-  async getCustomColor(colorNumber: number) {
-    const bytes = [BACKLIGHT_CUSTOM_COLOR, colorNumber];
-    const [, , , hue, sat] = await this.hidCommand(
-      APICommand.BACKLIGHT_CONFIG_GET_VALUE,
-      bytes,
-    );
-    return {hue, sat};
-  }
-
-  async setCustomColor(colorNumber: number, hue: number, sat: number) {
-    const bytes = [BACKLIGHT_CUSTOM_COLOR, colorNumber, hue, sat];
-    await this.hidCommand(APICommand.BACKLIGHT_CONFIG_SET_VALUE, bytes);
-  }
-
-  async setRGBMode(effect: number) {
-    const bytes = [BACKLIGHT_EFFECT, effect];
-    await this.hidCommand(APICommand.BACKLIGHT_CONFIG_SET_VALUE, bytes);
-  }
-
   async commitCustomMenu(channel: number) {
     await this.hidCommand(APICommand.CUSTOM_MENU_SAVE, [channel]);
-  }
-
-  async saveLighting() {
-    await this.hidCommand(APICommand.BACKLIGHT_CONFIG_SAVE);
   }
 
   async resetEEPROM() {
@@ -675,12 +541,6 @@ export class KeyboardAPI {
 
       throw new Error('Receiving incorrect response for command');
     }
-    console.debug(
-      `Command for ${this.kbAddr}`,
-      commandBytes,
-      'Correct Resp:',
-      buffer,
-    );
     return buffer;
   }
 }

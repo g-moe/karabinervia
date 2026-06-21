@@ -32,22 +32,6 @@ const getMacroData = ({
     ? macroExpression
     : null;
 
-const paintDebugLines = (canvas: HTMLCanvasElement) => {
-  const context = canvas.getContext('2d');
-  if (context == null) {
-    return;
-  }
-  context.strokeStyle = 'magenta';
-  context.lineWidth = 1;
-  context.beginPath();
-  context.moveTo(0, 0);
-  context.lineTo(canvas.width, 0);
-  context.lineTo(canvas.width, canvas.height);
-  context.lineTo(0, canvas.height);
-  context.lineTo(0, 0);
-  context.stroke();
-};
-
 const paintKeycapLabel = (
   canvas: HTMLCanvasElement,
   legendColor: string,
@@ -154,14 +138,6 @@ const paintKeycap = (
   //context.fillStyle = bgColor;
   //context.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Leaving this here for future maintenance.
-  // This draws lines around the keycap edge and the top face edge,
-  // *or* a clipped area within it when keycaps are large, vertical or odd shapes.
-  const debug = false;
-  if (debug) {
-    paintDebugLines(canvas);
-  }
-
   return paintKeycapLabel(canvas, legendColor, label);
 };
 
@@ -249,14 +225,14 @@ export const Keycap: React.FC<TwoStringKeycapProps> = React.memo((props) => {
     DisplayMode.Test === mode
       ? pressedState === KeycapState.Unpressed
         ? wasPressed
-          ? 'mediumvioletred'
-          : 'lightgrey'
-        : 'mediumvioletred'
+          ? 'var(--color_control-border)'
+          : 'var(--color_separator-opaque)'
+        : 'var(--color_control-border)'
       : pressedState === KeycapState.Unpressed
-      ? 'lightgrey'
-      : 'lightgrey';
+      ? 'var(--color_separator-opaque)'
+      : 'var(--color_separator-opaque)';
   const keycapOpacity =
-    pressedState === KeycapState.Unpressed ? (wasPressed ? 0.4 : 0) : 0.6;
+    pressedState === KeycapState.Unpressed ? (wasPressed ? 0.28 : 0) : 0.36;
 
   const [onClick, onPointerOver, onPointerOut, onPointerDown] = useMemo(() => {
     const noop = () => {};
@@ -421,8 +397,7 @@ const GlowContainer = styled.div<{$selected: boolean}>`
   box-sizing: border-box;
   padding: 2px 6px 10px 6px;
   transition: transform 0.2s ease-out;
-  box-shadow: inset -1px -1px 0 rgb(0 0 0 / 20%),
-    inset 1px 1px 0 rgb(255 255 255 / 20%);
+  box-shadow: var(--box-shadow-keycap);
   animation: ${(p) =>
     p.$selected ? '.75s infinite alternate select-glow' : 'initial'};
   &:hover {

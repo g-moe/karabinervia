@@ -9,6 +9,7 @@ import {
   ThreeFiberKeycapProps,
 } from 'src/types/keyboard-rendering';
 import {TestKeyState} from 'src/types/types';
+import {AppleInteractionColor} from 'src/utils/apple-colors';
 import * as THREE from 'three';
 import {KeycapTooltip} from '../../inputs/tooltip';
 
@@ -70,63 +71,6 @@ type Point = {
 type Rect = {
   bl: Point;
   tr: Point;
-};
-
-const paintDebugLines = (
-  canvas: HTMLCanvasElement,
-  keycapRect: Rect,
-  faceRect: Rect,
-) => {
-  const context = canvas.getContext('2d');
-  if (context == null) {
-    return;
-  }
-  context.strokeStyle = 'magenta';
-  context.lineWidth = 2;
-  context.beginPath();
-  context.moveTo(
-    keycapRect.bl.x * canvas.width,
-    (1 - keycapRect.bl.y) * canvas.height,
-  );
-  context.lineTo(
-    keycapRect.bl.x * canvas.width,
-    (1 - keycapRect.tr.y) * canvas.height,
-  );
-  context.lineTo(
-    keycapRect.tr.x * canvas.width,
-    (1 - keycapRect.tr.y) * canvas.height,
-  );
-  context.lineTo(
-    keycapRect.tr.x * canvas.width,
-    (1 - keycapRect.bl.y) * canvas.height,
-  );
-  context.lineTo(
-    keycapRect.bl.x * canvas.width,
-    (1 - keycapRect.bl.y) * canvas.height,
-  );
-  context.stroke();
-  context.beginPath();
-  context.moveTo(
-    faceRect.bl.x * canvas.width,
-    (1 - faceRect.bl.y) * canvas.height,
-  );
-  context.lineTo(
-    faceRect.bl.x * canvas.width,
-    (1 - faceRect.tr.y) * canvas.height,
-  );
-  context.lineTo(
-    faceRect.tr.x * canvas.width,
-    (1 - faceRect.tr.y) * canvas.height,
-  );
-  context.lineTo(
-    faceRect.tr.x * canvas.width,
-    (1 - faceRect.bl.y) * canvas.height,
-  );
-  context.lineTo(
-    faceRect.bl.x * canvas.width,
-    (1 - faceRect.bl.y) * canvas.height,
-  );
-  context.stroke();
 };
 
 const paintKeycapLabel = (
@@ -292,14 +236,6 @@ const paintKeycap = (
   context.fillStyle = bgColor;
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Leaving this here for future maintenance.
-  // This draws lines around the keycap edge and the top face edge,
-  // *or* a clipped area within it when keycaps are large, vertical or odd shapes.
-  const debug = false;
-  if (debug) {
-    paintDebugLines(canvas, textureRects.keycapRect, textureRects.faceRect);
-  }
-
   return paintKeycapLabel(canvas, textureRects.faceRect, legendColor, label);
 };
 
@@ -363,9 +299,9 @@ export const Keycap: React.FC<ThreeFiberKeycapProps> = React.memo((props) => {
 
   const glow = useSpring({
     config: {duration: 800},
-    from: {x: 0, y: '#f4a0a0'},
+    from: {x: 0, y: AppleInteractionColor.systemBlue},
     loop: selected ? {reverse: true} : false,
-    to: {x: 100, y: '#b49999'},
+    to: {x: 100, y: AppleInteractionColor.systemBlueAccessible},
   });
   // Set Z to half the total height so that keycaps are at the same level since the center
   // is in the middle and each row has a different height
@@ -388,12 +324,12 @@ export const Keycap: React.FC<ThreeFiberKeycapProps> = React.memo((props) => {
     DisplayMode.Test === mode
       ? pressedState === KeycapState.Unpressed
         ? wasPressed
-          ? 'palevioletred'
-          : 'lightgrey'
-        : 'pink'
+          ? AppleInteractionColor.systemBlue
+          : AppleInteractionColor.systemGray
+        : AppleInteractionColor.systemBlue
       : pressedState === KeycapState.Unpressed
-      ? 'lightgrey'
-      : 'lightgrey';
+      ? AppleInteractionColor.systemGray
+      : AppleInteractionColor.systemGray;
 
   const {z, b, rotateZ, tooltipScale} = useSpring({
     config: {duration: 100},

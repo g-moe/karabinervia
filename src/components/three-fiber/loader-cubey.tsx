@@ -10,7 +10,6 @@ import {getDarkenedColor} from 'src/utils/color-math';
 export const LoaderCubey: React.FC<{theme: Theme; visible: boolean}> =
   React.memo(({visible, theme}) => {
     const cubeyGLTF = useGLTF(cubeySrc);
-    console.debug(cubeyGLTF, 'cubey');
     const spinnerRef = useRef<any>();
     const yInit = !visible ? 10 : -0.3;
 

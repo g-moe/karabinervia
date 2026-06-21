@@ -3,8 +3,7 @@ import {PerspectiveCamera, useProgress} from '@react-three/drei';
 import {useFrame, useThree} from '@react-three/fiber';
 import React from 'react';
 
-const DEBUG = false;
-const ZOOM = DEBUG ? 1 : 5.5 * 0.8;
+const ZOOM = 5.5 * 0.8;
 
 export const Camera = () => {
   const {progress} = useProgress();
@@ -17,17 +16,10 @@ export const Camera = () => {
 
   React.useEffect(() => {
     if (progress === 100) {
-      console.debug('lets animate');
       glow.x.start(endX);
     }
   }, [progress]);
 
-  React.useEffect(() => {
-    console.debug('mounting');
-    return () => {
-      console.debug('unmounting');
-    };
-  }, []);
   useFrame(() => {
     if (glow.x.isAnimating) {
       camera.position.setZ(glow.x.get());
