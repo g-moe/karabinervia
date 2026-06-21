@@ -9,18 +9,13 @@ import {
 } from 'src/store/definitionsSlice';
 import {
   getConnectedDevices,
-  getSelectedConnectedDevice,
   getSelectedKeyboardAPI,
 } from 'src/store/devicesSlice';
 import {useAppSelector} from 'src/store/hooks';
 import {
   getSelected256PaletteColor,
-  getSelectedKey,
-  getSelectedKeymap,
   setSelectedPaletteColor,
-  updateSelectedKey,
 } from 'src/store/keymapSlice';
-import {getCodeForByte} from 'src/utils/key';
 import {getNextKey} from 'src/utils/keyboard-rendering';
 import {RawKeycodeSequenceAction} from 'src/utils/macro-api/types';
 import styled from 'styled-components';
@@ -188,12 +183,7 @@ const TestControls = () => {
 
 export const Debug: FC = () => {
   const api = useAppSelector(getSelectedKeyboardAPI);
-  const selectedDevice = useAppSelector(getSelectedConnectedDevice);
   const connectedDevices = useAppSelector(getConnectedDevices);
-  const selectedKey = useAppSelector(getSelectedKey);
-  const selectedKeymap = useAppSelector(getSelectedKeymap);
-  const {basicKeyToByte, byteToKey} = useAppSelector(getBasicKeyToByte);
-  const dispatch = useDispatch();
 
   // Temporary patch that gets the page to load
   // TODO: We probably need to rethink this + design a bit. Loading defs in design causes this to crash
@@ -218,17 +208,9 @@ export const Debug: FC = () => {
     ])
     .filter(([_, definition]) => definition !== undefined);
 
-  const selectedVendorProductId =
-    selectedDevice && typeof selectedDevice !== 'string'
-      ? selectedDevice.vendorProductId
-      : null;
-  const selectedDeviceDefinitionIndex = allDefinitions.findIndex(
-    ([id]) => id === selectedVendorProductId?.toString(),
-  );
-  const [selectedDefinitionIndex, setSelectedDefinition] = useState(
-    selectedDeviceDefinitionIndex === -1 ? 0 : selectedDeviceDefinitionIndex,
-  );
+  const [selectedDefinitionIndex, setSelectedDefinition] = useState(0);
   const [selectedOptionKeys, setSelectedOptionKeys] = useState<number[]>([]);
+  const [selectedKey, setSelectedKey] = useState<undefined | number>(0);
   const [showMatrix, setShowMatrix] = useState(false);
 
   const options = allDefinitions.map(([, definition], index) => ({
@@ -236,10 +218,6 @@ export const Debug: FC = () => {
     value: `${index}`,
   }));
   const entry = allDefinitions[selectedDefinitionIndex];
-  const selectedKeycode =
-    selectedKey !== null && selectedKeymap
-      ? getCodeForByte(selectedKeymap[selectedKey], basicKeyToByte, byteToKey)
-      : 'None';
 
   return (
     <Pane>
@@ -258,12 +236,6 @@ export const Debug: FC = () => {
               </Detail>
             </ControlRow>
             <ControlRow>
-              <Label>Selected key</Label>
-              <Detail>
-                {selectedKey === null ? 'None' : `${selectedKey} / ${selectedKeycode}`}
-              </Detail>
-            </ControlRow>
-            <ControlRow>
               <Label>Set next key</Label>
               <Detail>
                 <AccentButton
@@ -275,11 +247,9 @@ export const Debug: FC = () => {
                         )
                       : [];
                     const displayedKeys = [...keys, ...selectedOptionKeys];
-                    if (selectedKey !== null) {
-                      dispatch(
-                        updateSelectedKey(
-                          getNextKey(selectedKey, displayedKeys) || 0,
-                        ),
+                    if (selectedKey !== undefined) {
+                      setSelectedKey(
+                        getNextKey(selectedKey, displayedKeys) || 0,
                       );
                     }
                   }}
