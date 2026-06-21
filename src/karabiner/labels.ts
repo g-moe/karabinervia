@@ -10,7 +10,7 @@ const keycapLabelMap: Record<string, string> = {
   grave_accent_and_tilde: '`',
   hyphen: '-',
   equal_sign: '=',
-  delete_or_backspace: 'Bspc',
+  delete_or_backspace: 'delete',
   delete_forward: 'Del',
   open_bracket: '[',
   close_bracket: ']',
@@ -20,11 +20,11 @@ const keycapLabelMap: Record<string, string> = {
   comma: ',',
   period: '.',
   slash: '/',
-  caps_lock: 'Caps',
+  caps_lock: 'caps lock',
   fn: 'fn',
-  return_or_enter: 'Enter',
-  left_shift: 'LShift',
-  right_shift: 'RShift',
+  return_or_enter: 'return',
+  left_shift: 'shift',
+  right_shift: 'shift',
   left_control: '⌃',
   right_control: '⌃',
   left_option: '⌥',
@@ -32,12 +32,36 @@ const keycapLabelMap: Record<string, string> = {
   left_command: '⌘',
   right_command: '⌘',
   spacebar: 'Space',
-  left_arrow: 'Left',
-  right_arrow: 'Right',
-  up_arrow: 'Up',
-  down_arrow: 'Down',
-  escape: 'Esc',
+  left_arrow: '←',
+  right_arrow: '→',
+  up_arrow: '↑',
+  down_arrow: '↓',
+  escape: 'esc',
   vk_none: '',
+};
+
+const shiftedKeycapLabelMap: Record<string, string> = {
+  grave_accent_and_tilde: '~',
+  '1': '!',
+  '2': '@',
+  '3': '#',
+  '4': '$',
+  '5': '%',
+  '6': '^',
+  '7': '&',
+  '8': '*',
+  '9': '(',
+  '0': ')',
+  hyphen: '_',
+  equal_sign: '+',
+  open_bracket: '{',
+  close_bracket: '}',
+  backslash: '|',
+  semicolon: ':',
+  quote: '"',
+  comma: '<',
+  period: '>',
+  slash: '?',
 };
 
 const shortKarabinerLabel = (label: string) =>
@@ -68,7 +92,31 @@ const twoLineLabel = (topLabel: string, bottomLabel: string) => ({
   offset: [0, 0],
 });
 
-export const getKarabinerLabels = (layerIndex: number) => {
+const shiftedPairLabel = (topLabel: string, bottomLabel: string) => ({
+  ...twoLineLabel(topLabel, bottomLabel),
+  key: `shifted:${topLabel}:${bottomLabel}`,
+});
+
+const physicalDefaultLabel = (defaultTap: string, shifted: boolean) => {
+  const bottomLabel = shortKarabinerLabel(defaultTap);
+  const shiftedLabel = shiftedKeycapLabelMap[defaultTap];
+
+  if (shifted) {
+    if (shiftedLabel) {
+      return centerLabel(shiftedLabel);
+    }
+    return centerLabel(
+      bottomLabel.length === 1 ? bottomLabel.toUpperCase() : bottomLabel,
+    );
+  }
+
+  if (shiftedLabel) {
+    return shiftedPairLabel(shiftedLabel, bottomLabel);
+  }
+  return centerLabel(bottomLabel);
+};
+
+export const getKarabinerLabels = (layerIndex: number, shifted = false) => {
   const workspace = loadWorkspace();
   return macbookLayoutKeys.map((macKey) => {
     if (macKey.displayTopLabel && macKey.displayBottomLabel) {
@@ -89,6 +137,13 @@ export const getKarabinerLabels = (layerIndex: number) => {
       assignment.hold.kind === 'transparent'
     ) {
       return centerLabel(displayLabel);
+    }
+    if (
+      assignment.tap.kind === 'key' &&
+      assignment.tap.keyCode === defaultTap &&
+      assignment.hold.kind === 'transparent'
+    ) {
+      return physicalDefaultLabel(defaultTap, shifted);
     }
 
     const tap =

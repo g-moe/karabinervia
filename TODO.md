@@ -2,6 +2,8 @@
 - [x] add function row + touch id as DISPLAY_ONLY but they are not allowed to be edited
 - [x] refine MacBook Pro Touch ID geometry so all rows share the keyboard body width
 - [x] replace QMK/VIA special-key legends with Mac-style labels
+- [x] show shifted physical legends on number and symbol keys
+- [x] preview shifted legends while holding either Shift key
 
 - [ ] removal not-needed
 - all themes but default dark and default light

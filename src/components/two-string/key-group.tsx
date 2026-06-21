@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {getBasicKeyToByte} from 'src/store/definitionsSlice';
 import {useAppDispatch, useAppSelector} from 'src/store/hooks';
 import {getSelectedKey, getSelectedLayerIndex} from 'src/store/keymapSlice';
@@ -60,6 +60,9 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
   const {basicKeyToByte, byteToKey} = useAppSelector(getBasicKeyToByte);
   const macros = useAppSelector((state) => state.macros);
   const {keys, selectedKey: externalSelectedKey} = props;
+  const isKarabinerDevice =
+    props.definition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID;
+  const [isShiftPreviewActive, setIsShiftPreviewActive] = useState(false);
   const selectedKeyIndex =
     externalSelectedKey === undefined ? selectedKey : externalSelectedKey;
   const keysKeys: KeysKeys<React.MouseEvent> = useMemo(() => {
@@ -71,12 +74,61 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
     props.onKeycapPointerOver,
     props.onKeycapClick,
   ]);
+  const previewKeysKeys = useMemo(() => {
+    if (!isKarabinerDevice) {
+      return keysKeys;
+    }
+    return {
+      ...keysKeys,
+      coords: keysKeys.coords.map((coords, index) => {
+        const key = keys[index];
+        const isShiftKey =
+          key.row === 4 && (key.col === 0 || key.col === 11);
+        if (!isShiftKey) {
+          return coords;
+        }
+        return {
+          ...coords,
+          onPointerDown: (event: React.MouseEvent, idx: number) => {
+            setIsShiftPreviewActive(true);
+            coords.onPointerDown?.(event, idx);
+          },
+          onClick: (event: React.MouseEvent, idx: number) => {
+            setIsShiftPreviewActive(true);
+            coords.onClick(event, idx);
+          },
+        };
+      }),
+    };
+  }, [isKarabinerDevice, keysKeys, keys]);
+  useEffect(() => {
+    if (!isShiftPreviewActive) {
+      return undefined;
+    }
+    const releaseShiftPreview = () => setIsShiftPreviewActive(false);
+    window.addEventListener('pointerup', releaseShiftPreview);
+    window.addEventListener('mouseup', releaseShiftPreview);
+    window.addEventListener('blur', releaseShiftPreview);
+    return () => {
+      window.removeEventListener('pointerup', releaseShiftPreview);
+      window.removeEventListener('mouseup', releaseShiftPreview);
+      window.removeEventListener('blur', releaseShiftPreview);
+    };
+  }, [isShiftPreviewActive]);
   const labels = useMemo(() => {
-    if (props.definition.vendorProductId === KARABINER_VIA_VENDOR_PRODUCT_ID) {
-      return getKarabinerLabels(selectedLayerIndex);
+    if (isKarabinerDevice) {
+      return getKarabinerLabels(selectedLayerIndex, isShiftPreviewActive);
     }
     return getLabels(props, macroExpressions, basicKeyToByte, byteToKey);
-  }, [keys, props.matrixKeycodes, macros, props.definition, selectedLayerIndex]);
+  }, [
+    keys,
+    props.matrixKeycodes,
+    macros,
+    props.definition,
+    selectedLayerIndex,
+    isKarabinerDevice,
+    isShiftPreviewActive,
+  ]);
   const {width, height} = calculateKeyboardFrameDimensions(keys);
   const elems = useMemo(() => {
     return props.keys.map((k, i) => {
@@ -87,7 +139,7 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
             k,
             i,
             props,
-            keysKeys,
+            previewKeysKeys,
             selectedKeyIndex,
             labels,
             skipFontCheck,
@@ -103,6 +155,7 @@ export const KeyGroup: React.FC<KeyGroupProps<React.MouseEvent>> = (props) => {
     props.selectable,
     keyColorPalette,
     props.definition.vendorProductId,
+    previewKeysKeys,
     skipFontCheck,
   ]);
   return (
