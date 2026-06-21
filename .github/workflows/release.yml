@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Verify release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Enable pnpm
         uses: pnpm/action-setup@v4
       - name: Use Node
@@ -34,7 +34,7 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Enable pnpm
         uses: pnpm/action-setup@v4
       - name: Use Node
