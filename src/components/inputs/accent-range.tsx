@@ -24,7 +24,7 @@ const Container = styled.span<{$mode?: number}>`
 `;
 
 const SliderInput = styled.input.attrs({type: 'range'})<any>`
-  accent-color: var(--color_accent);
+  accent-color: var(--color_control-border);
   width: ${(props) => {
     switch (props.$mode) {
       case 0:
