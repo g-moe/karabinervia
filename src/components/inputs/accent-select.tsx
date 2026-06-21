@@ -1,5 +1,11 @@
 import React from 'react';
 import Select, {Props} from 'react-select';
+
+const readableTextColor = 'var(--color_label-highlighted)';
+const mutedTextColor = 'var(--color_label)';
+const accentColor = 'var(--color_accent)';
+const accentTextColor = 'var(--color_inside-accent)';
+
 const customStyles = {
   option: (provided: any, state: any) => {
     return {
@@ -13,15 +19,15 @@ const customStyles = {
         backgroundColor: 'var(--bg_control)',
       },
       background: state.isSelected
-        ? 'var(--color_accent)'
+        ? accentColor
         : state.isFocused
         ? 'var(--bg_control)'
         : 'var(--bg_menu)',
       color: state.isSelected
-        ? 'var(--color_inside-accent)'
+        ? accentTextColor
         : state.isFocused
-        ? 'var(--color_accent)'
-        : 'var(--color_accent)',
+        ? readableTextColor
+        : mutedTextColor,
     };
   },
   container: (provided: any) => ({
@@ -31,20 +37,22 @@ const customStyles = {
   }),
   input: (provided: any) => ({
     ...provided,
-    color: 'var(--color_accent)',
-    opacity: 0.5,
+    color: readableTextColor,
+    opacity: 1,
   }),
-  singleValue: (provided: any) => ({
+  singleValue: (provided: any, state: any) => ({
     ...provided,
-    color: 'var(--color_accent)',
+    color: state.isDisabled ? mutedTextColor : readableTextColor,
+    opacity: 1,
   }),
-  dropdownIndicator: (provided: any) => ({
+  dropdownIndicator: (provided: any, state: any) => ({
     ...provided,
-    color: 'var(--color_accent)',
+    color: state.isDisabled ? mutedTextColor : accentColor,
+    opacity: state.isDisabled ? 0.75 : 1,
   }),
-  indicatorSeparator: (provided: any) => ({
+  indicatorSeparator: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: 'var(--color_accent)',
+    backgroundColor: state.isDisabled ? 'var(--bg_control)' : accentColor,
   }),
   menuList: (provided: any) => ({
     ...provided,
@@ -53,9 +61,9 @@ const customStyles = {
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    color: 'var(--color_accent)',
+    color: mutedTextColor,
   }),
-  valueContainer: (provided: any) => ({
+  valueContainer: (provided: any, state: any) => ({
     ...provided,
     ':active': {
       backgroundColor: 'var(--bg_control)',
@@ -64,7 +72,7 @@ const customStyles = {
     '&:hover': {
       borderColor: 'var(--color_accent)',
     },
-    color: 'var(--color_accent)',
+    color: state.isDisabled ? mutedTextColor : readableTextColor,
     background: 'var(--bg_menu)',
   }),
   control: (provided: any, state: any) => {
@@ -78,10 +86,11 @@ const customStyles = {
       '&:hover': {
         borderColor: 'var(--color_accent)',
       },
-      color: 'var(--color_accent)',
-      borderColor: '1px solid var(--color_accent)',
+      color: state.isDisabled ? mutedTextColor : readableTextColor,
+      borderColor: state.isDisabled ? 'var(--bg_control)' : accentColor,
       background: 'var(--bg_menu)',
       overflow: 'hidden',
+      opacity: 1,
       width: state.selectProps.width || 250,
     };
     return res;
