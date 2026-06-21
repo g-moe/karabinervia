@@ -97,6 +97,7 @@ html[data-theme-mode='dark'] {
   --color_control-text-disabled: var(--color_label);
   --color_control-border: var(--color_accent);
   --color_control-border-disabled: var(--bg_control);
+  --color_control-border-subtle: #8a7773;
   --color_control-selected-bg: var(--color_accent);
   --color_control-selected-text: var(--color_inside-accent);
   --color_detail-text: var(--color_accent);
@@ -129,6 +130,7 @@ html[data-theme-mode='light'] {
   --color_control-text-disabled: var(--color_label);
   --color_control-border: var(--color_accent);
   --color_control-border-disabled: var(--bg_control);
+  --color_control-border-subtle: #7c7070;
   --color_control-selected-bg: var(--color_accent);
   --color_control-selected-text: var(--color_inside-accent);
   --color_detail-text: var(--color_accent);

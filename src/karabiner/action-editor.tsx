@@ -17,7 +17,6 @@ import {
 import {
   KarabinerAction,
   KarabinerActionKind,
-  actionLabel,
   assignmentFor,
   keyAction,
   keyOptions,
@@ -49,9 +48,16 @@ const Select = styled.select`
   min-width: 260px;
   background: var(--bg_menu);
   color: var(--color_control-text);
-  border: 1px solid var(--color_control-border);
+  border: 2px solid var(--color_control-border-subtle);
   border-radius: var(--radius_control);
+  box-sizing: border-box;
   padding: 0 10px;
+
+  &:focus,
+  &:hover {
+    border-color: var(--color_control-border);
+    outline: none;
+  }
 
   option {
     color: var(--color_control-text);
@@ -64,9 +70,16 @@ const TextInput = styled.input`
   min-width: 260px;
   background: var(--bg_menu);
   color: var(--color_control-text);
-  border: 1px solid var(--color_control-border);
+  border: 2px solid var(--color_control-border-subtle);
   border-radius: var(--radius_control);
+  box-sizing: border-box;
   padding: 0 10px;
+
+  &:focus,
+  &:hover {
+    border-color: var(--color_control-border);
+    outline: none;
+  }
 
   &::placeholder {
     color: var(--color_control-text-muted);
@@ -84,6 +97,11 @@ const Checkbox = styled.label`
   color: var(--color_label);
   font-size: 16px;
   line-height: 24px;
+`;
+
+const SelectedKeyValue = styled.span`
+  color: var(--color_control-text);
+  margin-left: 8px;
 `;
 
 function defaultAction(kind: KarabinerActionKind, fallbackLayerId: string) {
@@ -109,7 +127,6 @@ function defaultAction(kind: KarabinerActionKind, fallbackLayerId: string) {
 }
 
 function ActionRows(props: {
-  title: string;
   action: KarabinerAction;
   allowLayer: boolean;
   allowTransparent: boolean;
@@ -122,7 +139,6 @@ function ActionRows(props: {
     allowTransparent,
     layerOptions,
     onChange,
-    title,
   } = props;
   const fallbackLayer = layerOptions[0]?.value ?? 'nav';
   const kindOptions: {value: KarabinerActionKind; label: string}[] = [
@@ -138,10 +154,6 @@ function ActionRows(props: {
 
   return (
     <>
-      <ControlRow>
-        <Label>{title}</Label>
-        <Detail>{actionLabel(action, loadWorkspace())}</Detail>
-      </ControlRow>
       <ControlRow>
         <Label>Type</Label>
         <Detail>
@@ -316,8 +328,10 @@ export function KarabinerActionEditor() {
       <Pane>
         <Container>
           <ControlRow>
-            <Label>Selected Key</Label>
-            <Detail>{macKey.code.replace(/^KC_/, '')}</Detail>
+            <Label>
+              Selected Key
+              <SelectedKeyValue>{macKey.code.replace(/^KC_/, '')}</SelectedKeyValue>
+            </Label>
           </ControlRow>
           <ControlRow>
             <Label>Layer Name</Label>
@@ -361,7 +375,6 @@ export function KarabinerActionEditor() {
             </Detail>
           </ControlRow>
           <ActionRows
-            title="Tap"
             action={current.tap}
             allowLayer={false}
             allowTransparent={selectedLayerIndex !== 0}
@@ -376,7 +389,6 @@ export function KarabinerActionEditor() {
             }
           />
           <ActionRows
-            title="Hold"
             action={current.hold}
             allowLayer
             allowTransparent
