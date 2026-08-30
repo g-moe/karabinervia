@@ -50,8 +50,8 @@
     "wouter": "^3.10.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.60.0",
-    "@testing-library/jest-dom": "^6.9.1",
+    "@playwright/test": "^1.62.1",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/lodash.partition": "^4.6.9",
@@ -61,7 +61,7 @@
     "@types/wicg-file-system-access": "^2023.10.7",
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/coverage-v8": "^4.1.8",
-    "jsdom": "^29.1.1",
+    "jsdom": "^30.0.1",
     "oxfmt": "^0.53.0",
     "oxlint": "^1.68.0",
     "typescript": "^6.0.3",
